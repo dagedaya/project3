@@ -3,13 +3,13 @@
   <div class="box-header">
     <!-- 输入框 -->
     <div class="place">
-        <el-button><i class="el-icon-delete"></i>&nbsp;删除</el-button>
-        <el-button><i class="el-icon-folder-add"></i>&nbsp;添加班级</el-button>
+        <el-button ><i class="el-icon-delete"></i>&nbsp;删除</el-button>
+        <el-button  @click="dialogVisible = true"><i class="el-icon-folder-add"></i>&nbsp;添加班级</el-button>
     </div>
     <div class="select-box">
       <el-dropdown trigger="click">
       <span class="el-dropdown-link">
-        下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
+        下拉菜单<i class="el-icon-arrow-down el-icon--right"></i> 
       </span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item icon="el-icon-plus">学习</el-dropdown-item>
@@ -44,13 +44,25 @@
       <td>{{item.have}}</td>
     </tr>
   </table>
+  <!-- 添加班级 -->
+    <el-dialog title="增加班级" :visible.sync="dialogVisible" width="47%">
+      <ClassesList></ClassesList>
+      <span slot="footer" class="dialog-footer">
+        <el-button class="button-box" type="primary" @click="dialogVisible = false"
+          >保存</el-button
+        >
+      </span>
+    </el-dialog>
 </div>
 </template>
 
 <script>
+import ClassesList from '../../components/classes/ClassesList.vue'
 export default {
+  components:{ClassesList},
   data() {
     return {
+      dialogVisible:false,
       dataList:[
         {
           className:"架子鼓基础班",
@@ -118,7 +130,8 @@ export default {
 };
 </script>
 
-<style>
+<style socped>
+/* 表格 */
 .table-s{
   float: left;
   width:48px;
@@ -155,7 +168,7 @@ span:nth-of-type(1){
   width: 420px;
   height: 31px;
   border:1px solid #dee3e9;
-  margin-left:263pxpx;
+  margin-left:260px;
   margin-top:-42px;
   line-height: 28px;
   padding-left:5px;
@@ -172,18 +185,26 @@ span:nth-of-type(1){
   left:90px;
   top:-30px;
 }
+
 .el-input__inner{
+  margin:0;
+  padding:0;
   border: none;
   background-color: rgba(0, 0, 0, 0);
+  margin-top: -6px;
 }
 .el-icon-search{
   position: absolute;
-  left:780px;
-  top:75px;
+  left:781px;
+  top:74px;
   font-size:20px;
 }
 
   /* 按钮 */
+div.el-dialog__footer > span > button{
+  background-color: #4281fc;
+  color:#fff;
+}
 .box-header{
   width:99.9%;
   height:55px;
@@ -192,7 +213,7 @@ span:nth-of-type(1){
   border-bottom:1px solid #dee3e9;
 }
 
-.el-button{
+.box-header .el-button{
   padding: 7px 12px;
   margin:10px 15px;
   background-color:#fff;
@@ -203,20 +224,11 @@ span:nth-of-type(1){
   font-weight:bold;
   font-size:16px;
 }
-.box-header .box2{
-  border:1px solid #dee3e9;
-  background-color:#fff;
-  color:#9ea4b0;
-  width:100px;
-  margin-left:-5px;
-}
 .el-icon-folder-add{
   font-weight:bold;
   font-size:16px;
 }
-.el-input__inner{
-      border-left: none;
-}
+
 .place{
   position:relative;
 }
