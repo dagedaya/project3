@@ -6,17 +6,22 @@
   </el-header>
   <el-container>
     <el-aside width="130px">
-      <div class="el-div" v-for="(item,index) in elList" :key="index">
+      <div class="el-div" v-for="(item,index) in elList" :key="index" @click="addClass(index)"
+      :class="index==status?'changeClass':''"
+      >
         <ul>
             <li>
-              <span></span>
+              <span :style="index==status?item.check.backgroundPos:item.checkNo.backgroundPos"></span>
               <p>{{item.name}}</p>
             </li>
         </ul>
       </div>
 
     </el-aside>
-    <el-main>Main</el-main>
+    <el-main>
+      <!-- 路由出口 -->
+      <router-view></router-view>
+    </el-main>
   </el-container>
 </el-container>
 </template>
@@ -25,40 +30,95 @@
 export default {
   data() {
     return {
+      // 左侧栏默认
+      status:0,
       elList:[
         {
-          path:'',
-          name:'班级管理'
+          path:'/classes',
+          name:'班级管理',
+          // 选中
+          check:{
+            backgroundPos:"backgroundPosition:-9px -183px",
+          },
+          // 未选中
+          checkNo:{
+            backgroundPos:"backgroundPosition:-9px -283px",
+          }
         },
         {
-          path:'',
-          name:"课程管理"
+          path:'/project',
+          name:"课程管理",
+          // 选中
+          check:{
+            backgroundPos:"background-position:-82px -234px",
+          },
+          // 未选中
+          checkNo:{
+            backgroundPos:"background-position:-9px -94px",
+          }
         },
         {
-          path:'',
-          name:'考勤管理'
+          path:'/work',
+          name:'考勤管理',
+          // 选中
+          check:{
+            backgroundPos:"background-position:-9px -382px",
+          },
+          // 未选中
+          checkNo:{
+            backgroundPos:"background-position:-9px -476px",
+          }
         },
         {
-          path:'',
-          name:'课时管理'
+          path:'/hour',
+          name:'课时管理',
+          // 选中
+          check:{
+            backgroundPos:"background-position:-146px -1px",
+          },
+          // 未选中
+          checkNo:{
+            backgroundPos:"background-position:-146px -95px",
+          }
         },
         {
-          path:'',
-          name:'学员管理'
+          path:'/student',
+          name:'学员管理',
+          // 选中
+          check:{
+            backgroundPos:"background-position:-2px -714px",
+          },
+          // 未选中
+          checkNo:{
+            backgroundPos:"background-position:-88px -714px",
+          }
         },
       ]
     };
+  },
+  created(){
+    for(var i=0;i<this.elList.length;i++){
+      if(this.elList[i].path==this.$route.path){
+        this.status=i
+      }
+    }
   },
   mounted() {
 
   },
   methods: {
-
+    addClass(val){
+      this.status = val
+      console.log(val)
+      this.$router.push({
+        path:this.elList[val].path
+      })
+    }
   },
 };
 </script>
 
-<style lang="less" scoped>
+<style scoped>
 /* 清除页面边距 */
 *{
   margin:0;
@@ -99,11 +159,16 @@ div:nth-child(5) > ul > li > span{
   width: 110px;
   height: 98px;
   text-align: center;
-  /* background-color: #e8ebf0; */
   border-radius: 4px;
   margin-left:9px;
   margin-top: 20px;
   cursor: pointer;
+}
+.changeClass{
+    background-color: #e8ebf0;
+}
+.changeClass p{
+  color:#3f81fb;
 }
 
 /* logo */
@@ -129,6 +194,8 @@ div:nth-child(5) > ul > li > span{
   }
   
   .el-aside {
+    /* box-shadow:5px 0px 6px #dee3e9; */
+    border-right:1px solid #dee3e9;
     background-color: #ffffff;
     color: #333;
     text-align: center;
@@ -137,10 +204,11 @@ div:nth-child(5) > ul > li > span{
   }
   
   .el-main {
-    background-color: #E9EEF3;
+    padding:0;
+    background-color: #fefefe;
     color: #333;
-    text-align: center;
-    line-height: 160px;
+    /* text-align: center; */
+    /* line-height: 160px; */
   }
   
   body > .el-container {
