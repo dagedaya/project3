@@ -102,6 +102,7 @@ export default {
       ]
     };
   },
+  // 防止页面刷新
   created() {
     for (var i = 0; i < this.elList.length; i++) {
       if (this.elList[i].path == this.$route.path) {
@@ -111,6 +112,7 @@ export default {
   },
   mounted() {},
   methods: {
+    // 路由跳转
     addClass(val) {
       this.status = val;
       console.log(val);

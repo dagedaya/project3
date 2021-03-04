@@ -26,15 +26,15 @@
       <tr v-for="(item,index) in dataList" :key="index">
         <td style="text-align:left;clear:both; line-height:55px">
           <span class="table-s"></span>
-          {{item.className}}
+          {{item.name}}
         </td>
         <td>{{item.mode}}</td>
-        <td>{{item.money}}</td>
-        <td>{{item.class}}</td>
+        <td>{{item.price}}</td>
+        <td>{{item.pricetype}}</td>
       </tr>
     </table>
     <!-- 添加班级 -->
-    <el-dialog title="增加班级" :visible.sync="dialogVisible" width="47%">
+    <el-dialog title="增加课程" :visible.sync="dialogVisible" width="47%">
       <ProjectList></ProjectList>
       <span slot="footer" class="dialog-footer">
         <el-button class="button-box" type="primary" @click="dialogVisible = false">保存</el-button>
@@ -51,48 +51,22 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      dataList: [
-        {
-          className: "架子鼓基础班",
-          mode: "按课收费",
-          money: "500.00元、课时",
-          class: "集体班"
-        },
-        {
-          className: "架子鼓基础班",
-          mode: "按课收费",
-          money: "500.00元、课时",
-          class: "集体班"
-        },
-        {
-          className: "架子鼓基础班",
-          mode: "按课收费",
-          money: "500.00元、课时",
-          class: "集体班"
-        },
-        {
-          className: "架子鼓基础班",
-          mode: "按课收费",
-          money: "500.00元、课时",
-          class: "集体班"
-        },
-        {
-          className: "架子鼓基础班",
-          mode: "按课收费",
-          money: "500.00元、课时",
-          class: "集体班"
-        },
-        {
-          className: "架子鼓基础班",
-          mode: "按课收费",
-          money: "500.00元、课时",
-          class: "集体班"
-        }
-      ]
+      dataList: []
     };
   },
-  mounted() {},
-  methods: {}
+  mounted() {
+    this.loaddata()
+  },
+  methods: {
+    loaddata(){
+      this.$http.get('/courses/list',{page:1},success => {
+        this.dataList = success.data.list
+      },failrue =>{
+        console.log('请求数据失败')
+      }
+    )
+    }
+  }
 };
 </script>
 
@@ -134,8 +108,8 @@ span:nth-of-type(1) {
   width: 420px;
   height: 31px;
   border: 1px solid #dee3e9;
-  margin-left: 297px;
-  margin-top: -42px;
+  margin-left: 302px;
+  margin-top: -45px;
   line-height: 28px;
   padding-left: 5px;
   float: left;
@@ -167,20 +141,22 @@ span:nth-of-type(1) {
 
 /* 按钮 */
 /* 三角 */
-
+.btn{
+  font-size:15px;
+}
 .triangle {
   width: 0;
   height: 0;
-  border-top: 19px solid transparent;
-  border-left: 38px solid #dbdfe8;
-  border-bottom: 19px solid transparent;
+  border-top: 29px solid transparent;
+  border-left: 34px solid #dbdfe8;
+  border-bottom: 30px solid transparent;
   position: absolute;
   left:99px;
-  top:7px;
+  top:-3px;
 }
 .place .btn {
   width: 100px;
-  height: 36px;
+  height: 56px;
   background-color: #dbdfe8;
   border: none;
   margin-right: 40px;
@@ -201,7 +177,7 @@ div.el-dialog__footer > span > button {
 
 .el-button {
   padding: 6px 15px;
-  margin: 10px 15px;
+  margin: 10px 34px;
   background-color: #fff;
   color: #9ea4b0;
   font-size: 14px;

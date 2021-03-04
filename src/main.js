@@ -8,6 +8,10 @@ import store from './store'
   import 'element-ui/lib/theme-chalk/index.css';
   Vue.use(ElementUI);//安装插件 
 
+  // 封装的axios
+  import HttpRequest from "./api/httpRequest.js"
+  Vue.http = Vue.prototype.$http=HttpRequest
+
 Vue.config.productionTip = false
 
 new Vue({

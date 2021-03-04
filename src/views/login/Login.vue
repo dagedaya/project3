@@ -68,6 +68,15 @@ export default {
         this.messtitle="请输入密码"
       }else{
         this.messtitle=""
+        this.$http.post('/admin/checklogin',{username:this.username,pass:this.password},success =>{
+          // token存到本地
+          localStorage.setItem('token',success.data)
+          // 跳转
+          this.$router.push('/')
+        },failure => {
+          this.messtitle="账号密码错误"
+        }
+      )
       }
     },
     messChange(){
@@ -90,6 +99,7 @@ ul,li {
 .message {
   line-height: 30px;
   color: red;
+  text-align: center;
 }
 /* 行内元素 */
 .login-type {

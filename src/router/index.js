@@ -10,6 +10,16 @@ const routes = [
     redirect: '/classes',
     children:[
       {
+        path:'/test',
+        name:'test',
+        component: () => import('@/views/test.vue')
+      },
+      {
+        path:'/test2',
+        name:'test2',
+        component: () => import('@/views/test2.vue')
+      },
+      {
         path:'/classes',
         name:'classes',
         component: () => import('@/views/classes/Classes.vue')

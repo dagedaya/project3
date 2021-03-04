@@ -70,8 +70,19 @@ export default {
         value2: ''
     };
   },
+  created(){
+
+  },
   mounted() {},
   methods: {
+    // 请求添加班级数据
+    loaddata(){
+      this.$http.post('/classes/ add',{courseid:0,coursename:0,name:0,startdate:'2021-10-20',enddate:'2021-10-20'},success =>{
+        console.log(success)
+      }),failrue =>{
+        console.log('添加班级数据失败')
+      }
+    },
     onSubmit() {
       console.log("submit!");
     }
