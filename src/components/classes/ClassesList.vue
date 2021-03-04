@@ -12,7 +12,7 @@
     <el-form-item label="计划课时:">
       <el-input v-model="form.name" class="inner"></el-input>&nbsp;&nbsp;课时
     </el-form-item>
-    <div class="block">
+    <!-- <div class="block">
       <span class="demonstration">日期:&nbsp;&nbsp;</span>
       <el-date-picker
         v-model="value1"
@@ -21,7 +21,17 @@
         start-placeholder="开始日期"
         end-placeholder="结束日期"
       ></el-date-picker>
-    </div>
+    </div>-->
+    <el-form-item label="当前日期">
+      <el-col :span="11">
+        <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%"></el-date-picker>
+      </el-col>
+    </el-form-item>
+    <el-form-item label="结束日期">
+      <el-col :span="11">
+        <el-date-picker type="date" placeholder="选择日期" v-model="form.date2" style="width: 100%"></el-date-picker>
+      </el-col>
+    </el-form-item>
   </el-form>
 </template>
 
@@ -39,49 +49,31 @@ export default {
         resource: "",
         desc: ""
       },
-      pickerOptions: {
-          shortcuts: [{
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit('pick', [start, end]);
-            }
-          }]
-        },
-        value1: '',
-        value2: ''
+      value1: "",
+      value2: ""
     };
   },
-  created(){
-
-  },
+  created() {},
   mounted() {},
   methods: {
     // 请求添加班级数据
-    loaddata(){
-      this.$http.post('/classes/ add',{courseid:0,coursename:0,name:0,startdate:'2021-10-20',enddate:'2021-10-20'},success =>{
-        console.log(success)
-      }),failrue =>{
-        console.log('添加班级数据失败')
-      }
+    loaddata() {
+      this.$http.post(
+        "/classes/add",
+        {
+          courseid: 0,
+          coursename: 0,
+          name: 0,
+          startdate: "2021-10-20",
+          enddate: "2021-10-20"
+        },
+        success => {
+          console.log(success);
+        }
+      ),
+        failrue => {
+          console.log("添加班级数据");
+        };
     },
     onSubmit() {
       console.log("submit!");
@@ -96,9 +88,7 @@ export default {
   width: 420px;
   border-radius: 4px;
 }
-.el-input__icon {
-  line-height: 74px;
+.el-input{
+  border:1px solid #f5f5f5;
 }
-
-
 </style>

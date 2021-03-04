@@ -166,6 +166,7 @@ export default {
     border: none;
     background-color: rgba(0, 0, 0, 0);
     margin-top: -6px;
+    margin-left:20px;
   }
   .el-icon-search {
     position: absolute;
@@ -225,6 +226,12 @@ export default {
     top: 0;
     left: 0;
     z-index: 999;
+  }
+  .el-input__icon{
+    line-height: 70px;
+    position: absolute;
+    left:-16px;
+    top:-33px;  
   }
 }
 </style>
