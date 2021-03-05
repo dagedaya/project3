@@ -55,22 +55,30 @@ export default {
     };
   },
   mounted() {
-    this.loaddata()
+    this.loaddata();
   },
   methods: {
-    loaddata(){
-      this.$http.get('/courses/list',{page:1},success => {
-        this.dataList = success.data.list
-      },failrue =>{
-        console.log('请求数据失败')
-      }
-    )
+    loaddata() {
+      this.$http.get(
+        "/courses/list",
+        { page: 1 },
+        success => {
+          this.dataList = success.data.list;
+        },
+        failrue => {
+          console.log("请求数据失败");
+        }
+      );
     }
   }
 };
 </script>
 
 <style scoped>
+/* 滑过 */
+table tr:hover {
+  background-color: #e8ebf0;
+}
 /* 表格 */
 .table-s {
   float: left;
@@ -141,8 +149,8 @@ span:nth-of-type(1) {
 
 /* 按钮 */
 /* 三角 */
-.btn{
-  font-size:15px;
+.btn {
+  font-size: 15px;
 }
 .triangle {
   width: 0;
@@ -151,8 +159,8 @@ span:nth-of-type(1) {
   border-left: 34px solid #dbdfe8;
   border-bottom: 30px solid transparent;
   position: absolute;
-  left:99px;
-  top:-3px;
+  left: 99px;
+  top: -3px;
 }
 .place .btn {
   width: 100px;
@@ -160,7 +168,7 @@ span:nth-of-type(1) {
   background-color: #dbdfe8;
   border: none;
   margin-right: 40px;
-  outline:none; 
+  outline: none;
 }
 div.el-dialog__footer > span > button {
   background-color: #4281fc;

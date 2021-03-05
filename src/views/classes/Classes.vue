@@ -6,7 +6,7 @@
         <el-button>
           <i class="el-icon-delete"></i>&nbsp;删除
         </el-button>
-        <el-button @click="dialogVisible = true">
+        <el-button @click="dialogVisible=true">
           <i class="el-icon-folder-add"></i>&nbsp;添加班级
         </el-button>
       </div>
@@ -50,19 +50,25 @@
         <td>{{item.endcourses}}</td>
         <td>{{item.coursecounts}}</td>
         <td class="cli-btn">
-          <a href="javascript:;">排课</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="javascript:;" @click="course=true">排课</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <a
-            href="javascript:;"
-          >修改</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <a href="javascript:;">删除</a>
+            href="javascript:;" @click="dialogVisible=true">修改</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="javascript:;" @click="del(index)">删除</a>
         </td>
       </tr>
     </table>
-    <!-- 添加班级 -->
+    <!-- 添加班级/修改班级 -->
     <el-dialog title="增加班级" :visible.sync="dialogVisible" width="47%">
-      <ClassesList></ClassesList>
+      <ClassesList @ClassListChild="AddClass2"></ClassesList>
+      <!-- <span slot="footer" class="dialog-footer">
+        <el-button class="button-box" type="primary" @click="AddClass2">保存</el-button>
+      </span> -->
+    </el-dialog>
+    <!-- 排课 -->
+    <el-dialog title="排课" :visible.sync="course" width="80%">
+      <CourseList></CourseList>
       <span slot="footer" class="dialog-footer">
-        <el-button class="button-box" type="primary" @click="dialogVisible = false">保存</el-button>
+        <el-button class="button-box" type="primary" @click="course=false">保存</el-button>
       </span>
     </el-dialog>
   </div>
@@ -70,12 +76,17 @@
 
 <script>
 import ClassesList from "../../components/classes/ClassesList.vue";
+import CourseList from "../../components/classes/CourseList.vue";
+
 export default {
-  components: { ClassesList },
+  components: { ClassesList, CourseList },
   data() {
     return {
+      // 排课
+      course: false,
+      // 添加班级
       dialogVisible: false,
-      dataList: []
+      dataList: [],
     };
   },
   created() {
@@ -89,11 +100,38 @@ export default {
         "/classes/list",
         { page: 1 },
         success => {
-          console.log(success.data.list);
           this.dataList = success.data.list;
         },
         failrue => {
           console.log("获取数据失败");
+        }
+      );
+    },
+    // 重新请求班级列表（子传父）
+    AddClass2() {
+      this.loaddata();
+      this.dialogVisible = false;
+    },
+    // 删除课程接口
+    del(index) {
+      this.$http.get(
+        "/classes/delete",
+        { id: this.dataList[index].id },
+        success => {
+          console.log('1')
+          this.$message({
+            message: "恭喜你，删除成功",
+            type: "success"
+          });
+          // 初始化数据
+          this.loaddata();
+        },
+        failrue => {
+          console.log('2')
+          this.$message({
+            message: "删除失败",
+            type: "error"
+          });
         }
       );
     }
@@ -160,13 +198,19 @@ export default {
     top: -30px;
   }
 
+  div.box > div:nth-child(4) > div.box-2 > div > input {
+    border: 1px solid #f5f5f5;
+    margin-top: 3px;
+    margin-left: -2px;
+  }
+
   .el-input__inner {
     margin: 0;
     padding: 0;
     border: none;
     background-color: rgba(0, 0, 0, 0);
     margin-top: -6px;
-    margin-left:20px;
+    margin-left: 20px;
   }
   .el-icon-search {
     position: absolute;
@@ -175,17 +219,17 @@ export default {
     font-size: 20px;
   }
 
-// 滑过
-  table tr:hover{
+  // 滑过
+  table tr:hover {
     background-color: #e8ebf0;
   }
-  table tr:hover .cli-btn a{
+  table tr:hover .cli-btn a {
     display: block;
     float: left;
-    margin-left:20px;
-    padding-left:15px;
+    margin-left: 20px;
+    padding-left: 15px;
   }
-  .cli-btn a{
+  .cli-btn a {
     display: none;
   }
 
@@ -227,11 +271,11 @@ export default {
     left: 0;
     z-index: 999;
   }
-  .el-input__icon{
+  .el-input__icon {
     line-height: 70px;
     position: absolute;
-    left:-16px;
-    top:-33px;  
+    left: -16px;
+    top: -33px;
   }
 }
 </style>

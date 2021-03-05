@@ -8,7 +8,7 @@
         <el-button @click="dialogVisible = true">
           <i class="el-icon-user"></i>&nbsp;添加学员
         </el-button>
-        <el-button @click="dialogVisible = true">
+        <el-button @click="course = true">
           <i class="el-icon-folder-add"></i>&nbsp;添加排课
         </el-button>
         <el-button>
@@ -24,15 +24,19 @@
     </div>
     <table class="tab">
       <tr>
-        <th width="2%"><input type="checkbox" name id /></th>
-        <th width="20%"> 学生姓名</th>
+        <th width="2%">
+          <input type="checkbox" name id />
+        </th>
+        <th width="20%">学生姓名</th>
         <th width="14%">性别</th>
         <th width="14%">所选课程</th>
         <th width="14%">购买总课时</th>
         <th width="14%">已上课时</th>
       </tr>
       <tr>
-        <td><input type="checkbox" name id /></td>
+        <td>
+          <input type="checkbox" name id />
+        </td>
         <td>
           <span></span>
           李红
@@ -45,10 +49,17 @@
     </table>
 
     <!-- 添加班级 -->
-    <el-dialog title="增加课程" :visible.sync="dialogVisible" width="47%">
-      <ProjectList></ProjectList>
+    <el-dialog title="添加学员" :visible.sync="dialogVisible" width="47%">
+      <StudentList></StudentList>
       <span slot="footer" class="dialog-footer">
         <el-button class="button-box" type="primary" @click="dialogVisible = false">保存</el-button>
+      </span>
+    </el-dialog>
+    <!-- 添加排课 -->
+    <el-dialog title="排课" :visible.sync="course" width="47%">
+      <CourseList></CourseList>
+      <span slot="footer" class="dialog-footer">
+        <el-button class="button-box" type="primary" @click="course = false">保存</el-button>
       </span>
     </el-dialog>
   </div>
@@ -56,11 +67,17 @@
 
 <script>
 // 引入组件
-import ProjectList from "../../components/project/ProjectList.vue";
+import StudentList from "../../components/student/StudentList.vue";
+import CourseList from "../../components/student/CourseList.vue";
 export default {
-  components: { ProjectList },
+  components: { StudentList, CourseList },
   data() {
     return {
+      // 切换状态
+      cut:1,
+      // 排课
+      course : false,
+      // 添加班级
       dialogVisible: false,
       dataList: []
     };
@@ -91,16 +108,6 @@ export default {
   font-size: 16px;
 }
 /* 表格 */
-/* .table-s {
-  float: left;
-  width: 48px;
-  height: 50px;
-}
-table > tr:nth-child(2) > td:nth-child(2) {
-  background-position: -2px -635px;
-  margin-top: 18px;
-  margin-left: 10px;
-} */
 .tab tr td span {
   background-image: url("../../assets/ico.png");
   display: inline-block;
@@ -108,18 +115,18 @@ table > tr:nth-child(2) > td:nth-child(2) {
   height: 25px;
   background-position: -2px -635px;
   position: relative;
-  top:5px;
+  top: 5px;
 }
-table > tr:nth-child(1) > th:nth-child(1){
+table > tr:nth-child(1) > th:nth-child(1) {
   text-align: left;
 }
-table > tr:nth-child(1) > th:nth-child(2){
+table > tr:nth-child(1) > th:nth-child(2) {
   text-align: left;
 }
-table > tr:nth-child(2) > td:nth-child(1){
+table > tr:nth-child(2) > td:nth-child(1) {
   text-align: left;
 }
-table > tr:nth-child(2) > td:nth-child(2){
+table > tr:nth-child(2) > td:nth-child(2) {
   text-align: left;
 }
 /* 列表 */
