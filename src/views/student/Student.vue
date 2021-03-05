@@ -25,26 +25,32 @@
     <table class="tab">
       <tr>
         <th width="2%">
-          <input type="checkbox" name id />
+          <input type="checkbox"  v-model="checkList" @click="changeAll" />
         </th>
-        <th width="20%">学生姓名</th>
+        <th width="20%" class="stu">学生姓名</th>
         <th width="14%">性别</th>
         <th width="14%">所选课程</th>
         <th width="14%">购买总课时</th>
         <th width="14%">已上课时</th>
+        <th>操作</th>
       </tr>
-      <tr>
+      <tr v-for="(item,index) in dataList" :key="index">
         <td>
-          <input type="checkbox" name id />
+          <input type="checkbox"  v-model="changeStatus" />
         </td>
-        <td>
+        <td class="stu">
           <span></span>
-          李红
+          {{item.name}}
         </td>
-        <td>女</td>
+        <td>{{item.sex}}</td>
         <td>php</td>
         <td>10</td>
         <td>9</td>
+        <td class="cli-btn">
+          <a href="javascript:;" @click="course=true">排课</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="javascript:;" @click="edit(index)">修改</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="javascript:;" @click="del(index)">删除</a>
+        </td>
       </tr>
     </table>
 
@@ -55,8 +61,8 @@
         <el-button class="button-box" type="primary" @click="dialogVisible = false">保存</el-button>
       </span>
     </el-dialog>
-    <!-- 添加排课 -->
-    <el-dialog title="排课" :visible.sync="course" width="47%">
+      <!-- 添加排课 -->
+    <el-dialog title="添加排课" :visible.sync="course" width="47%">
       <CourseList></CourseList>
       <span slot="footer" class="dialog-footer">
         <el-button class="button-box" type="primary" @click="course = false">保存</el-button>
@@ -74,12 +80,14 @@ export default {
   data() {
     return {
       // 切换状态
-      cut:1,
+      cut: 1,
       // 排课
-      course : false,
+      course: false,
       // 添加班级
       dialogVisible: false,
-      dataList: []
+      dataList: [],
+      checkList: [], //选中列表
+      changeStatus: false //是否全选
     };
   },
   mounted() {
@@ -88,7 +96,7 @@ export default {
   methods: {
     loaddata() {
       this.$http.get(
-        "/courses/list",
+        "/students/list",
         { page: 1 },
         success => {
           this.dataList = success.data.list;
@@ -97,12 +105,46 @@ export default {
           console.log("请求数据失败");
         }
       );
+    },
+    // 全选
+    changeAll() {
+      if (this.changeStatus) {
+        this.checkList = this.dataList;
+        this.changeStatus = false;
+      } else {
+        this.checkList = [];
+        this.changeStatus = true;
+      }
+    },
+    // 修改
+    edit(index){
+
+    },
+    // 删除
+    del(index){
+      
     }
   }
 };
 </script>
 
 <style scoped>
+/* 滑过 */
+table tr:hover{
+  background-color: #e8ebf0;
+}
+.cli-btn a{
+  display: none;
+  text-decoration: none;
+}
+table tr:hover .cli-btn a{
+  display: block;
+  float: left;
+  padding-left:10px;
+  margin-left:40px;
+}
+
+
 .el-icon-delete {
   font-weight: bold;
   font-size: 16px;
@@ -117,16 +159,14 @@ export default {
   position: relative;
   top: 5px;
 }
-table > tr:nth-child(1) > th:nth-child(1) {
-  text-align: left;
-}
-table > tr:nth-child(1) > th:nth-child(2) {
-  text-align: left;
-}
-table > tr:nth-child(2) > td:nth-child(1) {
+
+table > tr > th:nth-child(2) {
   text-align: left;
 }
 table > tr:nth-child(2) > td:nth-child(2) {
+  text-align: left;
+}
+table tr td:nth-of-type(2) {
   text-align: left;
 }
 /* 列表 */

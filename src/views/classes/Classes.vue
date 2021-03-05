@@ -6,7 +6,7 @@
         <el-button>
           <i class="el-icon-delete"></i>&nbsp;删除
         </el-button>
-        <el-button @click="dialogVisible=true">
+        <el-button @click="save()">
           <i class="el-icon-folder-add"></i>&nbsp;添加班级
         </el-button>
       </div>
@@ -51,18 +51,14 @@
         <td>{{item.coursecounts}}</td>
         <td class="cli-btn">
           <a href="javascript:;" @click="course=true">排课</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <a
-            href="javascript:;" @click="dialogVisible=true">修改</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="javascript:;" @click="edit(index)">修改</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <a href="javascript:;" @click="del(index)">删除</a>
         </td>
       </tr>
     </table>
     <!-- 添加班级/修改班级 -->
-    <el-dialog title="增加班级" :visible.sync="dialogVisible" width="47%">
-      <ClassesList @ClassListChild="AddClass2"></ClassesList>
-      <!-- <span slot="footer" class="dialog-footer">
-        <el-button class="button-box" type="primary" @click="AddClass2">保存</el-button>
-      </span> -->
+    <el-dialog :title="status" :visible.sync="dialogVisible" width="47%">
+      <ClassesList ref="classForm" @ClassListChild="AddClass2"></ClassesList>
     </el-dialog>
     <!-- 排课 -->
     <el-dialog title="排课" :visible.sync="course" width="80%">
@@ -87,6 +83,7 @@ export default {
       // 添加班级
       dialogVisible: false,
       dataList: [],
+      status:"",
     };
   },
   created() {
@@ -118,7 +115,7 @@ export default {
         "/classes/delete",
         { id: this.dataList[index].id },
         success => {
-          console.log('1')
+          console.log("1");
           this.$message({
             message: "恭喜你，删除成功",
             type: "success"
@@ -127,13 +124,27 @@ export default {
           this.loaddata();
         },
         failrue => {
-          console.log('2')
+          console.log("2");
           this.$message({
             message: "删除失败",
             type: "error"
           });
         }
       );
+    },
+    // 修改课程
+    edit(index) {
+      this.dialogVisible = true;
+      this.status="修改课程",
+      console.log(this.dataList[index])
+      setTimeout(()=>{
+        this.$refs.classForm.form = JSON.parse(JSON.stringify(this.dataList[index]))
+      },50)
+    },
+    // 添加课程标题
+    save(){
+      this.dialogVisible=true;
+      this.status="添加课程"
     }
   }
 };

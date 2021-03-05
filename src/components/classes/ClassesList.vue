@@ -1,10 +1,10 @@
 <template>
   <div>
-    <el-form ref="form" :model="form" label-width="80px">
+    <el-form ref="form" :v-model="form" label-width="80px">
       <el-form-item label="所选课程:">
-        <el-select v-model="form.coursename" placeholder="请选择" class="inner">
+        <el-select class="inner" v-model="form.courseid">
           <template v-for="item in proList">
-            <el-option :value="item.name" :key="item.id">{{item.name}}</el-option>
+            <el-option :value="item.id" :label="item.name" :key="item.id">{{item.name}}</el-option>
           </template>
         </el-select>
       </el-form-item>
@@ -36,7 +36,7 @@
           ></el-date-picker>
         </el-col>
       </el-form-item>
-      <el-button type="primary preservation" @click="AddClass">保存</el-button>
+        <el-button type="primary preservation" @click="AddClass">{{form.id==0||form.id==undefined?"添加":"修改"}}</el-button>
     </el-form>
   </div>
 </template>
@@ -49,7 +49,7 @@ export default {
       proList: [],
       form: {
         // 课程id
-        courseid: "0",
+        courseid: "",
         // 课程名称
         coursename: "",
         // 班级名称
@@ -78,20 +78,7 @@ export default {
   methods: {
     // 封装添加课程列表
     restModel() {
-      this.form = {
-        // 课程id
-        courseid: "0",
-        // 课程名称
-        coursename: "",
-        // 班级名称
-        name: "",
-
-        coursecounts: 0,
-        // 当前时间
-        startdate: "",
-        // 结束时间
-        enddate: ""
-      };
+      this.form = [];
     },
     //所选的课程接口
     loaddata() {
@@ -118,10 +105,10 @@ export default {
           // 添加成功
           this.restModel();
           that.$emit("ClassListChild");
-          this.$message({
-            message: "恭喜你，添加成功",
-            type: "success"
-          });
+            this.$message({
+              message: "恭喜你，添加成功",
+              type: "success"
+            });
         },
         failrue => {
           this.$message({

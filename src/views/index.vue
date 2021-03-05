@@ -115,7 +115,6 @@ export default {
     // 路由跳转
     addClass(val) {
       this.status = val;
-      console.log(val);
       this.$router.push({
         path: this.elList[val].path
       });

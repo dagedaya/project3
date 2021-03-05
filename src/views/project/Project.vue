@@ -19,9 +19,10 @@
     <table class="tab">
       <tr>
         <th class="textleft" width="49%" style="text-align:left">课程名称</th>
-        <th width="17%">收费模式</th>
-        <th width="17%">单价</th>
-        <th width="17%">上课模式</th>
+        <th width="10%">收费模式</th>
+        <th width="10%">单价</th>
+        <th width="10%">上课模式</th>
+        <th width="30%">编辑</th>
       </tr>
       <tr v-for="(item,index) in dataList" :key="index">
         <td style="text-align:left;clear:both; line-height:55px">
@@ -31,14 +32,16 @@
         <td>{{item.mode}}</td>
         <td>{{item.price}}</td>
         <td>{{item.pricetype}}</td>
+        <td class="cli-btn">
+          <a href="javascript:;" @click="course=true">排课</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="javascript:;" @click="edit(index)">修改</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="javascript:;" @click="del(index)">删除</a>
+        </td>
       </tr>
     </table>
     <!-- 添加班级 -->
-    <el-dialog title="增加课程" :visible.sync="dialogVisible" width="47%">
-      <ProjectList></ProjectList>
-      <span slot="footer" class="dialog-footer">
-        <el-button class="button-box" type="primary" @click="dialogVisible = false">保存</el-button>
-      </span>
+    <el-dialog :title="status" :visible.sync="dialogVisible" width="47%">
+      <ProjectList ref="classForm" @PorListChild="proAdd"></ProjectList>
     </el-dialog>
   </div>
 </template>
@@ -51,13 +54,16 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      dataList: []
+      dataList: [],
+      // 切换状态
+      status:"添加课程",
     };
   },
   mounted() {
     this.loaddata();
   },
   methods: {
+    // 请求课程列表数据
     loaddata() {
       this.$http.get(
         "/courses/list",
@@ -69,6 +75,36 @@ export default {
           console.log("请求数据失败");
         }
       );
+    },
+    // 子传父
+    proAdd() {
+      this.dialogVisible = false;
+      // 初始化数据
+      this.loaddata();
+    },
+    // 删除
+    del(index){
+      this.$http.get('/courses/delete',{id:this.dataList[index].id},success => {
+          this.$message({
+            message: "恭喜你，删除成功",
+            type: "success"
+          });
+          // 初始化数据
+          this.loaddata()
+      },failrue => {
+          this.$message({
+            message: "恭喜你，删除失败",
+            type: "error"
+          });
+      }
+    )},
+    // 修改
+    edit(index){
+      this.dialogVisible = true
+      this.status="修改课程"
+      setTimeout(() =>{
+        this.$refs.classForm.form = JSON.parse(JSON.stringify(this.dataList[index]))
+      },50) 
     }
   }
 };
@@ -78,6 +114,17 @@ export default {
 /* 滑过 */
 table tr:hover {
   background-color: #e8ebf0;
+}
+table tr td a {
+  text-decoration: none;
+}
+table tr:hover .cli-btn a {
+  display: block;
+  float: left;
+  margin-left: 50px;
+}
+.cli-btn a {
+  display: none;
 }
 /* 表格 */
 .table-s {
