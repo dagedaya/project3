@@ -29,9 +29,9 @@
           <span class="table-s"></span>
           {{item.name}}
         </td>
-        <td>{{item.mode}}</td>
-        <td>{{item.price}}</td>
         <td>{{item.pricetype}}</td>
+        <td>{{item.price}}</td>
+        <td>{{item.mode}}</td>
         <td class="cli-btn">
           <a href="javascript:;" @click="course=true">排课</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <a href="javascript:;" @click="edit(index)">修改</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

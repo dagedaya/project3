@@ -4,7 +4,7 @@
       <el-input v-model="form.name"></el-input>
     </el-form-item>
     <el-form-item label="收费模式：">
-      <el-radio-group v-model="form.mode">
+      <el-radio-group v-model="form.pricetype">
         <el-radio label="按课时收费"></el-radio>
         <el-radio label="按期收费"></el-radio>
       </el-radio-group>
@@ -13,7 +13,7 @@
       <el-input v-model="form.price" class="inner"></el-input>&nbsp;&nbsp;元/课时
     </el-form-item>
     <el-form-item label="上课模式：">
-      <el-radio-group v-model="form.pricetype">
+      <el-radio-group v-model="form.mode">
         <el-radio label="一对一"></el-radio>
         <el-radio label="集体班"></el-radio>
       </el-radio-group>
@@ -28,9 +28,9 @@ export default {
     return {
       form: {
         name: "",
-        mode: "",
-        price: 0.0,
         pricetype: "",
+        price: 0.0,
+        mode: "",
       }
     };
   },

@@ -16,7 +16,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import "../less/button";
+// @import "../less/button";
 
 .test {
   .button {

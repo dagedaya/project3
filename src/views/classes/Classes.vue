@@ -63,9 +63,6 @@
     <!-- 排课 -->
     <el-dialog title="排课" :visible.sync="course" width="80%">
       <CourseList></CourseList>
-      <span slot="footer" class="dialog-footer">
-        <el-button class="button-box" type="primary" @click="course=false">保存</el-button>
-      </span>
     </el-dialog>
   </div>
 </template>
@@ -83,6 +80,7 @@ export default {
       // 添加班级
       dialogVisible: false,
       dataList: [],
+      // 切换状态
       status:"",
     };
   },
@@ -220,7 +218,7 @@ export default {
     padding: 0;
     border: none;
     background-color: rgba(0, 0, 0, 0);
-    margin-top: -6px;
+    // margin-top: -6px;
     margin-left: 20px;
   }
   .el-icon-search {

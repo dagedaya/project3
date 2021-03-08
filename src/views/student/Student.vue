@@ -25,7 +25,7 @@
     <table class="tab">
       <tr>
         <th width="2%">
-          <input type="checkbox"  v-model="checkList" @click="changeAll" />
+          <input type="checkbox" v-model="checkList" @click="changeAll" />
         </th>
         <th width="20%" class="stu">学生姓名</th>
         <th width="14%">性别</th>
@@ -36,7 +36,7 @@
       </tr>
       <tr v-for="(item,index) in dataList" :key="index">
         <td>
-          <input type="checkbox"  v-model="changeStatus" />
+          <input type="checkbox" v-model="changeStatus" />
         </td>
         <td class="stu">
           <span></span>
@@ -48,7 +48,10 @@
         <td>9</td>
         <td class="cli-btn">
           <a href="javascript:;" @click="course=true">排课</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <a href="javascript:;" @click="edit(index)">修改</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a
+            href="javascript:;"
+            @click="edit(index)"
+          >修改</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <a href="javascript:;" @click="del(index)">删除</a>
         </td>
       </tr>
@@ -61,8 +64,8 @@
         <el-button class="button-box" type="primary" @click="dialogVisible = false">保存</el-button>
       </span>
     </el-dialog>
-      <!-- 添加排课 -->
-    <el-dialog title="添加排课" :visible.sync="course" width="47%">
+    <!-- 添加排课 -->
+    <el-dialog title="添加排课" :visible.sync="course" width="80%">
       <CourseList></CourseList>
       <span slot="footer" class="dialog-footer">
         <el-button class="button-box" type="primary" @click="course = false">保存</el-button>
@@ -117,33 +120,28 @@ export default {
       }
     },
     // 修改
-    edit(index){
-
-    },
+    edit(index) {},
     // 删除
-    del(index){
-      
-    }
+    del(index) {}
   }
 };
 </script>
 
 <style scoped>
 /* 滑过 */
-table tr:hover{
+table tr:hover {
   background-color: #e8ebf0;
 }
-.cli-btn a{
+.cli-btn a {
   display: none;
   text-decoration: none;
 }
-table tr:hover .cli-btn a{
+table tr:hover .cli-btn a {
   display: block;
   float: left;
-  padding-left:10px;
-  margin-left:40px;
+  padding-left: 10px;
+  margin-left: 40px;
 }
-
 
 .el-icon-delete {
   font-weight: bold;
