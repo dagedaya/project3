@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="classesList">
     <el-form ref="form" :v-model="form" label-width="80px">
       <el-form-item label="所选课程:">
         <el-select class="inner" v-model="form.courseid">
@@ -36,7 +36,10 @@
           ></el-date-picker>
         </el-col>
       </el-form-item>
-        <el-button type="primary preservation" @click="AddClass">{{form.id==0||form.id==undefined?"添加":"修改"}}</el-button>
+      <el-button
+        type="primary preservation"
+        @click="AddClass"
+      >{{form.id==0||form.id==undefined?"添加":"修改"}}</el-button>
     </el-form>
   </div>
 </template>
@@ -60,13 +63,7 @@ export default {
         startdate: "",
         // 结束时间
         enddate: ""
-        // delivery: false,
-        // type: [],
-        // resource: "",
-        // desc: ""
-      },
-      value1: "",
-      value2: ""
+      }
     };
   },
   created() {
@@ -78,6 +75,7 @@ export default {
   methods: {
     // 封装添加课程列表
     restModel() {
+      // 添加列表清空
       this.form = [];
     },
     //所选的课程接口
@@ -93,7 +91,6 @@ export default {
         }
       );
     },
-
     // 请求添加班级数据
     AddClass() {
       let that = this;
@@ -105,10 +102,11 @@ export default {
           // 添加成功
           this.restModel();
           that.$emit("ClassListChild");
-            this.$message({
-              message: "恭喜你，添加成功",
-              type: "success"
-            });
+          // 弹框
+          this.$message({
+            message: "恭喜你，添加成功",
+            type: "success"
+          });
         },
         failrue => {
           this.$message({
@@ -117,20 +115,19 @@ export default {
           });
         }
       );
-    },
-    onSubmit() {
-      console.log("submit!");
     }
   }
 };
 </script>
 
-<style scoped>
-.inner {
-  width: 420px;
-  border-radius: 4px;
-}
-.el-input {
-  border: 1px solid #f5f5f5;
+<style lang="less" scoped>
+.classesList {
+  .inner {
+    width: 420px;
+    border-radius: 4px;
+  }
+  .el-input {
+    border: 1px solid #f5f5f5;
+  }
 }
 </style>

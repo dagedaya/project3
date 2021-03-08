@@ -1,5 +1,5 @@
 <template>
-  <div class="CourseList" id="CourseList">
+  <div class="CourseList">
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
       <el-tab-pane label="插班排课" name="first">
         <div>
@@ -123,9 +123,13 @@ export default {
     return {
       // 获取课程信息
       getProjectList: [],
+      // 开始时间
       startTime: "",
+      // 结束时间
       endTime: "",
+      // 切换
       activeName: "second",
+      // 数据
       form: {
         name: "",
         region: "",
@@ -148,13 +152,13 @@ export default {
     handleClick(tab, event) {
       console.log(tab, event);
     },
-  // 获取课程信息
+    // 获取课程信息
     getProjectInfo() {
       this.$http.get(
         "/classes/list",
         { page: 1 },
         success => {
-          console.log(success.data.list)
+          console.log(success.data.list);
           this.getProjectList = success.data.list;
         },
         failure => {
@@ -166,91 +170,91 @@ export default {
 };
 </script> 
 
-<style>
-.el-select {
-  border: 1px solid #dee3e9;
-}
-.One-time {
-  margin-left: 20px;
-}
-/* 一对一排课 */
-div.second > form > div:nth-child(3) > div > input {
-  border: 1px solid #dee3e9;
-}
-.first {
-  width: 100%;
-  height: 100px;
-  background-color: #fafafa;
-}
-.second {
-  width: 100%;
-  height: 100px;
-  background-color: #fafafa;
-  margin-top: 20px;
-}
-.third {
-  width: 100%;
-  height: 220px;
-  background-color: #fafafa;
-  margin-top: 20px;
-}
-#pane-third {
-  line-height: 40px;
-}
-
-.el-tabs--card > .el-tabs__header {
-  border-bottom: 1px solid #4281fc;
-}
-
-/* 表格 */
-.tab tr td span {
-  background-image: url("../../assets/ico.png");
-  display: inline-block;
-  width: 25px;
-  height: 25px;
-  background-position: -2px -969px;
-  position: relative;
-  top: 5px;
-}
-
-table > tr > th:nth-child(1) {
-  text-align: left;    
-}
-table tr td:nth-of-type(1) {
-  text-align: left;
-}
-table tr td .text-a{
-  text-decoration: none;
-  color: #0b0f18;
-}
-/* 列表 */
-.tab {
-  width: 96%;
-  margin-left: 2%;
-  margin-top: 20px;
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-.tab td,
-.tab th {
-  border-bottom: solid 1px #ececec;
-  text-align: center;
-  height: 40px;
-}
-.tab th {
-  background: #f5f6fa;
-  height: 35px;
-  text-align: center;
-  font-weight: normal;
-}
-.el-icon-circle-plus-outline {
-  font-size: 38px;
-  color: #ececec;
-  position: absolute;
-  top: 94px;
-  left: 465px;
-}
-</style>
 <style lang="less" scoped>
-@import "../../less/InputList";
+.CourseList {
+  .el-select {
+    border: 1px solid #dee3e9;
+  }
+  .One-time {
+    margin-left: 20px;
+  }
+  /* 一对一排课 */
+  div.second > form > div:nth-child(3) > div > input {
+    border: 1px solid #dee3e9;
+  }
+  .first {
+    width: 100%;
+    height: 100px;
+    background-color: #fafafa;
+  }
+  .second {
+    width: 100%;
+    height: 100px;
+    background-color: #fafafa;
+    margin-top: 20px;
+  }
+  .third {
+    width: 100%;
+    height: 220px;
+    background-color: #fafafa;
+    margin-top: 20px;
+  }
+  #pane-third {
+    line-height: 40px;
+  }
+
+  .el-tabs--card > .el-tabs__header {
+    border-bottom: 1px solid #4281fc;
+  }
+
+  /* 表格 */
+  .tab tr td span {
+    background-image: url("../../assets/ico.png");
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background-position: -2px -969px;
+    position: relative;
+    top: 5px;
+  }
+
+  table > tr > th:nth-child(1) {
+    text-align: left;
+  }
+  table tr td:nth-of-type(1) {
+    text-align: left;
+  }
+  table tr td .text-a {
+    text-decoration: none;
+    color: #0b0f18;
+  }
+  /* 列表 */
+  .tab {
+    width: 96%;
+    margin-left: 2%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+  .tab td,
+  .tab th {
+    border-bottom: solid 1px #ececec;
+    text-align: center;
+    height: 40px;
+  }
+  .tab th {
+    background: #f5f6fa;
+    height: 35px;
+    text-align: center;
+    font-weight: normal;
+  }
+  .el-icon-circle-plus-outline {
+    font-size: 38px;
+    color: #ececec;
+    position: absolute;
+    top: 94px;
+    left: 465px;
+  }
+  @import "../../less/InputList";
+}
 </style>

@@ -1,5 +1,6 @@
 <template>
-  <div class="body">
+  <div class="body courseList">
+    <!-- 上半部分 -->
     <div class="heads">
       <div class="zhuteacher1">
         <div>
@@ -7,7 +8,7 @@
           <span class="createTeacher" @click="is_createTeacher = !is_createTeacher">添加助教</span>
         </div>
         <div class="selechange1">
-          <el-select v-model="courseForm.teacherid" placeholder="请选择">
+          <el-select class="selectAll" v-model="courseForm.teacherid" placeholder="请选择">
             <el-option
               v-for="item in teacherslist"
               :key="item.id"
@@ -58,6 +59,7 @@
         </div>
       </div>
     </div>
+    <!-- 中间部分 -->
     <div class="main">
       <div class="title">
         <span :class="{ laing: isTAVal == 1 ? 'laing' : '' }" @click="changeis(1)">单次排课</span>
@@ -214,11 +216,12 @@
         </div>
       </div>
     </div>
+    <!-- 尾部部分 -->
     <div class="floor">
       <div class="box">
         <h3>选择学员(0)</h3>
         <span class="createUser">
-          <span class="iconfont icon-jiahaotianjia"></span>添加学员
+          <span class="el-icon-user"></span>添加学员
         </span>
         <div class="user">
           <div>
@@ -232,6 +235,7 @@
         </div>
       </div>
     </div>
+    <!-- 提交按钮 -->
     <div class="button-bg">
       <el-button type="primary" class="buttin save" @click="handleClick">保存</el-button>
     </div>
@@ -242,8 +246,6 @@
 export default {
   data() {
     return {
-      // 真实数据
-
       // 主讲老师列表
       teacherslist: [],
       // 助教老师列表
@@ -348,8 +350,6 @@ export default {
     this.getHelpTeacherInfo();
     // 获取教室信息
     this.getClassroomInfo();
-    // 获取学员列表
-    // this.getStudentInfo();
   },
   methods: {
     // 批量排课里面（切换结束方式）
@@ -479,227 +479,232 @@ export default {
 };
 </script>
 
-<style>
-.week-time {
-  float: left;
-  margin-right: 40px;
-  margin-top: 45px;
-}
-.week-time .el-date-editor.el-input,
-.el-date-editor.el-input__inner {
-  width: 115px;
-}
-.week-time .el-input {
-  margin-top: 10px;
-  width: 115px;
-}
-.up-time {
-  clear: both;
-}
-.save {
-  height: 40px;
-  margin-left: 80%;
-  margin-bottom: 20px;
-}
-.iconfont {
-  font-family: "iconfont" !important;
-  font-size: 16px;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-.button-bg {
-  background-color: #fff;
-}
-.icon-jiahaotianjia:before {
-  content: "\e623";
-}
-.createUser {
-  color: #4181fc;
-  cursor: pointer;
-}
-/* 引入精灵图 */
-.elf {
-  width: 24px;
-  height: 24px;
-  background-image: url("../../assets/ico.png");
-}
-.userCap {
-  display: inline-block;
-  background-position: -2px -635px;
-}
-.box {
-  padding-top: 25px;
-  margin-left: 30px;
-}
-.box h3 {
-  display: inline-block;
-  margin-right: 35px;
-}
-.box .user > div {
-  margin-top: 30px;
-  margin-right: 100px;
-  float: left;
-}
-.floor {
-  margin-top: 20px;
-  background-color: #ffffff;
-  clear: both;
-}
+<style lang="less" scoped>
+.courseList {
+  .el-icon-user{
+    font-size:16px;
+  }
+  .week-time {
+    float: left;
+    margin-right: 40px;
+    margin-top: 45px;
+  }
+  .week-time .el-date-editor.el-input,
+  .el-date-editor.el-input__inner {
+    width: 115px;
+  }
+  .week-time .el-input {
+    margin-top: 10px;
+    width: 115px;
+  }
+  .up-time {
+    clear: both;
+  }
+  .save {
+    height: 40px;
+    margin-left: 80%;
+    margin-bottom: 20px;
+  }
+  .iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .button-bg {
+    background-color: #fff;
+  }
+  .icon-jiahaotianjia:before {
+    content: "\e623";
+  }
+  .createUser {
+    color: #4181fc;
+    cursor: pointer;
+  }
+  /* 引入精灵图 */
+  .elf {
+    width: 24px;
+    height: 24px;
+    background-image: url("../../assets/ico.png");
+  }
+  .userCap {
+    display: inline-block;
+    background-position: -2px -635px;
+  }
+  .box {
+    padding-top: 25px;
+    margin-left: 30px;
+  }
+  .box h3 {
+    display: inline-block;
+    margin-right: 35px;
+  }
+  .box .user > div {
+    margin-top: 30px;
+    margin-right: 100px;
+    float: left;
+  }
+  .floor {
+    margin-top: 20px;
+    background-color: #ffffff;
+    clear: both;
+  }
 
-.connect-body .start {
-  float: left;
-  margin-right: 80px;
-}
-.connect-body .start .create {
-  padding: 0;
-  width: 40px;
-  height: 40px;
-  margin-left: 8px;
-}
-.connect-body .start .title {
-  margin-top: 5px;
-}
-.connect-body .start .title {
-  margin-bottom: 12px;
-}
-.main .title {
-  padding-top: 20px;
-}
-.main > .title span {
-  margin-right: 40px;
-  font-size: 16px;
-  cursor: pointer;
-}
-.main {
-  padding-left: 30px;
-}
-.shiliangtu {
-  background-image: url("../../assets/ico.png");
-  background-repeat: no-repeat;
-  background-position: -30px -776px;
-}
+  .connect-body .start {
+    float: left;
+    margin-right: 80px;
+  }
+  .connect-body .start .create {
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    margin-left: 8px;
+  }
+  .connect-body .start .title {
+    margin-top: 5px;
+  }
+  .connect-body .start .title {
+    margin-bottom: 12px;
+  }
+  .main .title {
+    padding-top: 20px;
+  }
+  .main > .title span {
+    margin-right: 40px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .main {
+    padding-left: 30px;
+  }
+  .shiliangtu {
+    background-image: url("../../assets/ico.png");
+    background-repeat: no-repeat;
+    background-position: -30px -776px;
+  }
 
-.laing {
-  display: inline-block;
-  height: 36px;
-  color: #0074d9;
-  cursor: pointer;
-  border-bottom: 3px solid #0074d9;
-}
+  .laing {
+    display: inline-block;
+    height: 36px;
+    color: #0074d9;
+    cursor: pointer;
+    border-bottom: 3px solid #0074d9;
+  }
 
-.heads {
-  padding-left: 30px;
-  height: 100px;
-  background-color: #fff;
-}
+  .heads {
+    padding-left: 30px;
+    height: 100px;
+    background-color: #fff;
+  }
 
-.main {
-  height: auto;
-  background-color: #fff;
-  margin-top: 20px;
-}
+  .main {
+    height: auto;
+    background-color: #fff;
+    margin-top: 20px;
+  }
 
-.fen {
-  margin-top: 30px;
-  border-bottom: 1px solid #000000;
-}
+  .fen {
+    margin-top: 30px;
+    border-bottom: 1px solid #000000;
+  }
 
-.buttin {
-  width: 150px;
-  margin-top: 20px;
-}
+  .buttin {
+    width: 150px;
+    margin-top: 20px;
+  }
 
-.zhuteacher1 {
-  font-size: 15px;
-  color: #000000;
-  padding-right: 40px;
-  padding-top: 15px;
-  float: left;
-}
-.zhuteacher1 .createTeacher {
-  float: right;
-  color: #15b0ff;
-  cursor: pointer;
-}
+  .zhuteacher1 {
+    font-size: 15px;
+    color: #000000;
+    padding-right: 40px;
+    padding-top: 15px;
+    float: left;
+  }
+  .zhuteacher1 .createTeacher {
+    float: right;
+    color: #15b0ff;
+    cursor: pointer;
+  }
 
-.zhuteacher2 {
-  font-size: 15px;
-  color: #000000;
-  padding-right: 40px;
-  padding-top: 15px;
-  float: left;
-}
+  .zhuteacher2 {
+    font-size: 15px;
+    color: #000000;
+    padding-right: 40px;
+    padding-top: 15px;
+    float: left;
+  }
 
-.zhuteacher3 {
-  font-size: 15px;
-  color: #000000;
-  padding-right: 40px;
-  padding-top: 15px;
-  float: left;
-}
+  .zhuteacher3 {
+    font-size: 15px;
+    color: #000000;
+    padding-right: 40px;
+    padding-top: 15px;
+    float: left;
+  }
 
-.zhuteacher4 {
-  font-size: 15px;
-  color: #000000;
-  padding-right: 40px;
-  padding-top: 15px;
-  float: left;
-}
+  .zhuteacher4 {
+    font-size: 15px;
+    color: #000000;
+    padding-right: 40px;
+    padding-top: 15px;
+    float: left;
+  }
 
-.selechange1 {
-  width: 177px;
-  height: 40px;
-  float: left;
-  border: 1px solid #ebeef5;
-  border-radius: 5px;
-  margin-top: 12px;
-}
+  .selechange1 {
+    width: 177px;
+    height: 40px;
+    float: left;
+    border: 1px solid #ebeef5;
+    border-radius: 5px;
+    margin-top: 12px;
+  }
 
-.selechange2 {
-  width: 177px;
-  height: 40px;
-  float: left;
-  border: 1px solid #ebeef5;
-  border-radius: 5px;
-}
+  .selechange2 {
+    width: 177px;
+    height: 40px;
+    float: left;
+    border: 1px solid #ebeef5;
+    border-radius: 5px;
+  }
 
-.selechange3 {
-  width: 177px;
-  height: 40px;
-  float: left;
-  border: 1px solid #ebeef5;
-  border-radius: 5px;
-}
+  .selechange3 {
+    width: 177px;
+    height: 40px;
+    float: left;
+    border: 1px solid #ebeef5;
+    border-radius: 5px;
+  }
 
-.selechange4 {
-  width: 177px;
-  height: 40px;
-  float: left;
-  border: 1px solid #ebeef5;
-  border-radius: 5px;
-}
-/* 引入精灵图 */
-.elf {
-  width: 24px;
-  height: 24px;
-  background-image: url("../../assets/ico.png");
-}
-div.floor > div > div > div:nth-child(1) > span {
-  display: inline-block;
-  background-position: -2px -635px;
-  margin-left: 20px;
-}
-div.floor > div > div > div:nth-child(2) > span {
-  background-position: -2px -635px;
-}
-.classes .el-input__suffix-inner .el-input__icon {
-  height: none;
-  top: 0px;
-}
-.createTeacher {
-  position: absolute;
-  top: 81px;
-  left: 150px;
+  .selechange4 {
+    width: 177px;
+    height: 40px;
+    float: left;
+    border: 1px solid #ebeef5;
+    border-radius: 5px;
+  }
+  /* 引入精灵图 */
+  .elf {
+    width: 24px;
+    height: 24px;
+    background-image: url("../../assets/ico.png");
+  }
+  div.floor > div > div > div:nth-child(1) > span {
+    display: inline-block;
+    background-position: -2px -635px;
+    margin-left: 20px;
+  }
+  div.floor > div > div > div:nth-child(2) > span {
+    background-position: -2px -635px;
+  }
+  .classes .el-input__suffix-inner .el-input__icon {
+    height: none;
+    top: 0;
+  }
+  .createTeacher {
+    position: absolute;
+    top: 81px;
+    left: 150px;
+  }
 }
 </style>

@@ -51,7 +51,10 @@
         <td>{{item.coursecounts}}</td>
         <td class="cli-btn">
           <a href="javascript:;" @click="course=true">排课</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <a href="javascript:;" @click="edit(index)">修改</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a
+            href="javascript:;"
+            @click="edit(index)"
+          >修改</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <a href="javascript:;" @click="del(index)">删除</a>
         </td>
       </tr>
@@ -81,7 +84,7 @@ export default {
       dialogVisible: false,
       dataList: [],
       // 切换状态
-      status:"",
+      status: ""
     };
   },
   created() {
@@ -92,7 +95,7 @@ export default {
     // 请求班级数据
     loaddata() {
       this.$http.get(
-        "/classes/list",  
+        "/classes/list",
         { page: 1 },
         success => {
           this.dataList = success.data.list;
@@ -133,16 +136,17 @@ export default {
     // 修改课程
     edit(index) {
       this.dialogVisible = true;
-      this.status="修改课程",
-      console.log(this.dataList[index])
-      setTimeout(()=>{
-        this.$refs.classForm.form = JSON.parse(JSON.stringify(this.dataList[index]))
-      },50)
+      (this.status = "修改课程"), console.log(this.dataList[index]);
+      setTimeout(() => {
+        this.$refs.classForm.form = JSON.parse(
+          JSON.stringify(this.dataList[index])
+        );
+      }, 50);
     },
     // 添加课程标题
-    save(){
-      this.dialogVisible=true;
-      this.status="添加课程"
+    save() {
+      this.dialogVisible = true;
+      this.status = "添加课程";
     }
   }
 };
@@ -281,10 +285,9 @@ export default {
     z-index: 999;
   }
   .el-input__icon {
-    line-height: 70px;
     position: absolute;
     left: -16px;
-    top: -33px;
+    top: -16px;
   }
 }
 </style>

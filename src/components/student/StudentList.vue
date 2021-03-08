@@ -29,6 +29,7 @@ export default {
   name: "StudentList",
   data() {
     return {
+      // 绑定数据
       form: {
         name: "",
         region: "",
@@ -43,9 +44,6 @@ export default {
   },
   mounted() {},
   methods: {
-    onSubmit() {
-      console.log("submit!");
-    }
   }
 };
 </script>
