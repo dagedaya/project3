@@ -343,18 +343,17 @@ export default {
   },
   created() {
     // 获取讲师信息
-    // this.getTeacherInfo();
+    this.getTeacherInfo();
     // 获取助教讲师信息
-    // this.getHelpTeacherInfo();
+    this.getHelpTeacherInfo();
     // 获取教室信息
-    // this.getClassroomInfo();
+    this.getClassroomInfo();
     // 获取学员列表
     // this.getStudentInfo();
   },
   methods: {
-    // 切换结束方式
+    // 批量排课里面（切换结束方式）
     clickCatJsfs() {
-      console.log(this.courseForm.jsfs);
       if (this.courseForm.jsfs == "按课节") {
         this.courseForm.enddate = null;
       } else {
@@ -372,7 +371,6 @@ export default {
       } else {
         this.week["week" + (index + 1)] = [];
       }
-      // console.log(this.weekArray);
     },
     // 添加星期日期
     clickWeekCreate(index) {
@@ -385,7 +383,7 @@ export default {
     },
     // 删除星期日期
     clickWeekDel(index, index2) {
-      console.log(index);
+      console.log(index, index2);
       this.week["week" + (index + 1)].splice(index2, 1);
     },
     // 切换单排排课、批量排课
@@ -393,7 +391,6 @@ export default {
       if (value == 1) {
         this.isTAVal = 1;
         this.courseForm.addtype = "one";
-
         this.courseForm.weektime = [];
         this.courseForm.enddate = null;
         this.courseForm.coursescount = "";
@@ -402,63 +399,53 @@ export default {
         this.isTAVal = 2;
         this.courseForm.addtype = "more";
       }
-      // console.log(this.courseForm.addtype);
     },
     // 获取讲师信息
-    // getTeacherInfo() {
-    //   this.$http.get(
-    //     "edusystems/api/teachers/list",
-    //     { cat: 1, page: 1 },
-    //     success => {
-    //       // console.log(success);
-    //       this.teacherslist = success.data.list;
-    //     },
-    //     error => {}
-    //   );
-    // },
+    getTeacherInfo() {
+      this.$http.get(
+        "/teachers/list",
+        { cat: 1, page: 1 },
+        success => {
+          this.teacherslist = success.data.list;
+        },
+        failure => {
+          console.log("获取讲师信息失败");
+        }
+      );
+    },
     // 获取助教讲师信息
-    // getHelpTeacherInfo() {
-    //   this.$http.get(
-    //     "edusystems/api/teachers/list",
-    //     { cat: 2, page: 1 },
-    //     success => {
-    //       // console.log(success);
-    //       this.assistantList = success.data.list;
-    //     },
-    //     error => {}
-    //   );
-    // },
-    // 获取教室信息
-    // getClassroomInfo() {
-    //   this.$http.get(
-    //     "edusystems/api/classrooms/list",
-    //     { page: 1 },
-    //     success => {
-    //       // console.log(success);
-    //       this.classroomList = success.data.list;
-    //     },
-    //     error => {}
-    //   );
-    // },
-    // 获取学员列表
-    // getStudentInfo() {
-    //   this.$http.get(
-    //     "edusystems/api/students/list",
-    //     { page: 1 },
-    //     success => {
-    //       console.log(success);
-    //       this.studentList = success.data.list;
-    //     },
-    //     error => {}
-    //   );
-    // },
+    getHelpTeacherInfo() {
+      this.$http.get(
+        "/teachers/list",
+        { cat: 2, page: 1 },
+        success => {
+          this.assistantList = success.data.list;
+        },
+        failure => {
+          console.log("讲师信息接收失败");
+        }
+      );
+    },
+    // 获取教师信息
+    getClassroomInfo() {
+      this.$http.get(
+        "/classrooms/list",
+        { page: 1 },
+        success => {
+          this.classroomList = success.data.list;
+        },
+        failure => {
+          console.log("获取教师信息失败");
+        }
+      );
+    },
     // 保存
     handleClick() {
-      console.log();
       if (this.courseForm.addtype == "one") {
         this.courseForm.weektime = [
           {
             week: 0,
+            // 开始时间和结束时间
             begintime: this.weekBegintime,
             endtime: this.weekBegintime
           }
@@ -470,11 +457,11 @@ export default {
           }
         }
       }
+      // 打印结果查看
       console.log(this.courseForm);
       console.log(JSON.stringify(this.courseForm));
-      // return false
       this.$http.post(
-        "edusystems/api/coursetables/add",
+        "/coursetables/add",
         this.courseForm,
         success => {
           this.$message.success({
@@ -483,7 +470,9 @@ export default {
           });
           this.$emit("closeAlert");
         },
-        error => {}
+        failure => {
+          console.log("班级排课失败");
+        }
       );
     }
   }
@@ -506,22 +495,6 @@ export default {
 }
 .up-time {
   clear: both;
-}
-@font-face {
-  font-family: "iconfont";
-  src: url("//at.alicdn.com/t/font_2397226_4aavsy7kgg5.eot?t=1614750743350"); /* IE9 */
-  src: url("//at.alicdn.com/t/font_2397226_4aavsy7kgg5.eot?t=1614750743350#iefix")
-      format("embedded-opentype"),
-    /* IE6-IE8 */
-      url("data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAANgAAsAAAAAByAAAAMRAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCCcAqCJIISATYCJAMICwYABCAFhG0HNxs/BsiuMG7hSQuAxYI7OgLcCoBnCoKI1srqnVma3SfiAFpAkMTyEV3YRgGrc0G0rOMepm42dGkX8BboEx/LfgTa1sRLYFG2Blhr6nKgn5hat2Dny8j0pZT5lDilGRmDxLbxw/YNEADMvAECzMzH6v8cM10U4DA/0Jwym/YGOG4dUMZ1AR/IHciB+Q1jF7iE6yGAIZuCXnbz9AU1NNYqAeRYFFio5VTolmzBQ3BqDmpkABvP6rSeA/3h78s/6vPAwlZYeat27cHZC+w4dXnusm0+AvZ8BoAdAwVUotAg62pNKxTjUCUWo4VK5KP2lS3wczE357N2+48HAuJgZYYAZELWPbFdzq2WWQBo7n10O+D8qPuAHUaFYeU50zV2ZTwIukcvj6wbG0uW8fHkg5JoRo58/Lhh/7Rx/bB+eb+lf5979cPy6VPBtY+nq7vJY1NyJSOl5SH1h7abRaOTEzeSbxU//Gjev18nNZdHR2+mRI3ONTWx5U5BxPxI+mEigZ93zDm88CP+i5gB83/k2iudI7Gz0ibG0WtBeThK86P49fqwYsVQdgl/VwnGfIcemfONn6fDlH2V/K43t3ukcd/onFd1stnVnWj4p3572jnn7lD2mdseV3T843/LwI/EHwMsAsDc1Iha/Nv/hqR7f3aK8/57gQbgO1m90DE3TT8L4N2cWeAns3u2aJ1rqS2tsmtjFtuVb77KYIA52BbvGytLeqOY4JH0XhaXrBQUHoVIja0Em4BGcPBYCIYK9vGABFgR0T5QLgUgxGrBIppnoIg1IzX2BZtkPzjEpsCwoYRzBhR32CwVskoeOnuMXc59R6smyv6gYJtayXJD0g/JJvKiWV1bjN5STjLHFrILThP1MRDOEICbUZoyQuGYXF1GquuVXnOg7ouWLmdgWEoQSxEPcuyhmIvlfL+zMqWf/0ACWylLWppq9D+I2IjGRyaN0QN5K8p7Nd3LS4idwKmE8qGAYBkEgIGkdoghWD8vRlxqKRoRWFvRUbugr2i5viT7ul2AwZJbYk9QRB2JbGhZfUEeKwEAAAAA")
-      format("woff2"),
-    url("//at.alicdn.com/t/font_2397226_4aavsy7kgg5.woff?t=1614750743350")
-      format("woff"),
-    url("//at.alicdn.com/t/font_2397226_4aavsy7kgg5.ttf?t=1614750743350")
-      format("truetype"),
-    /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
-      url("//at.alicdn.com/t/font_2397226_4aavsy7kgg5.svg?t=1614750743350#iconfont")
-      format("svg"); /* iOS 4.1- */
 }
 .save {
   height: 40px;
@@ -712,12 +685,12 @@ export default {
   height: 24px;
   background-image: url("../../assets/ico.png");
 }
-div.floor > div > div > div:nth-child(1) > span{
+div.floor > div > div > div:nth-child(1) > span {
   display: inline-block;
   background-position: -2px -635px;
   margin-left: 20px;
 }
-div.floor > div > div > div:nth-child(2) > span{
+div.floor > div > div > div:nth-child(2) > span {
   background-position: -2px -635px;
 }
 .classes .el-input__suffix-inner .el-input__icon {

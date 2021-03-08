@@ -25,7 +25,7 @@
     <table class="tab">
       <tr>
         <th width="2%">
-          <input type="checkbox" v-model="checkList" @click="changeAll" />
+          <input type="checkbox" @click="changeAll" />
         </th>
         <th width="20%" class="stu">学生姓名</th>
         <th width="14%">性别</th>
@@ -36,7 +36,7 @@
       </tr>
       <tr v-for="(item,index) in dataList" :key="index">
         <td>
-          <input type="checkbox" v-model="changeStatus" />
+          <input type="checkbox" v-model="checkList" :value="item" />
         </td>
         <td class="stu">
           <span></span>
@@ -112,10 +112,10 @@ export default {
     // 全选
     changeAll() {
       if (this.changeStatus) {
-        this.checkList = this.dataList;
+        this.checkList = [];
         this.changeStatus = false;
       } else {
-        this.checkList = [];
+        this.checkList = this.dataList;
         this.changeStatus = true;
       }
     },

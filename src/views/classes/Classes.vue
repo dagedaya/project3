@@ -92,7 +92,7 @@ export default {
     // 请求班级数据
     loaddata() {
       this.$http.get(
-        "/classes/list",
+        "/classes/list",  
         { page: 1 },
         success => {
           this.dataList = success.data.list;

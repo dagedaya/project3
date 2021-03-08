@@ -17,17 +17,17 @@
             <th>已上课时</th>
             <th>操作</th>
           </tr>
-          <tr>
+          <tr v-for="(item,index) in getProjectList" :key="index">
             <td>
               <span></span>
-              <a href="javascript:;">架子鼓基础班</a>
+              <a href="javascript:;" class="text-a">{{item.name}}</a>
             </td>
-            <td>架子鼓课</td>
-            <td></td>
-            <td>0人</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
+            <td>{{item.coursename}}</td>
+            <td>{{item.teacherslist}}</td>
+            <td>{{item.students}}</td>
+            <td>{{item.schcourses}}</td>
+            <td>{{item.endcourses}}</td>
+            <td>{{item.coursecounts}}</td>
             <td>
               <a href="javascript:;">课表</a>
             </td>
@@ -82,33 +82,32 @@
             <el-tab-pane v-model="activeName" label="单次排课" name="first">
               <div class="One-time">
                 <div>开课日期</div>
-              <el-date-picker v-model="startTime" type="date" placeholder="选择日期"></el-date-picker>
-              <div style="height:15px"></div>
-              <div>
-                <i style="color:red">*</i>&nbsp;&nbsp;&nbsp;上课时间
-              </div>
-              <el-time-select
-                placeholder="起始时间"
-                v-model="startTime"
-                :picker-options="{
+                <el-date-picker v-model="startTime" type="date" placeholder="选择日期"></el-date-picker>
+                <div style="height:15px"></div>
+                <div>
+                  <i style="color:red">*</i>&nbsp;&nbsp;&nbsp;上课时间
+                </div>
+                <el-time-select
+                  placeholder="起始时间"
+                  v-model="startTime"
+                  :picker-options="{
       start: '08:30',
       step: '00:15',
       end: '18:30'
     }"
-              ></el-time-select>
-              <el-time-select
-                placeholder="结束时间"
-                v-model="endTime"
-                :picker-options="{
+                ></el-time-select>
+                <el-time-select
+                  placeholder="结束时间"
+                  v-model="endTime"
+                  :picker-options="{
       start: '08:30',
       step: '00:15',
       end: '18:30',
       minTime: startTime
     }"
-              ></el-time-select>
-              <i class="el-icon-circle-plus-outline"></i>
+                ></el-time-select>
+                <i class="el-icon-circle-plus-outline"></i>
               </div>
-              
             </el-tab-pane>
             <el-tab-pane label="定时任务补偿" name="second">批量排课</el-tab-pane>
           </el-tabs>
@@ -122,6 +121,8 @@
 export default {
   data() {
     return {
+      // 获取课程信息
+      getProjectList: [],
       startTime: "",
       endTime: "",
       activeName: "second",
@@ -138,20 +139,38 @@ export default {
       activeName: "first"
     };
   },
+  created() {
+    this.getProjectInfo();
+  },
   mounted() {},
+
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
+    },
+  // 获取课程信息
+    getProjectInfo() {
+      this.$http.get(
+        "/classes/list",
+        { page: 1 },
+        success => {
+          console.log(success.data.list)
+          this.getProjectList = success.data.list;
+        },
+        failure => {
+          console.log("获取课程信息失败");
+        }
+      );
     }
   }
 };
 </script> 
 
 <style>
-.el-select{
+.el-select {
   border: 1px solid #dee3e9;
 }
-.One-time{
+.One-time {
   margin-left: 20px;
 }
 /* 一对一排课 */
@@ -195,17 +214,14 @@ div.second > form > div:nth-child(3) > div > input {
 }
 
 table > tr > th:nth-child(1) {
-  text-align: left;
+  text-align: left;    
 }
 table tr td:nth-of-type(1) {
   text-align: left;
 }
-table tr td:nth-of-type(1) a {
-  position: absolute;
-  left: 48px;
-  top: 104px;
+table tr td .text-a{
   text-decoration: none;
-  color: #606266;
+  color: #0b0f18;
 }
 /* 列表 */
 .tab {
@@ -227,12 +243,12 @@ table tr td:nth-of-type(1) a {
   text-align: center;
   font-weight: normal;
 }
-.el-icon-circle-plus-outline{
-  font-size:38px;
-  color:#ececec;
+.el-icon-circle-plus-outline {
+  font-size: 38px;
+  color: #ececec;
   position: absolute;
-  top:94px;
-  left:465px;
+  top: 94px;
+  left: 465px;
 }
 </style>
 <style lang="less" scoped>
