@@ -87,6 +87,7 @@ export default {
         { page, psize: this.pageNumber },
         success => {
           this.dataList = success.data.list;
+          // 总数据
           this.counts = success.data.counts;
         },
         failrue => {
