@@ -56,7 +56,17 @@
         </td>
       </tr>
     </table>
+    <!-- 分页 -->
 
+    <el-pagination
+      class="paging"
+      background
+      layout="total, prev, pager, next, jumper"
+      :total="counts"
+      :hide-on-single-page="true"
+      :page-size="pageNum"
+      @current-change="changeNumber"
+    ></el-pagination>
     <!-- 添加班级 -->
     <el-dialog title="添加学员" :visible.sync="dialogVisible" width="47%">
       <StudentList></StudentList>
@@ -91,24 +101,34 @@ export default {
       // 循环数据列表
       dataList: [],
       checkList: [], //选中列表
-      changeStatus: false //是否全选
+      changeStatus: false, //是否全选
+      // 总条数
+      counts: 0,
+      // 每页显示多少条数据
+      pageNum: 8
     };
   },
-  mounted() {
-    this.loaddata();
+  mounted() {},
+  created() {
+    this.loaddata(1);
   },
   methods: {
-    loaddata() {
+    loaddata(page) {
       this.$http.get(
         "/students/list",
-        { page: 1 },
+        { page, psize: this.pageNum },
         success => {
           this.dataList = success.data.list;
+          this.counts = success.data.counts;
         },
         failrue => {
           console.log("请求数据失败");
         }
       );
+    },
+    // 当前页数
+    changeNumber(page) {
+      this.loaddata(page);
     },
     // 全选
     changeAll() {
@@ -130,6 +150,11 @@ export default {
 
 <style lang="less" scoped>
 .studentes {
+  // 分页
+  .paging {
+    text-align: center;
+    margin-top: 10px;
+  }
   /* 滑过 */
   table tr:hover {
     background-color: #e8ebf0;

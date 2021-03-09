@@ -42,6 +42,16 @@
         </td>
       </tr>
     </table>
+    <!-- 分页 -->
+    <el-pagination
+      class="paging"
+      background
+      layout="total, prev, pager, next, jumper"
+      :total="counts"
+      :hide-on-single-page="true"
+      @current-change="chagneNumber"
+      :page-size="pageNumber"
+    ></el-pagination>
     <!-- 添加班级 -->
     <el-dialog :title="status" :visible.sync="dialogVisible" width="47%">
       <ProjectList ref="classForm" @PorListChild="proAdd"></ProjectList>
@@ -56,6 +66,10 @@ export default {
   components: { ProjectList },
   data() {
     return {
+      // 总页数
+      counts: 0,
+      // 每页显示的条数
+      pageNumber: 6,
       dialogVisible: false,
       dataList: [],
       // 切换状态
@@ -63,21 +77,26 @@ export default {
     };
   },
   mounted() {
-    this.loaddata();
+    this.loaddata(1);
   },
   methods: {
     // 请求课程列表数据
-    loaddata() {
+    loaddata(page) {
       this.$http.get(
         "/courses/list",
-        { page: 1 },
+        { page, psize: this.pageNumber },
         success => {
           this.dataList = success.data.list;
+          this.counts = success.data.counts;
         },
         failrue => {
           console.log("请求数据失败");
         }
       );
+    },
+    // 当前页
+    chagneNumber(page) {
+      this.loaddata(page);
     },
     // 子传父
     proAdd() {
@@ -122,6 +141,11 @@ export default {
 
 <style lang="less" scoped>
 .projectes {
+  // 分页
+  .paging {
+    text-align: center;
+    margin-top: 10px;
+  }
   /* 滑过 */
   table tr:hover {
     background-color: #e8ebf0;

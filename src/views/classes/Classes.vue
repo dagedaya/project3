@@ -22,7 +22,7 @@
           </el-dropdown-menu>
         </el-dropdown>
         <div class="text-box">
-          <input type="text" class="el-input__inner" />
+          <input type="text" class="el-input_inner" />
         </div>
         <i class="el-icon-search search"></i>
       </div>
@@ -59,6 +59,19 @@
         </td>
       </tr>
     </table>
+    <!-- 分页 -->
+      <!-- <p style="color:red;margin-left:20px">总条数：{{counts}}条</p> -->
+    <div>
+      <el-pagination
+        class="paging"
+        background
+        layout="total, prev, pager, next, jumper"
+        :total="counts"
+        :hide-on-single-page="true"
+        @current-change="changeNumber"
+        :page-size="pageNum"
+      ></el-pagination>
+    </div>
     <!-- 添加班级/修改班级 -->
     <el-dialog :title="status" :visible.sync="dialogVisible" width="47%">
       <ClassesList ref="classForm" @ClassListChild="AddClass2"></ClassesList>
@@ -84,21 +97,30 @@ export default {
       dialogVisible: false,
       dataList: [],
       // 切换状态
-      status: ""
+      status: "",
+      // 总条数
+      counts: 0,
+      // 每页显示多少条数据
+      pageNum:6
     };
   },
   created() {
-    this.loaddata();
+    this.loaddata(1);
   },
   mounted() {},
   methods: {
+    // 当前页数
+    changeNumber(page) {
+      this.loaddata(page);
+    },
     // 请求班级数据
-    loaddata() {
+    loaddata(page) {
       this.$http.get(
         "/classes/list",
-        { page: 1 },
+        { page, psize: this.pageNum },
         success => {
           this.dataList = success.data.list;
+          this.counts = success.data.counts;
         },
         failrue => {
           console.log("获取数据失败");
@@ -155,6 +177,14 @@ export default {
 <style lang="less" socped>
 /* 表格 */
 .classes {
+  // 分页
+  .paging {
+    text-align: center;
+    margin-top: 10px;
+  }
+  .paging .el-pagination__total {
+    margin-top: 0px;
+  }
   .table-s {
     float: left;
     width: 48px;
@@ -217,13 +247,15 @@ export default {
     margin-left: -2px;
   }
 
-  .el-input__inner {
+  .text-box .el-input_inner {
     margin: 0;
     padding: 0;
     border: none;
     background-color: rgba(0, 0, 0, 0);
-    // margin-top: -6px;
     margin-left: 20px;
+    width: 262px;
+    height: 30px;
+    outline: none;
   }
   .el-icon-search {
     position: absolute;
