@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="studentes">
     <div class="box-header">
       <!-- 输入框 -->
       <div class="place">
@@ -88,6 +88,7 @@ export default {
       course: false,
       // 添加班级
       dialogVisible: false,
+      // 循环数据列表
       dataList: [],
       checkList: [], //选中列表
       changeStatus: false //是否全选
@@ -127,161 +128,163 @@ export default {
 };
 </script>
 
-<style scoped>
-/* 滑过 */
-table tr:hover {
-  background-color: #e8ebf0;
-}
-.cli-btn a {
-  display: none;
-  text-decoration: none;
-}
-table tr:hover .cli-btn a {
-  display: block;
-  float: left;
-  padding-left: 10px;
-  margin-left: 40px;
-}
+<style lang="less" scoped>
+.studentes {
+  /* 滑过 */
+  table tr:hover {
+    background-color: #e8ebf0;
+  }
+  .cli-btn a {
+    display: none;
+    text-decoration: none;
+  }
+  table tr:hover .cli-btn a {
+    display: block;
+    float: left;
+    padding-left: 10px;
+    margin-left: 40px;
+  }
 
-.el-icon-delete {
-  font-weight: bold;
-  font-size: 16px;
-}
-/* 表格 */
-.tab tr td span {
-  background-image: url("../../assets/ico.png");
-  display: inline-block;
-  width: 25px;
-  height: 25px;
-  background-position: -2px -635px;
-  position: relative;
-  top: 5px;
-}
+  .el-icon-delete {
+    font-weight: bold;
+    font-size: 16px;
+  }
+  /* 表格 */
+  .tab tr td span {
+    background-image: url("../../assets/ico.png");
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background-position: -2px -635px;
+    position: relative;
+    top: 5px;
+  }
 
-table > tr > th:nth-child(2) {
-  text-align: left;
-}
-table > tr:nth-child(2) > td:nth-child(2) {
-  text-align: left;
-}
-table tr td:nth-of-type(2) {
-  text-align: left;
-}
-/* 列表 */
-.tab {
-  width: 96%;
-  margin-left: 2%;
-  margin-top: 20px;
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-.tab td,
-.tab th {
-  border-bottom: solid 1px #ececec;
-  text-align: center;
-  height: 40px;
-}
-.tab th {
-  background: #f5f6fa;
-  height: 35px;
-  text-align: center;
-  font-weight: normal;
-}
-/* 输入框 */
+  table > tr > th:nth-child(2) {
+    text-align: left;
+  }
+  table > tr:nth-child(2) > td:nth-child(2) {
+    text-align: left;
+  }
+  table tr td:nth-of-type(2) {
+    text-align: left;
+  }
+  /* 列表 */
+  .tab {
+    width: 96%;
+    margin-left: 2%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+  .tab td,
+  .tab th {
+    border-bottom: solid 1px #ececec;
+    text-align: center;
+    height: 40px;
+  }
+  .tab th {
+    background: #f5f6fa;
+    height: 35px;
+    text-align: center;
+    font-weight: normal;
+  }
+  /* 输入框 */
 
-.select-box {
-  width: 420px;
-  height: 31px;
-  border: 1px solid #dee3e9;
-  margin-left: 486px;
-  margin-top: -45px;
-  line-height: 28px;
-  padding-left: 5px;
-  float: left;
-  background-color: #fff;
-}
-.el-dropdown-link {
-  cursor: pointer;
-  color: #9ea4b0;
-}
-.text-box2 {
-  width: 260px;
-  position: relative;
-  /* left: 90px; */
-  top: -30px;
-}
+  .select-box {
+    width: 420px;
+    height: 31px;
+    border: 1px solid #dee3e9;
+    margin-left: 486px;
+    margin-top: -45px;
+    line-height: 28px;
+    padding-left: 5px;
+    float: left;
+    background-color: #fff;
+  }
+  .el-dropdown-link {
+    cursor: pointer;
+    color: #9ea4b0;
+  }
+  .text-box2 {
+    width: 260px;
+    position: relative;
+    /* left: 90px; */
+    top: -30px;
+  }
 
-.el-input__inner {
-  margin-top: 25px;
-  border: none;
-  background-color: rgba(0, 0, 0, 0);
-}
-/* 搜索 */
-.el-icon-search {
-  position: absolute;
-  left: 879px;
-  top: 16px;
-  font-size: 20px;
-}
+  .el-input__inner {
+    margin-top: 25px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+  }
+  /* 搜索 */
+  .el-icon-search {
+    position: absolute;
+    left: 879px;
+    top: 16px;
+    font-size: 20px;
+  }
 
-/* 按钮 */
-/* 三角 */
-.btn {
-  font-size: 15px;
-}
-.triangle {
-  width: 0;
-  height: 0;
-  border-top: 29px solid transparent;
-  border-left: 34px solid #dbdfe8;
-  border-bottom: 30px solid transparent;
-  position: absolute;
-  left: 99px;
-  top: -3px;
-}
-.place .btn {
-  width: 100px;
-  height: 56px;
-  background-color: #dbdfe8;
-  border: none;
-  margin-right: 40px;
-  outline: none;
-}
-div.el-dialog__footer > span > button {
-  background-color: #4281fc;
-  color: #fff;
-}
-.box-header {
-  width: 99.9%;
-  height: 55px;
-  background-color: #f0f1f5;
-  border-right: 1px solid #dee3e9;
-  border-bottom: 1px solid #dee3e9;
-  position: relative;
-}
+  /* 按钮 */
+  /* 三角 */
+  .btn {
+    font-size: 15px;
+  }
+  .triangle {
+    width: 0;
+    height: 0;
+    border-top: 29px solid transparent;
+    border-left: 34px solid #dbdfe8;
+    border-bottom: 30px solid transparent;
+    position: absolute;
+    left: 99px;
+    top: -3px;
+  }
+  .place .btn {
+    width: 100px;
+    height: 56px;
+    background-color: #dbdfe8;
+    border: none;
+    margin-right: 40px;
+    outline: none;
+  }
+  div.el-dialog__footer > span > button {
+    background-color: #4281fc;
+    color: #fff;
+  }
+  .box-header {
+    width: 99.9%;
+    height: 55px;
+    background-color: #f0f1f5;
+    border-right: 1px solid #dee3e9;
+    border-bottom: 1px solid #dee3e9;
+    position: relative;
+  }
 
-.el-button {
-  padding: 6px 15px;
-  margin: 6px 7px;
-  background-color: #fff;
-  color: #9ea4b0;
-  font-size: 14px;
-}
-.box-header .box2 {
-  border: 1px solid #dee3e9;
-  background-color: #fff;
-  color: #9ea4b0;
-  width: 100px;
-  margin-left: -5px;
-}
+  .el-button {
+    padding: 6px 15px;
+    margin: 6px 7px;
+    background-color: #fff;
+    color: #9ea4b0;
+    font-size: 14px;
+  }
+  .box-header .box2 {
+    border: 1px solid #dee3e9;
+    background-color: #fff;
+    color: #9ea4b0;
+    width: 100px;
+    margin-left: -5px;
+  }
 
-/* 小图标 */
-.el-icon-folder-add {
-  font-weight: bold;
-  font-size: 16px;
-}
-.el-icon-user {
-  font-weight: bold;
-  font-size: 16px;
+  /* 小图标 */
+  .el-icon-folder-add {
+    font-weight: bold;
+    font-size: 16px;
+  }
+  .el-icon-user {
+    font-weight: bold;
+    font-size: 16px;
+  }
 }
 </style>

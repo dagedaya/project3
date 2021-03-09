@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="houres">
     <el-button-group>
       <div class="introduction">课时汇总</div>
       <div class="brief"></div>
@@ -67,6 +67,7 @@
 export default {
   data() {
     return {
+      // 循环列表
       navlist: [
         {
           week: "星期一",
@@ -134,183 +135,185 @@ export default {
 };
 </script>
 
-<style scoped>
-.el-main {
-  background-color: #e9eef3;
-  color: #333;
-  padding: 0px;
-}
-.el-button-group {
-  width: 100% !important;
-  position: relative;
-  height: 51px;
-  border: #c8ccd5 solid 1px;
-  background-color: #f5f6fa;
-}
-.introduction {
-  width: 106px;
-  height: 51px;
-  background-color: #dfe3ec;
-  line-height: 51px;
-  font-size: 16px;
-  text-align: center;
-}
-.brief {
-  width: 0;
-  height: 0;
-  border-right: 16px solid transparent;
-  border-bottom: 25px solid #dfe3ec;
-  left: 106px;
-  top: 0px;
-  position: absolute;
-}
-.brief-s {
-  width: 0;
-  height: 0;
-  border-right: 16px solid transparent;
-  border-top: 25px solid #dfe3ec;
-  position: absolute;
-  left: 106px;
-  top: 25px;
-}
-.el-dropdown-link {
-  cursor: pointer;
-  margin-right: 36px;
-  padding-left: 10px;
-}
-.el-icon-arrow-down {
-  font-size: 12px;
-}
-.sele {
-  position: absolute;
-  left: 158px;
-  top: 6px;
-  color: #a0a3aa;
-  border: 1px solid #dee3e9;
-  height: 36px !important;
-  width: 518px;
-  line-height: 36px;
-  background-color: #ffffff;
-}
-.sele input {
-  border: 0px;
-  background: url("../../assets/ico.png") no-repeat;
-  background-position: 183px -438px;
-  width: 312px;
-  height: 27px;
-}
-.row-course {
-  width: 100%;
-  height: 52px;
-  background-color: #ffffff;
-  border-bottom: 1px solid #e5e5e5;
-  margin-left: 24px;
-}
-.dates {
-  margin-left: 9px;
-  margin-right: 50px;
-  line-height: 52px;
-}
-.upper {
-  float: left;
-  line-height: 52px;
-  width: 80px;
-  background: url("../../assets/ico.png") no-repeat;
-  background-position: -164px -887px;
-  margin: 0px;
-  padding-left: 20px;
-}
-.data {
-  width: 162px;
-  float: left;
-  line-height: 52px;
-}
-.lower {
-  float: left;
-  line-height: 52px;
-  width: 80px;
-  background: url("../../assets/ico.png") no-repeat;
-  background-position: 65px -888px;
-  margin: 0px;
-}
-.total {
-  float: right;
-}
-.row-course .dates ul li {
-  float: right;
-  margin-right: 30px;
-  position: relative;
-  list-style: none;
-}
-.row-course .dates ul li .result {
-  width: 12px;
-  height: 12px;
-  background-color: #925ff8;
-  position: absolute;
-  left: -15px;
-  top: 20px;
-}
+<style lang="less" scoped>
+.houres {
+  .el-main {
+    background-color: #e9eef3;
+    color: #333;
+    padding: 0px;
+  }
+  .el-button-group {
+    width: 100% !important;
+    position: relative;
+    height: 51px;
+    border: #c8ccd5 solid 1px;
+    background-color: #f5f6fa;
+  }
+  .introduction {
+    width: 106px;
+    height: 51px;
+    background-color: #dfe3ec;
+    line-height: 51px;
+    font-size: 16px;
+    text-align: center;
+  }
+  .brief {
+    width: 0;
+    height: 0;
+    border-right: 16px solid transparent;
+    border-bottom: 25px solid #dfe3ec;
+    left: 106px;
+    top: 0px;
+    position: absolute;
+  }
+  .brief-s {
+    width: 0;
+    height: 0;
+    border-right: 16px solid transparent;
+    border-top: 25px solid #dfe3ec;
+    position: absolute;
+    left: 106px;
+    top: 25px;
+  }
+  .el-dropdown-link {
+    cursor: pointer;
+    margin-right: 36px;
+    padding-left: 10px;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
+  .sele {
+    position: absolute;
+    left: 158px;
+    top: 6px;
+    color: #a0a3aa;
+    border: 1px solid #dee3e9;
+    height: 36px !important;
+    width: 518px;
+    line-height: 36px;
+    background-color: #ffffff;
+  }
+  .sele input {
+    border: 0px;
+    background: url("../../assets/ico.png") no-repeat;
+    background-position: 183px -438px;
+    width: 312px;
+    height: 27px;
+  }
+  .row-course {
+    width: 100%;
+    height: 52px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e5e5;
+    margin-left: 24px;
+  }
+  .dates {
+    margin-left: 9px;
+    margin-right: 50px;
+    line-height: 52px;
+  }
+  .upper {
+    float: left;
+    line-height: 52px;
+    width: 80px;
+    background: url("../../assets/ico.png") no-repeat;
+    background-position: -164px -887px;
+    margin: 0px;
+    padding-left: 20px;
+  }
+  .data {
+    width: 162px;
+    float: left;
+    line-height: 52px;
+  }
+  .lower {
+    float: left;
+    line-height: 52px;
+    width: 80px;
+    background: url("../../assets/ico.png") no-repeat;
+    background-position: 65px -888px;
+    margin: 0px;
+  }
+  .total {
+    float: right;
+  }
+  .row-course .dates ul li {
+    float: right;
+    margin-right: 30px;
+    position: relative;
+    list-style: none;
+  }
+  .row-course .dates ul li .result {
+    width: 12px;
+    height: 12px;
+    background-color: #925ff8;
+    position: absolute;
+    left: -15px;
+    top: 20px;
+  }
 
-.prass {
-  border: 1px solid #dcdfe6;
-  width: 68px;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-  height: 33px;
-}
-.prass1 {
-  border: 1px solid #dcdfe6;
-  width: 68px;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-  height: 33px;
-}
-.thead {
-  width: 100%;
-  height: 100%;
-  /* background-color: red; */
-  margin-left: 24px;
-}
-.thead tr {
-  width: 100%;
-}
-.thead tr td {
-  border-bottom: 2px solid #e5e5e5;
-  height: 99px;
-  position: relative;
-  padding-left: 10px;
-}
-.thead tr td:first-of-type {
-  width: 125px;
+  .prass {
+    border: 1px solid #dcdfe6;
+    width: 68px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    height: 33px;
+  }
+  .prass1 {
+    border: 1px solid #dcdfe6;
+    width: 68px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    height: 33px;
+  }
+  .thead {
+    width: 100%;
+    height: 100%;
+    /* background-color: red; */
+    margin-left: 24px;
+  }
+  .thead tr {
+    width: 100%;
+  }
+  .thead tr td {
+    border-bottom: 2px solid #e5e5e5;
+    height: 99px;
+    position: relative;
+    padding-left: 10px;
+  }
+  .thead tr td:first-of-type {
+    width: 125px;
 
-  background-color: #f3f3f3;
-  line-height: 99px;
-}
-.thead tr td:nth-of-type(2) {
-  background-color: #f7f7f7;
-}
-.thead tr td .subject {
-  width: 150px;
-  height: 57px;
-  background-color: #ffffff;
-  border-radius: 5px;
-  font-size: 13px;
-  position: absolute;
-  top: 20px;
-  left: 14px;
-  border-left: 4px solid #4381fc;
-}
-.thead tr td .subject th {
-  float: left;
-  margin: 10px 0 7px 9px;
-}
-.thead tr td .subject div {
-  float: left;
-  margin-left: 10px;
-  color: #c8ccd5;
-}
-.thead tr:nth-of-type(6) td:first-of-type,
-.thead tr:nth-of-type(7) td:first-of-type {
-  background-color: #fefa8f;
+    background-color: #f3f3f3;
+    line-height: 99px;
+  }
+  .thead tr td:nth-of-type(2) {
+    background-color: #f7f7f7;
+  }
+  .thead tr td .subject {
+    width: 150px;
+    height: 57px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    font-size: 13px;
+    position: absolute;
+    top: 20px;
+    left: 14px;
+    border-left: 4px solid #4381fc;
+  }
+  .thead tr td .subject th {
+    float: left;
+    margin: 10px 0 7px 9px;
+  }
+  .thead tr td .subject div {
+    float: left;
+    margin-left: 10px;
+    color: #c8ccd5;
+  }
+  .thead tr:nth-of-type(6) td:first-of-type,
+  .thead tr:nth-of-type(7) td:first-of-type {
+    background-color: #fefa8f;
+  }
 }
 </style>
