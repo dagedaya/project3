@@ -33,7 +33,7 @@
         <td>{{item.price}}</td>
         <td>{{item.mode}}</td>
         <td class="cli-btn">
-          <a href="javascript:;" @click="course=true">排课</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <a
             href="javascript:;"
             @click="edit(index)"

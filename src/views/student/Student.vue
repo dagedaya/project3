@@ -5,13 +5,13 @@
       <div class="place">
         <button class="btn">学员管理</button>
         <div class="triangle"></div>
-        <el-button @click="dialogVisible = true">
+        <el-button @click="save">
           <i class="el-icon-user"></i>&nbsp;添加学员
         </el-button>
         <el-button @click="course = true">
           <i class="el-icon-folder-add"></i>&nbsp;添加排课
         </el-button>
-        <el-button>
+        <el-button @click="handleClickDel">
           <i class="el-icon-delete"></i>&nbsp;删除
         </el-button>
       </div>
@@ -68,12 +68,11 @@
       @current-change="changeNumber"
     ></el-pagination>
     <!-- 添加班级 -->
-    <el-dialog title="添加学员" :visible.sync="dialogVisible" width="47%">
-      <StudentList></StudentList>
-      <span slot="footer" class="dialog-footer">
-        <el-button class="button-box" type="primary" @click="dialogVisible = false">保存</el-button>
-      </span>
-    </el-dialog>
+    <div v-if="dialogVisible">
+      <el-dialog :title="status" :visible.sync="dialogVisible" width="47%">
+        <StudentList ref="studentEdit" @studentChild="studentChange"></StudentList>
+      </el-dialog>
+    </div>
     <!-- 添加排课 -->
     <el-dialog title="添加排课" :visible.sync="course" width="80%">
       <CourseList></CourseList>
@@ -86,12 +85,13 @@
 
 <script>
 // 引入组件
-import StudentList from '../../components/student/StudentList.vue'
-import CourseList from '../../components/student/CourseList.vue'
+import StudentList from "../../components/student/StudentList.vue";
+import CourseList from "../../components/student/CourseList.vue";
 export default {
   components: { StudentList, CourseList },
-  data () {
+  data() {
     return {
+      status: "",
       // 切换状态
       cut: 1,
       // 排课
@@ -106,46 +106,107 @@ export default {
       counts: 0,
       // 每页显示多少条数据
       pageNum: 8
-    }
+    };
   },
-  mounted () {},
-  created () {
-    this.loaddata(1)
+  mounted() {},
+  created() {
+    this.loaddata(1);
   },
   methods: {
-    loaddata (page) {
+    loaddata(page) {
       this.$http.get(
-        '/students/list',
+        "/students/list",
         { page, psize: this.pageNum },
         success => {
-          this.dataList = success.data.list
-          this.counts = success.data.counts
+          this.dataList = success.data.list;
+          this.counts = success.data.counts;
         },
         failrue => {
-          console.log('请求数据失败')
+          console.log("请求数据失败");
         }
-      )
+      );
     },
     // 当前页数
-    changeNumber (page) {
-      this.loaddata(page)
+    changeNumber(page) {
+      this.loaddata(page);
     },
     // 全选
-    changeAll () {
+    changeAll() {
       if (this.changeStatus) {
-        this.checkList = []
-        this.changeStatus = false
+        this.checkList = [];
+        this.changeStatus = false;
       } else {
-        this.checkList = this.dataList
-        this.changeStatus = true
+        this.checkList = this.dataList;
+        this.changeStatus = true;
       }
     },
+    // 子传父
+    studentChange() {
+      this.loaddata();
+      this.dialogVisible = false;
+    },
     // 修改
-    edit (index) {},
+    edit(index) {
+      this.status = "修改成员";
+      this.dialogVisible = true;
+      setTimeout(() => {
+        this.$refs.studentEdit.form = JSON.parse(
+          JSON.stringify(this.dataList[index])
+        );
+      }, 50);
+    },
+    // 添加课程标题
+    save() {
+      this.dialogVisible = true;
+      this.status = "添加课程";
+    },
     // 删除
-    del (index) {}
+    del(index) {
+      this.$http.get(
+        "/students/delete",
+        { id: this.dataList[index].id },
+        success => {
+          this.$message({
+            message: "恭喜你，删除成功",
+            type: "success"
+          });
+          // 初始化数据
+          this.loaddata();
+        },
+        failure => {
+          this.$message({
+            message: "删除失败",
+            type: "error"
+          });
+        }
+      );
+    },
+    // 批量删除
+    handleClickDel() {
+      console.log(this.checkList);
+      for (var i in this.checkList) {
+        this.$http.get(
+          "/students/delete",
+          { id: this.checkList[i].id },
+          success => {
+            this.$message({
+              message: "恭喜你，删除成功",
+              type: "success"
+            });
+            // 初始化数据
+            this.loaddata();
+          },
+          failure => {
+            this.$message({
+              message: "删除失败",
+              type: "error"
+            });
+          }
+        );
+      }
+    }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
