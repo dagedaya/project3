@@ -67,25 +67,25 @@
 </template>
 
 <script >
-import WorkList from "../../components/work/WorkList.vue";
+import WorkList from '../../components/work/WorkList.vue'
 // 引入组件
 export default {
   components: { WorkList },
-  data() {
+  data () {
     return {
       // 弹框开关
       dialogVisible: false,
       form: {
-        date3: "",
-        date4: ""
+        date3: '',
+        date4: ''
       },
       // 循环数据
       dataList: []
-    };
+    }
   },
-  mounted() {},
+  mounted () {},
   methods: {}
-};
+}
 </script>
 
 <style lang="less" scoped>

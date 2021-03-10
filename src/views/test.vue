@@ -7,13 +7,13 @@
 
 <script>
 export default {
-  name: "test",
-  data() {
-    return {};
+  name: 'test',
+  data () {
+    return {}
   },
-  mounted() {},
+  mounted () {},
   methods: {}
-};
+}
 </script>
 <style lang="less" scoped>
 // @import "../less/button";

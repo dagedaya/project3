@@ -244,7 +244,7 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       // 主讲老师列表
       teacherslist: [],
@@ -259,35 +259,35 @@ export default {
       // 要传输的数据
       courseForm: {
         // 班级ID
-        classid: "",
+        classid: '',
         // 课程ID
-        courseid: "",
+        courseid: '',
         // 单次/批量排课
-        addtype: "one",
+        addtype: 'one',
         // 主讲老师ID
-        teacherid: "",
+        teacherid: '',
         // 助教老师ID
-        assistant: "",
+        assistant: '',
         // 教师ID
         classrooms: 0,
         // 单节课扣学员课时
-        pricecounts: "1",
+        pricecounts: '1',
         // 开课日期
-        begindate: "",
+        begindate: '',
         // 结课日期
-        enddate: "",
+        enddate: '',
         // 结束方式
-        jsfs: "按课节",
+        jsfs: '按课节',
         // 排课总数
-        coursescount: "",
+        coursescount: '',
         // 上课时间
         weektime: [],
         // 学员列表
         studentlist: []
       },
       // 上课时间
-      weekBegintime: "",
-      weekEndtime: "",
+      weekBegintime: '',
+      weekEndtime: '',
 
       // 单排/批量排课（class类）
       isTAVal: 1,
@@ -304,144 +304,144 @@ export default {
       weekArray: [
         {
           id: 1,
-          name: "一",
+          name: '一',
           check: false
         },
         {
           id: 2,
-          name: "二",
+          name: '二',
           check: false
         },
         {
           id: 3,
-          name: "三",
+          name: '三',
           check: false
         },
         {
           id: 4,
-          name: "四",
+          name: '四',
           check: false
         },
         {
           id: 5,
-          name: "五",
+          name: '五',
           check: false
         },
         {
           id: 6,
-          name: "六",
+          name: '六',
           check: false
         },
         {
           id: 7,
-          name: "日",
+          name: '日',
           check: false
         }
       ],
 
-      startTime: "",
-      endTime: ""
-    };
+      startTime: '',
+      endTime: ''
+    }
   },
-  created() {
+  created () {
     // 获取讲师信息
-    this.getTeacherInfo();
+    this.getTeacherInfo()
     // 获取助教讲师信息
-    this.getHelpTeacherInfo();
+    this.getHelpTeacherInfo()
     // 获取教室信息
-    this.getClassroomInfo();
+    this.getClassroomInfo()
   },
   methods: {
     // 批量排课里面（切换结束方式）
-    clickCatJsfs() {
-      if (this.courseForm.jsfs == "按课节") {
-        this.courseForm.enddate = null;
+    clickCatJsfs () {
+      if (this.courseForm.jsfs == '按课节') {
+        this.courseForm.enddate = null
       } else {
-        this.courseForm.coursescount = "";
+        this.courseForm.coursescount = ''
       }
     },
     // 选择星期
-    selectThisWeek(index) {
+    selectThisWeek (index) {
       if (this.weekArray[index].check) {
-        this.week["week" + (index + 1)].push({
+        this.week['week' + (index + 1)].push({
           week: index + 1,
-          begintime: "00:00",
-          endtime: "00:00"
-        });
+          begintime: '00:00',
+          endtime: '00:00'
+        })
       } else {
-        this.week["week" + (index + 1)] = [];
+        this.week['week' + (index + 1)] = []
       }
     },
     // 添加星期日期
-    clickWeekCreate(index) {
-      console.log(index);
-      this.week["week" + (index + 1)].push({
+    clickWeekCreate (index) {
+      console.log(index)
+      this.week['week' + (index + 1)].push({
         week: index + 1,
-        begintime: "00:00",
-        endtime: "00:00"
-      });
+        begintime: '00:00',
+        endtime: '00:00'
+      })
     },
     // 删除星期日期
-    clickWeekDel(index, index2) {
-      console.log(index, index2);
-      this.week["week" + (index + 1)].splice(index2, 1);
+    clickWeekDel (index, index2) {
+      console.log(index, index2)
+      this.week['week' + (index + 1)].splice(index2, 1)
     },
     // 切换单排排课、批量排课
-    changeis(value) {
+    changeis (value) {
       if (value == 1) {
-        this.isTAVal = 1;
-        this.courseForm.addtype = "one";
-        this.courseForm.weektime = [];
-        this.courseForm.enddate = null;
-        this.courseForm.coursescount = "";
-        this.courseForm.jsfs = "按课节";
+        this.isTAVal = 1
+        this.courseForm.addtype = 'one'
+        this.courseForm.weektime = []
+        this.courseForm.enddate = null
+        this.courseForm.coursescount = ''
+        this.courseForm.jsfs = '按课节'
       } else {
-        this.isTAVal = 2;
-        this.courseForm.addtype = "more";
+        this.isTAVal = 2
+        this.courseForm.addtype = 'more'
       }
     },
     // 获取讲师信息
-    getTeacherInfo() {
+    getTeacherInfo () {
       this.$http.get(
-        "/teachers/list",
+        '/teachers/list',
         { cat: 1, page: 1 },
         success => {
-          this.teacherslist = success.data.list;
+          this.teacherslist = success.data.list
         },
         failure => {
-          console.log("获取讲师信息失败");
+          console.log('获取讲师信息失败')
         }
-      );
+      )
     },
     // 获取助教讲师信息
-    getHelpTeacherInfo() {
+    getHelpTeacherInfo () {
       this.$http.get(
-        "/teachers/list",
+        '/teachers/list',
         { cat: 2, page: 1 },
         success => {
-          this.assistantList = success.data.list;
+          this.assistantList = success.data.list
         },
         failure => {
-          console.log("讲师信息接收失败");
+          console.log('讲师信息接收失败')
         }
-      );
+      )
     },
     // 获取教师信息
-    getClassroomInfo() {
+    getClassroomInfo () {
       this.$http.get(
-        "/classrooms/list",
+        '/classrooms/list',
         { page: 1 },
         success => {
-          this.classroomList = success.data.list;
+          this.classroomList = success.data.list
         },
         failure => {
-          console.log("获取教师信息失败");
+          console.log('获取教师信息失败')
         }
-      );
+      )
     },
     // 保存
-    handleClick() {
-      if (this.courseForm.addtype == "one") {
+    handleClick () {
+      if (this.courseForm.addtype == 'one') {
         this.courseForm.weektime = [
           {
             week: 0,
@@ -449,34 +449,34 @@ export default {
             begintime: this.weekBegintime,
             endtime: this.weekBegintime
           }
-        ];
-      } else if (this.courseForm.jsfs != "按课节") {
+        ]
+      } else if (this.courseForm.jsfs != '按课节') {
         for (var i in this.week) {
           for (var j in this.week[i]) {
-            this.courseForm.weektime.push(this.week[i][j]);
+            this.courseForm.weektime.push(this.week[i][j])
           }
         }
       }
       // 打印结果查看
-      console.log(this.courseForm);
-      console.log(JSON.stringify(this.courseForm));
+      console.log(this.courseForm)
+      console.log(JSON.stringify(this.courseForm))
       this.$http.post(
-        "/coursetables/add",
+        '/coursetables/add',
         this.courseForm,
         success => {
           this.$message.success({
-            message: "班级排课成功",
-            type: "success"
-          });
-          this.$emit("closeAlert");
+            message: '班级排课成功',
+            type: 'success'
+          })
+          this.$emit('closeAlert')
         },
         failure => {
-          console.log("班级排课失败");
+          console.log('班级排课失败')
         }
-      );
+      )
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

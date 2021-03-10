@@ -26,48 +26,48 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       form: {
-        name: "",
-        pricetype: "",
+        name: '',
+        pricetype: '',
         price: 0.0,
-        mode: ""
+        mode: ''
       }
-    };
+    }
   },
-  mounted() {},
+  mounted () {},
   methods: {
     // 封装添加数据
-    restModel() {
-      this.form = [];
+    restModel () {
+      this.form = []
     },
     // 添加
-    loaddata() {
-      console.log(this.form);
+    loaddata () {
+      console.log(this.form)
       this.$http.post(
-        "/courses/add",
+        '/courses/add',
         this.form,
         success => {
-          console.log(success);
+          console.log(success)
           // 添加成功
-          this.restModel();
-          this.$emit("PorListChild");
+          this.restModel()
+          this.$emit('PorListChild')
           this.$message({
-            message: "添加成功",
-            type: "success"
-          });
+            message: '添加成功',
+            type: 'success'
+          })
         },
         failrue => {
           this.$message({
-            message: "添加失败",
-            type: "error"
-          });
+            message: '添加失败',
+            type: 'error'
+          })
         }
-      );
+      )
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

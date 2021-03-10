@@ -63,53 +63,53 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
-      messtitle: "",
+      messtitle: '',
       loginType: 1,
-      username: "",
-      password: "",
-      username1: "",
-      password1: ""
-    };
+      username: '',
+      password: '',
+      username1: '',
+      password1: ''
+    }
   },
   methods: {
-    show(val) {
-      this.loginType = val;
+    show (val) {
+      this.loginType = val
     },
-    mess() {
-      if (this.username == "") {
-        this.messtitle = "请输入账号";
-      } else if (this.password == "") {
-        this.messtitle = "请输入密码";
+    mess () {
+      if (this.username == '') {
+        this.messtitle = '请输入账号'
+      } else if (this.password == '') {
+        this.messtitle = '请输入密码'
       } else {
-        this.messtitle = "";
+        this.messtitle = ''
         this.$http.post(
-          "/admin/checklogin",
+          '/admin/checklogin',
           { username: this.username, pass: this.password },
           success => {
             // token存到本地
-            localStorage.setItem("token", success.data);
+            localStorage.setItem('token', success.data)
             // 跳转
-            this.$router.push("/");
+            this.$router.push('/')
           },
           failure => {
-            this.messtitle = "账号密码错误";
+            this.messtitle = '账号密码错误'
           }
-        );
+        )
       }
     },
-    messChange() {
-      if (this.username1 == "") {
-        this.messtitle = "请输入手机号";
-      } else if (this.password1 == "") {
-        this.messtitle = "请输入验证码";
+    messChange () {
+      if (this.username1 == '') {
+        this.messtitle = '请输入手机号'
+      } else if (this.password1 == '') {
+        this.messtitle = '请输入验证码'
       } else {
-        this.messtitle = "";
+        this.messtitle = ''
       }
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

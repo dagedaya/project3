@@ -46,78 +46,78 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       // 课程列表
       proList: [],
       form: {
         // 课程id
-        courseid: "",
+        courseid: '',
         // 课程名称
-        coursename: "",
+        coursename: '',
         // 班级名称
-        name: "",
+        name: '',
         // 计划课时
         coursecounts: 0,
         // 当前时间
-        startdate: "",
+        startdate: '',
         // 结束时间
-        enddate: ""
+        enddate: ''
       }
-    };
+    }
   },
-  created() {
+  created () {
     // 调用所选的课程接口
-    this.loaddata();
+    this.loaddata()
   },
-  mounted() {},
+  mounted () {},
 
   methods: {
     // 封装添加课程列表
-    restModel() {
+    restModel () {
       // 添加列表清空
-      this.form = [];
+      this.form = []
     },
-    //所选的课程接口
-    loaddata() {
+    // 所选的课程接口
+    loaddata () {
       this.$http.get(
-        "/courses/list",
+        '/courses/list',
         { page: 1 },
         success => {
-          this.proList = success.data.list;
+          this.proList = success.data.list
         },
         failrue => {
-          console.log("请求数据失败");
+          console.log('请求数据失败')
         }
-      );
+      )
     },
     // 请求添加班级数据
-    AddClass() {
-      let that = this;
-      let data = JSON.stringify(this.form);
+    AddClass () {
+      const that = this
+      const data = JSON.stringify(this.form)
       this.$http.post(
-        "/classes/add",
+        '/classes/add',
         data,
         success => {
           // 添加成功
-          this.restModel();
-          that.$emit("ClassListChild");
+          this.restModel()
+          that.$emit('ClassListChild')
           // 弹框
           this.$message({
-            message: "恭喜你，添加成功",
-            type: "success"
-          });
+            message: '恭喜你，添加成功',
+            type: 'success'
+          })
         },
         failrue => {
           this.$message({
-            message: "添加失败",
-            type: "error"
-          });
+            message: '添加失败',
+            type: 'error'
+          })
         }
-      );
+      )
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

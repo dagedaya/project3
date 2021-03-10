@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 const originalPush = VueRouter.prototype.push
-VueRouter.prototype.push = function push(location) {
+VueRouter.prototype.push = function push (location) {
   return originalPush.call(this, location).catch(err => err)
 }
 const routes = [
@@ -11,42 +11,42 @@ const routes = [
     path: '/',
     component: () => import('@/views/index.vue'),
     redirect: '/classes',
-    children:[
+    children: [
       {
-        path:'/test',
-        name:'test',
+        path: '/test',
+        name: 'test',
         component: () => import('@/views/test.vue')
       },
       {
-        path:'/test2',
-        name:'test2',
+        path: '/test2',
+        name: 'test2',
         component: () => import('@/views/test2.vue')
       },
       {
-        path:'/classes',
-        name:'classes',
+        path: '/classes',
+        name: 'classes',
         component: () => import('@/views/classes/Classes.vue')
       },
       {
-        path:'/project',
-        name:'project',
+        path: '/project',
+        name: 'project',
         component: () => import('@/views/project/Project.vue')
       },
       {
-        path:'/work',
-        name:'work',
+        path: '/work',
+        name: 'work',
         component: () => import('@/views/work/Work.vue')
       },
       {
-        path:'/hour',
-        name:'hour',
+        path: '/hour',
+        name: 'hour',
         component: () => import('@/views/hour/Hour.vue')
       },
       {
-        path:'/student',
-        name:'student',
+        path: '/student',
+        name: 'student',
         component: () => import('@/views/student/Student.vue')
-      },
+      }
     ]
   },
   // 登录
@@ -57,7 +57,7 @@ const routes = [
   },
   // 404页面
   {
-    path:'*',
+    path: '*',
     component: () => import('@/views/error/404.vue')
   }
 ]

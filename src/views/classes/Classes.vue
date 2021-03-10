@@ -84,12 +84,12 @@
 </template>
 
 <script>
-import ClassesList from "../../components/classes/ClassesList.vue";
-import CourseList from "../../components/classes/CourseList.vue";
+import ClassesList from '../../components/classes/ClassesList.vue'
+import CourseList from '../../components/classes/CourseList.vue'
 
 export default {
   components: { ClassesList, CourseList },
-  data() {
+  data () {
     return {
       // 排课
       course: false,
@@ -97,81 +97,81 @@ export default {
       dialogVisible: false,
       dataList: [],
       // 切换状态
-      status: "",
+      status: '',
       // 总条数
       counts: 0,
       // 每页显示多少条数据
-      pageNum:6
-    };
+      pageNum: 6
+    }
   },
-  created() {
-    this.loaddata(1);
+  created () {
+    this.loaddata(1)
   },
-  mounted() {},
+  mounted () {},
   methods: {
     // 当前页数
-    changeNumber(page) {
-      this.loaddata(page);
+    changeNumber (page) {
+      this.loaddata(page)
     },
     // 请求班级数据
-    loaddata(page) {
+    loaddata (page) {
       this.$http.get(
-        "/classes/list",
+        '/classes/list',
         { page, psize: this.pageNum },
         success => {
-          this.dataList = success.data.list;
-          this.counts = success.data.counts;
+          this.dataList = success.data.list
+          this.counts = success.data.counts
         },
         failrue => {
-          console.log("获取数据失败");
+          console.log('获取数据失败')
         }
-      );
+      )
     },
     // 重新请求班级列表（子传父）
-    AddClass2() {
-      this.loaddata();
-      this.dialogVisible = false;
+    AddClass2 () {
+      this.loaddata()
+      this.dialogVisible = false
     },
     // 删除课程接口
-    del(index) {
+    del (index) {
       this.$http.get(
-        "/classes/delete",
+        '/classes/delete',
         { id: this.dataList[index].id },
         success => {
-          console.log("1");
+          console.log('1')
           this.$message({
-            message: "恭喜你，删除成功",
-            type: "success"
-          });
+            message: '恭喜你，删除成功',
+            type: 'success'
+          })
           // 初始化数据
-          this.loaddata();
+          this.loaddata()
         },
         failrue => {
-          console.log("2");
+          console.log('2')
           this.$message({
-            message: "删除失败",
-            type: "error"
-          });
+            message: '删除失败',
+            type: 'error'
+          })
         }
-      );
+      )
     },
     // 修改课程
-    edit(index) {
+    edit (index) {
       this.dialogVisible = true;
-      (this.status = "修改课程"), console.log(this.dataList[index]);
+      (this.status = '修改课程'), console.log(this.dataList[index])
       setTimeout(() => {
         this.$refs.classForm.form = JSON.parse(
           JSON.stringify(this.dataList[index])
-        );
-      }, 50);
+        )
+      }, 50)
     },
     // 添加课程标题
-    save() {
-      this.dialogVisible = true;
-      this.status = "添加课程";
+    save () {
+      this.dialogVisible = true
+      this.status = '添加课程'
     }
   }
-};
+}
 </script>
 
 <style lang="less" socped>

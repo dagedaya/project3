@@ -47,7 +47,7 @@
         <td>10</td>
         <td>9</td>
         <td class="cli-btn">
-          <a href="javascript:;" @click="course=true">排课</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="javascript:;" @click="course=true">购课</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <a
             href="javascript:;"
             @click="edit(index)"
@@ -86,11 +86,11 @@
 
 <script>
 // 引入组件
-import StudentList from "../../components/student/StudentList.vue";
-import CourseList from "../../components/student/CourseList.vue";
+import StudentList from '../../components/student/StudentList.vue'
+import CourseList from '../../components/student/CourseList.vue'
 export default {
   components: { StudentList, CourseList },
-  data() {
+  data () {
     return {
       // 切换状态
       cut: 1,
@@ -100,52 +100,52 @@ export default {
       dialogVisible: false,
       // 循环数据列表
       dataList: [],
-      checkList: [], //选中列表
-      changeStatus: false, //是否全选
+      checkList: [], // 选中列表
+      changeStatus: false, // 是否全选
       // 总条数
       counts: 0,
       // 每页显示多少条数据
       pageNum: 8
-    };
+    }
   },
-  mounted() {},
-  created() {
-    this.loaddata(1);
+  mounted () {},
+  created () {
+    this.loaddata(1)
   },
   methods: {
-    loaddata(page) {
+    loaddata (page) {
       this.$http.get(
-        "/students/list",
+        '/students/list',
         { page, psize: this.pageNum },
         success => {
-          this.dataList = success.data.list;
-          this.counts = success.data.counts;
+          this.dataList = success.data.list
+          this.counts = success.data.counts
         },
         failrue => {
-          console.log("请求数据失败");
+          console.log('请求数据失败')
         }
-      );
+      )
     },
     // 当前页数
-    changeNumber(page) {
-      this.loaddata(page);
+    changeNumber (page) {
+      this.loaddata(page)
     },
     // 全选
-    changeAll() {
+    changeAll () {
       if (this.changeStatus) {
-        this.checkList = [];
-        this.changeStatus = false;
+        this.checkList = []
+        this.changeStatus = false
       } else {
-        this.checkList = this.dataList;
-        this.changeStatus = true;
+        this.checkList = this.dataList
+        this.changeStatus = true
       }
     },
     // 修改
-    edit(index) {},
+    edit (index) {},
     // 删除
-    del(index) {}
+    del (index) {}
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

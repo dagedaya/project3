@@ -61,10 +61,10 @@
 
 <script>
 // 引入组件
-import ProjectList from "../../components/project/ProjectList.vue";
+import ProjectList from '../../components/project/ProjectList.vue'
 export default {
   components: { ProjectList },
-  data() {
+  data () {
     return {
       // 总页数
       counts: 0,
@@ -73,71 +73,71 @@ export default {
       dialogVisible: false,
       dataList: [],
       // 切换状态
-      status: "添加课程"
-    };
+      status: '添加课程'
+    }
   },
-  mounted() {
-    this.loaddata(1);
+  mounted () {
+    this.loaddata(1)
   },
   methods: {
     // 请求课程列表数据
-    loaddata(page) {
+    loaddata (page) {
       this.$http.get(
-        "/courses/list",
+        '/courses/list',
         { page, psize: this.pageNumber },
         success => {
-          this.dataList = success.data.list;
+          this.dataList = success.data.list
           // 总数据
-          this.counts = success.data.counts;
+          this.counts = success.data.counts
         },
         failrue => {
-          console.log("请求数据失败");
+          console.log('请求数据失败')
         }
-      );
+      )
     },
     // 当前页
-    chagneNumber(page) {
-      this.loaddata(page);
+    chagneNumber (page) {
+      this.loaddata(page)
     },
     // 子传父
-    proAdd() {
-      this.dialogVisible = false;
+    proAdd () {
+      this.dialogVisible = false
       // 初始化数据
-      this.loaddata();
+      this.loaddata()
     },
     // 删除
-    del(index) {
+    del (index) {
       this.$http.get(
-        "/courses/delete",
+        '/courses/delete',
         { id: this.dataList[index].id },
         success => {
           this.$message({
-            message: "恭喜你，删除成功",
-            type: "success"
-          });
+            message: '恭喜你，删除成功',
+            type: 'success'
+          })
           // 初始化数据
-          this.loaddata();
+          this.loaddata()
         },
         failrue => {
           this.$message({
-            message: "恭喜你，删除失败",
-            type: "error"
-          });
+            message: '恭喜你，删除失败',
+            type: 'error'
+          })
         }
-      );
+      )
     },
     // 修改
-    edit(index) {
-      this.dialogVisible = true;
-      this.status = "修改课程";
+    edit (index) {
+      this.dialogVisible = true
+      this.status = '修改课程'
       setTimeout(() => {
         this.$refs.classForm.form = JSON.parse(
           JSON.stringify(this.dataList[index])
-        );
-      }, 50);
+        )
+      }, 50)
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

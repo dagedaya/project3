@@ -8,18 +8,18 @@
 export default {
   name: 'test2',
 
-  data() {
+  data () {
     return {
-      
-    };
+
+    }
   },
-  mounted() {
-    
+  mounted () {
+
   },
   methods: {
-    
-  },
-};
+
+  }
+}
 </script>
 
 <style lang="less" scoped>
