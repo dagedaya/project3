@@ -94,7 +94,7 @@ export default {
   data() {
     return {
       // 排课
-      course: false,
+      course: true,
       // 添加班级
       dialogVisible: false,
       dataList: [],

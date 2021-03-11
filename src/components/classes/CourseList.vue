@@ -220,7 +220,7 @@
     <div class="floor">
       <div class="box">
         <h3>选择学员(0)</h3>
-        <span class="createUser">
+        <span class="createUser" @click="stuChoose">
           <span class="el-icon-user"></span>添加学员
         </span>
         <div class="user">
@@ -235,6 +235,10 @@
         </div>
       </div>
     </div>
+        <!-- 选择成员 -->
+    <el-dialog title="选择学员" :visible.sync="dialogVisible" :append-to-body="true" width="60%">
+      <StudentList></StudentList>
+    </el-dialog>
     <!-- 提交按钮 -->
     <div class="button-bg">
       <el-button type="primary" class="buttin save" @click="handleClick">保存</el-button>
@@ -243,9 +247,12 @@
 </template>
 
 <script>
+import StudentList from "./StudentList"
 export default {
+  components:{StudentList},
   data () {
     return {
+      dialogVisible:true,
       // 主讲老师列表
       teacherslist: [],
       // 助教老师列表
@@ -438,6 +445,10 @@ export default {
           console.log('获取教师信息失败')
         }
       )
+    },
+    // 选择学员
+    stuChoose(){
+      this.dialogVisible=true
     },
     // 保存
     handleClick () {
