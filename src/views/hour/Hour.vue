@@ -60,7 +60,7 @@ export default {
     calendar(valmonth) {
       this.$http.get(
         "/coursetables/search",
-        { month: this.$moment.dateFormat("yyyy-MM", valmonth), page: 1 },
+        { month: this.$moment.dateFormat("yyyy-MM", valmonth), page: 1,psize:10000 },
         success => {
           this.HourList = success.data.list;
         },

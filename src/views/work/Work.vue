@@ -61,7 +61,7 @@
                   <img src="../../assets/到达.gif" alt srcset />
                   <span>已到达</span>
                   <img src="../../assets/签到.gif" alt srcset />
-                  <span>签到</span>
+                  <span @click="dialogVisible=true" class="qiandao">签到</span>
                 </div>
               </div>
               <div class="student-group-row">
@@ -116,11 +116,17 @@
         </div>
       </div>
     </div>
+    <!-- 考勤签到 -->
+    <el-dialog title="签到" :visible.sync="dialogVisible" :append-to-body="true" width="60%">
+      <WorkList></WorkList>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import WorkList from "../../components/work/WorkList.vue";
 export default {
+  components: { WorkList },
   name: "index",
   data() {
     return {
@@ -129,6 +135,7 @@ export default {
         date2: ""
       },
       attendanceFrom: {
+        // 搜索内容
         searchList: [
           {
             label: "课程",
@@ -140,7 +147,6 @@ export default {
           }
         ],
         searchListThis: "",
-        // 搜索内容
         search: ""
       },
       dialogVisible: false
@@ -156,8 +162,11 @@ export default {
 
 <style lang="less">
 .attendance-body {
-  *{
-    font-size:14px;
+  .qiandao{
+    cursor: pointer;
+  }
+  * {
+    font-size: 14px;
   }
   background-color: #fff;
   height: 100%;
@@ -331,6 +340,7 @@ export default {
   }
   > span {
     margin-left: 40px;
+    cursor: pointer;
   }
 }
 .book-course {

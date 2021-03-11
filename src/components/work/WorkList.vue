@@ -13,29 +13,33 @@
         <el-input type="textarea" v-model="form.desc" placeholder="备注"></el-input>
       </el-form-item>
     </el-form>
+    <!-- 提交按钮 -->
+    <div class="button-bg">
+      <el-button type="primary" class="buttin save">保存</el-button>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       // 绑定数据
       form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
         delivery: false,
         type: [],
-        resource: '',
-        desc: ''
+        resource: "",
+        desc: ""
       }
-    }
+    };
   },
-  mounted () {},
+  mounted() {},
   methods: {}
-}
+};
 </script>
 
 <style lang="less" scoped>
