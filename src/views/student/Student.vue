@@ -47,7 +47,7 @@
         <td>10</td>
         <td>9</td>
         <td class="cli-btn">
-          <a href="javascript:;" @click="course=true">购课</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="javascript:;" @click="buyclass=true">购课</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <a
             href="javascript:;"
             @click="edit(index)"
@@ -80,6 +80,10 @@
         <el-button class="button-box" type="primary" @click="course = false">保存</el-button>
       </span>
     </el-dialog>
+    <!-- 购课 -->
+    <el-dialog title="购课" :visible.sync="buyclass" width="80%">
+      <BuyClass></BuyClass>
+    </el-dialog>
   </div>
 </template>
 
@@ -87,13 +91,16 @@
 // 引入组件
 import StudentList from "../../components/student/StudentList.vue";
 import CourseList from "../../components/student/CourseList.vue";
+import BuyClass from "../../components/student/BuyClass.vue";
 export default {
-  components: { StudentList, CourseList },
+  components: { StudentList, CourseList, BuyClass },
   data() {
     return {
       status: "",
       // 切换状态
       cut: 1,
+      // 购课
+      buyclass: true,
       // 排课
       course: false,
       // 添加班级
@@ -209,7 +216,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .studentes {
   // 分页
   .paging {
