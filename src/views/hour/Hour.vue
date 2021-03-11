@@ -58,12 +58,10 @@ export default {
   methods: {
     // 初始化加载
     calendar(valmonth) {
-      console.log(valmonth);
       this.$http.get(
         "/coursetables/search",
         { month: this.$moment.dateFormat("yyyy-MM", valmonth), page: 1 },
         success => {
-          console.log(success);
           this.HourList = success.data.list;
         },
         failure => {
@@ -74,7 +72,6 @@ export default {
     // 查看详情
     ClickDetail(index) {
       this.dialogVisible = true;
-      console.log(11);
       // setTimeout(() => {
       //   this.$refs.hourChild = this.HourList[index];
       // }, 50);

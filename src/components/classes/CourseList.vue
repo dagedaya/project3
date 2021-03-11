@@ -250,7 +250,7 @@ export default {
     return {
       // 选中的成员
       selectStudentList:[],
-      dialogVisible:true,
+      dialogVisible:false,
       // 主讲老师列表
       teacherslist: [],
       // 助教老师列表
@@ -384,7 +384,6 @@ export default {
     },
     // 添加星期日期
     clickWeekCreate (index) {
-      console.log(index)
       this.week['week' + (index + 1)].push({
         week: index + 1,
         begintime: '00:00',
@@ -393,7 +392,6 @@ export default {
     },
     // 删除星期日期
     clickWeekDel (index, index2) {
-      console.log(index, index2)
       this.week['week' + (index + 1)].splice(index2, 1)
     },
     // 切换单排排课、批量排课
@@ -455,6 +453,7 @@ export default {
     },
     // 保存
     handleClick () {
+      // 单次排课
       if (this.courseForm.addtype == 'one') {
         this.courseForm.weektime = [
           {

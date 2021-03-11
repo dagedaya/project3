@@ -71,7 +71,6 @@ export default {
   name: "studentList",
   data() {
     return {
-      dialogVisible:false,
       // 学员列表
       tableData: [],
       // 选中的学员列表

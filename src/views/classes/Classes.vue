@@ -94,7 +94,7 @@ export default {
   data() {
     return {
       // 排课
-      course: true,
+      course: false,
       // 添加班级
       dialogVisible: false,
       dataList: [],
@@ -140,7 +140,6 @@ export default {
         "/classes/delete",
         { id: this.dataList[index].id },
         success => {
-          console.log("1");
           this.$message({
             message: "恭喜你，删除成功",
             type: "success"
@@ -149,7 +148,6 @@ export default {
           this.loaddata();
         },
         failrue => {
-          console.log("2");
           this.$message({
             message: "删除失败",
             type: "error"
