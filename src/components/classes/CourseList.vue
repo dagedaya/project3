@@ -223,21 +223,17 @@
         <span class="createUser" @click="stuChoose">
           <span class="el-icon-user"></span>添加学员
         </span>
-        <div class="user">
+        <div class="user" v-for="(item,index) in selectStudentList" :key="index">
           <div>
             <span class="elf userCap"></span>
-            Jason
-          </div>
-          <div>
-            <span class="elf userCap"></span>
-            Jason
+            {{item.name}}
           </div>
         </div>
       </div>
     </div>
         <!-- 选择成员 -->
     <el-dialog title="选择学员" :visible.sync="dialogVisible" :append-to-body="true" width="60%">
-      <StudentList></StudentList>
+      <StudentList @changeStudent="changeStudentes"></StudentList>
     </el-dialog>
     <!-- 提交按钮 -->
     <div class="button-bg">
@@ -252,6 +248,8 @@ export default {
   components:{StudentList},
   data () {
     return {
+      // 选中的成员
+      selectStudentList:[],
       dialogVisible:true,
       // 主讲老师列表
       teacherslist: [],
@@ -359,6 +357,11 @@ export default {
     this.getClassroomInfo()
   },
   methods: {
+    // 选中的成员
+    changeStudentes(list){
+      this.dialogVisible=false
+      this.selectStudentList=list
+    },
     // 批量排课里面（切换结束方式）
     clickCatJsfs () {
       if (this.courseForm.jsfs == '按课节') {

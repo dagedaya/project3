@@ -3,16 +3,14 @@
     <div class="first-left">
       <!-- 搜索 -->
       <div class="search">
-        <el-dropdown trigger="click">
-          <span class="el-dropdown-link">
-            下拉菜单
-            <i class="el-icon-arrow-down el-icon--right"></i>
-          </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-plus">学习</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-circle-plus">课程</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+        <el-select v-model="classFrom.searchListThis" placeholder="请选择">
+          <el-option
+            v-for="item in classFrom.searchList"
+            :key="item.id"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
         <div class="text-box">
           <input type="text" class="el-input_inner" />
         </div>
@@ -21,8 +19,14 @@
       <!-- 表格 -->
       <div class="stu-tab">
         <el-table :data="tableData" style="width: 100%" class="stu-table">
-          <el-table-column prop="date" width="40" v-model="changeStudent" :value="tableData">
-            <el-checkbox></el-checkbox>
+          <el-table-column prop="date" width="40">
+            <template slot-scope="item">
+              <div>
+                <el-checkbox-group v-model="changeStudent" @change="StudentAll">
+                  <el-checkbox :label="item.row"></el-checkbox>
+                </el-checkbox-group>
+              </div>
+            </template>
           </el-table-column>
           <el-table-column width="40">
             <span>
@@ -37,21 +41,27 @@
     </div>
     <!-- 已选表格 -->
     <div class="second-right">
-      <span class="stu">已选学员(0)</span><span class="el-icon-delete del">清空</span>
-            <div class="stu-tab">
-        <el-table :data="select" style="width: 50%" class="stu-table">
+      <span class="stu">已选学员({{changeStudent.length}})</span>
+      <span class="el-icon-delete del" @click="changeStudent=[]">清空</span>
+      <div class="stu-tab">
+        <!-- {{changeStudent}} -->
+        <el-table :data="changeStudent" style="width: 50%" class="stu-table2">
           <el-table-column prop="date" width="40">
             <span>
-              <img src="../../assets/ico1.png" alt width="30px" height="30px"/>
-              <!-- {{data.$index}} -->
-              <!-- {{data.row.name}} -->
+              <img src="../../assets/ico1.png" alt width="30px" height="30px" />
             </span>
           </el-table-column>
-          <el-table-column width="60" prop="name">
+          <el-table-column width="100" prop="name"></el-table-column>
+          <el-table-column>
+            <template slot-scope="index">
+              <i class="el-icon-delete" @click="changeStudent.splice(index.$index,1)"></i>
+            </template>
           </el-table-column>
-          <el-table-column><i class="el-icon-delete"></i></el-table-column>
         </el-table>
       </div>
+    </div>
+    <div>
+      <el-button type="primary" class="submit save" @click="studentSubmit">确定</el-button>
     </div>
   </div>
 </template>
@@ -61,19 +71,29 @@ export default {
   name: "studentList",
   data() {
     return {
+      dialogVisible:false,
       // 学员列表
       tableData: [],
       // 选中的学员列表
-      changeStudent:[],
-      select:[
-        {
-          data:1,
-          name:"李红"
-        }
-      ]
+      changeStudent: [],
+      // 搜索
+      classFrom: {
+        searchList: [
+          {
+            label: "课程",
+            value: 0
+          },
+          {
+            label: "老师",
+            value: 1
+          }
+        ],
+        searchListThis: 0
+      }
     };
   },
   created() {
+    // 初始化学生列表
     this.initstudent();
   },
   mounted() {},
@@ -84,9 +104,7 @@ export default {
         "/students/list",
         { psize: 100 },
         success => {
-          console.log(success.data.list);
           this.tableData = success.data.list;
-          console.log(this.tableData);
         },
         failure => {
           console.log("获取数据失败");
@@ -94,8 +112,12 @@ export default {
       );
     },
     // 选中的学员
-    selectStudent(){
-      console.log(this.changeStudent)
+    StudentAll(val) {
+      this.changeStudent = val;
+    },
+    // 提交按钮
+    studentSubmit(){
+      this.$emit('changeStudent',this.changeStudent)
     }
   }
 };
@@ -103,15 +125,20 @@ export default {
 
 <style lang="less">
 .studentes {
+  .save {
+    float: right;
+    margin-top: -20px;
+  }
   .first-left {
+    .el-table::before {
+      height: none;
+    }
     float: left;
     width: 50%;
-    .el-table::before {
-      height: 0px;
-    }
+    height: 480px;
     // 滚轮
     .stu-table {
-      height: 500px;
+      height: 440px;
       overflow: auto;
     }
     .stu-table::-webkit-scrollbar {
@@ -125,17 +152,17 @@ export default {
       border-radius: 5px;
     }
     .el-checkbox__inner::after {
-    box-sizing: content-box;
-    content: "";
-    border: 1px solid #fff;
-    border-left: 0;
-    border-top: 0;
-    height: 12px;
-    left: 6px;
-    position: absolute;
-    top: 1px;
-    width: 5px;
-    transform-origin: center;
+      box-sizing: content-box;
+      content: "";
+      border: 1px solid #fff;
+      border-left: 0;
+      border-top: 0;
+      height: 12px;
+      left: 6px;
+      position: absolute;
+      top: 1px;
+      width: 5px;
+      transform-origin: center;
     }
     img {
       position: absolute;
@@ -151,6 +178,22 @@ export default {
       height: 32px;
       border: 1px solid #dee3e9;
       margin-left: 20px;
+      .el-select {
+        width: 90px;
+        .el-input {
+          height: 40px;
+          .el-input__prefix,
+          .el-input__suffix {
+            top: -3px;
+          }
+          > input {
+            height: 31px !important;
+          }
+        }
+        .el-input__inner {
+          border: none;
+        }
+      }
       .el-dropdown-link {
         line-height: 32px;
         margin-left: 4px;
@@ -176,20 +219,36 @@ export default {
       }
     }
   }
-  .second-right{
-    height: 520px;
-    .stu{
-      margin-left:40px;
+  .second-right {
+    // 滚轮
+    .stu-table2 {
+      height: 440px;
+      overflow: auto;
     }
-    .del{
-      margin-left:220px;
+    .stu-table2::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+      border: 1px solid #dee3e9;
+      border-radius: 5px;
     }
-    i{
-      font-size:20px;
-      margin-left:230px;
+    .stu-table2::-webkit-scrollbar-thumb {
+      background-color: #a1a3a9;
+      border-radius: 5px;
+    }
+    height: 480px;
+    .stu {
+      margin-left: 40px;
+    }
+    .del {
+      margin-left: 220px;
+      cursor: pointer;
+    }
+    i {
+      font-size: 20px;
+      margin-left: 230px;
       display: none;
     }
-    .el-table:hover i{
+    .el-table .el-table__row:hover i {
       display: block;
     }
   }
