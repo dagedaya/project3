@@ -17,7 +17,7 @@
       </div>
       <div class="select-box">
         <div class="text-box2">
-          <input type="text" class="el-input__inner" />
+          <input type="text" class="el-input__inner box2" />
         </div>
         <i class="el-icon-search search"></i>
       </div>
@@ -81,7 +81,7 @@
       </span>
     </el-dialog>
     <!-- 购课 -->
-    <el-dialog title="购课" :visible.sync="buyclass" width="80%">
+    <el-dialog title="购课" class="pty-pro" :visible.sync="buyclass" width="80%">
       <BuyClass></BuyClass>
     </el-dialog>
   </div>
@@ -100,7 +100,7 @@ export default {
       // 切换状态
       cut: 1,
       // 购课
-      buyclass: true,
+      buyclass: false,
       // 排课
       course: false,
       // 添加班级
@@ -237,11 +237,13 @@ export default {
     padding-left: 10px;
     margin-left: 40px;
   }
-
-  .el-icon-delete {
-    font-weight: bold;
-    font-size: 16px;
+  .box-header {
+    .el-icon-delete {
+      font-weight: bold;
+      font-size: 16px;
+    }
   }
+
   /* 表格 */
   .tab tr td span {
     background-image: url("../../assets/ico.png");
@@ -288,7 +290,7 @@ export default {
     width: 420px;
     height: 31px;
     border: 1px solid #dee3e9;
-    margin-left: 486px;
+    margin-left: 526px;
     margin-top: -45px;
     line-height: 28px;
     padding-left: 5px;
@@ -304,17 +306,22 @@ export default {
     position: relative;
     /* left: 90px; */
     top: -30px;
+    .box2 {
+      margin-top: 29px;
+      margin-left: 30px;
+      height: 33px;
+    }
   }
 
   .el-input__inner {
-    margin-top: 25px;
-    border: none;
+    // margin-top: 25px;
+    // border: none;
     background-color: rgba(0, 0, 0, 0);
   }
   /* 搜索 */
   .el-icon-search {
     position: absolute;
-    left: 879px;
+    left: 917px;
     top: 16px;
     font-size: 20px;
   }
@@ -354,19 +361,26 @@ export default {
     border-bottom: 1px solid #dee3e9;
     position: relative;
   }
-
-  .el-button {
-    padding: 6px 15px;
-    margin: 6px 7px;
-    background-color: #fff;
-    color: #9ea4b0;
-    font-size: 14px;
+  .dialog-footer {
+    .el-button {
+      padding: 6px 15px;
+      margin: 6px 7px;
+      background-color: #fff;
+      color: #9ea4b0;
+      font-size: 14px;
+    }
   }
+  .el-button+.el-button {
+    margin-left: 20px;
+}
+
   .box-header .box2 {
-    border: 1px solid #dee3e9;
+    border: none;
     background-color: #fff;
     color: #9ea4b0;
-    width: 100px;
+    width: 391px;
+    height: 31px;
+    margin-top: 30px;
     margin-left: -5px;
   }
 

@@ -119,55 +119,55 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       // 获取课程信息
       getProjectList: [],
       // 开始时间
-      startTime: '',
+      startTime: "",
       // 结束时间
-      endTime: '',
+      endTime: "",
       // 切换
-      activeName: 'second',
+      activeName: "second",
       // 数据
       form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
         delivery: false,
         type: [],
-        resource: '',
-        desc: ''
+        resource: "",
+        desc: ""
       },
-      activeName: 'first'
-    }
+      activeName: "first"
+    };
   },
-  created () {
-    this.getProjectInfo()
+  created() {
+    this.getProjectInfo();
   },
-  mounted () {},
+  mounted() {},
 
   methods: {
-    handleClick (tab, event) {
-      console.log(tab, event)
+    handleClick(tab, event) {
+      console.log(tab, event);
     },
     // 获取课程信息
-    getProjectInfo () {
+    getProjectInfo() {
       this.$http.get(
-        '/classes/list',
+        "/classes/list",
         { page: 1 },
         success => {
-          console.log(success.data.list)
-          this.getProjectList = success.data.list
+          console.log(success.data.list);
+          this.getProjectList = success.data.list;
         },
         failure => {
-          console.log('获取课程信息失败')
+          console.log("获取课程信息失败");
         }
-      )
+      );
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>

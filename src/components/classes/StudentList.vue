@@ -203,7 +203,7 @@ export default {
         height: 32px;
         position: absolute;
         font-size: 20px;
-        left: 395px;
+        left: 387px;
         top: 90px;
         border: none;
       }
@@ -211,7 +211,7 @@ export default {
         width: 267px;
         height: 27px;
         position: absolute;
-        left: 132px;
+        left: 126px;
         top: 85px;
         border: none;
         outline: none;

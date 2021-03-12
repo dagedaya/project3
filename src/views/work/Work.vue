@@ -4,8 +4,18 @@
     <div class="header">
       <div class="title">考勤管理</div>
       <div class="time">
-        <el-date-picker type="date" placeholder="选择日期" v-model="form.date1"></el-date-picker>-
-        <el-date-picker type="date" placeholder="结束日期" v-model="form.date2"></el-date-picker>
+        <el-date-picker
+          type="date"
+          placeholder="选择日期"
+          v-model="form.today"
+          value-format="yyyy-MM-dd"
+        ></el-date-picker>-
+        <el-date-picker
+          type="date"
+          placeholder="结束日期"
+          v-model="form.today"
+          value-format="yyyy-MM-dd"
+        ></el-date-picker>
       </div>
       <el-form ref="form" :model="attendanceFrom">
         <div class="form-search">
@@ -33,84 +43,76 @@
             <div class="attendance">考勤</div>
           </div>
         </div>
-        <div class="student-group">
-          <div class="row">
-            <div class="title">
+
+        <div v-for="item in attendanceList" :key="item.id">
+          <div class="student-group">
+            <div class="row">
+              <div class="title">
+                <input type="checkbox" name id class="checkbox-selectStudent" />
+                <span>{{ item.classname }}</span>
+                <div class="classCourse">班课</div>
+                <div class="book-course">
+                  <img src="../../assets/课程.gif" alt srcset />
+                  <span>{{ item.coursename }}</span>
+                </div>
+                <div class="book-course">
+                  <img src="../../assets/时间.gif" alt srcset />
+                  <!-- {{$time.dateFormat('HH:mm',item.endtime)}} -->
+                  <span>
+                    {{
+                    $moment.dateFormat("HH:mm", new Date(item.starttime))
+                    }}-{{
+                    $moment.dateFormat("HH:mm", new Date(item.endtime))
+                    }}
+                  </span>
+                </div>
+                <div class="book-course">
+                  <img src="../../assets/hat.gif" alt srcset />
+                  <span>{{ item.teachername }}</span>
+                </div>
+              </div>
+              <div class="group">
+                <div class="student-group-row" v-for="item2 in item.studentList" :key="item2.id">
+                  <input type="checkbox" name id class="checkbox-selectStudent" />
+                  <img src="../../assets/ico1.png" alt srcset />
+                  <span>{{ item2.name }}</span>
+                  <div class="right">
+                    <img src="../../assets/到达.gif" alt srcset />
+                    <span>{{ item2.checkedName }}</span>
+                    <img src="../../assets/签到.gif" alt srcset />
+                    <span class="sign-in" @click="qiandao(item2.id,item.id)">签到</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="student-list-detail">
+            <div class="student-group-row" v-for="item2 in item.studentList" :key="item2.id">
               <input type="checkbox" name id class="checkbox-selectStudent" />
-              <span>架子鼓基础班2101</span>
-              <div class="classCourse">班课</div>
+              <img src="../../assets/ico1.png" alt srcset />
+              <span>{{ item2.name }}</span>
               <div class="book-course">
                 <img src="../../assets/课程.gif" alt srcset />
-                <span>架子鼓课</span>
+                <span>{{ item.coursename }}</span>
               </div>
               <div class="book-course">
                 <img src="../../assets/时间.gif" alt srcset />
-                <span>08:00-08:45</span>
+                <span>
+                  {{ $moment.dateFormat("HH:mm", new Date(item.starttime)) }}-{{
+                  $moment.dateFormat("HH:mm", new Date(item.endtime))
+                  }}
+                </span>
               </div>
               <div class="book-course">
                 <img src="../../assets/hat.gif" alt srcset />
-                <span>在</span>
+                <span>{{ item.teachername }}</span>
               </div>
-            </div>
-            <div class="group">
-              <div class="student-group-row">
-                <input type="checkbox" name id class="checkbox-selectStudent" />
-                <img src="../../assets/ico1.png" alt srcset />
-                <span>李宗霖</span>
-                <div class="right">
-                  <img src="../../assets/到达.gif" alt srcset />
-                  <span>已到达</span>
-                  <img src="../../assets/签到.gif" alt srcset />
-                  <span @click="dialogVisible=true" class="qiandao">签到</span>
-                </div>
+              <div class="right">
+                <img src="../../assets/到达.gif" alt srcset />
+                <span>{{ item2.checkedName }}</span>
+                <img src="../../assets/签到.gif" alt srcset />
+                <span class="sign-in" @click="qiandao(item2.id,item.id)">签到</span>
               </div>
-              <div class="student-group-row">
-                <input type="checkbox" name id class="checkbox-selectStudent" />
-                <img src="../../assets/ico1.png" alt srcset />
-                <span>李宗霖</span>
-                <div class="right">
-                  <img src="../../assets/到达.gif" alt srcset />
-                  <span>已到达</span>
-                  <img src="../../assets/签到.gif" alt srcset />
-                  <span>签到</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="student-list-detail">
-          <div class="student-group-row">
-            <input type="checkbox" name id class="checkbox-selectStudent" />
-            <img src="../../assets/ico1.png" alt srcset />
-            <span>李宗霖</span>
-            <div class="right">
-              <img src="../../assets/到达.gif" alt srcset />
-              <span>已到达</span>
-              <img src="../../assets/签到.gif" alt srcset />
-              <span>签到</span>
-            </div>
-          </div>
-          <div class="student-group-row">
-            <input type="checkbox" name id class="checkbox-selectStudent" />
-            <img src="../../assets/ico1.png" alt srcset />
-            <span>李宗霖</span>
-            <div class="book-course">
-              <img src="../../assets/课程.gif" alt srcset />
-              <span>架子鼓课</span>
-            </div>
-            <div class="book-course">
-              <img src="../../assets/时间.gif" alt srcset />
-              <span>08:00-08:45</span>
-            </div>
-            <div class="book-course">
-              <img src="../../assets/到达.gif" alt srcset />
-              <span>在</span>
-            </div>
-            <div class="right">
-              <img src="../../assets/到达.gif" alt srcset />
-              <span>已到达</span>
-              <img src="../../assets/签到.gif" alt srcset />
-              <span>签到</span>
             </div>
           </div>
         </div>
@@ -118,7 +120,7 @@
     </div>
     <!-- 考勤签到 -->
     <el-dialog title="签到" :visible.sync="dialogVisible" :append-to-body="true" width="60%">
-      <WorkList></WorkList>
+      <WorkList ref="workChilds" @workChild="workAdd"></WorkList>
     </el-dialog>
   </div>
 </template>
@@ -130,6 +132,9 @@ export default {
   name: "index",
   data() {
     return {
+      today: null,
+      // 考勤数据
+      attendanceList: [],
       form: {
         date1: "",
         date2: ""
@@ -152,17 +157,47 @@ export default {
       dialogVisible: false
     };
   },
+  created() {
+    this.attendance();
+  },
   mounted() {
     // 设置搜索框下的默认选中
     this.attendanceFrom.searchListThis = this.attendanceFrom.searchList[0].value;
   },
-  methods: {}
+  methods: {
+    // 初始化考勤数据
+    attendance() {
+      this.$http.get(
+        "/coursetables/checked",
+        { today: this.today, psize: 100 },
+        success => {
+          this.attendanceList = success.data.list;
+        },
+        failure => {
+          console.log("获取考勤数据失败");
+        }
+      );
+    },
+    // (子传父)
+    workAdd() {
+      this.dialogVisible = false;
+      this.attendance();
+    },
+    // 签到
+    qiandao(id, courseid) {
+      this.dialogVisible = true;
+      setInterval(() => {
+        this.$refs.workChilds.form.id = id;
+        this.$refs.workChilds.form.couseid = courseid;
+      }, 50);
+    }
+  }
 };
 </script>
 
 <style lang="less">
 .attendance-body {
-  .qiandao{
+  .qiandao {
     cursor: pointer;
   }
   * {
@@ -174,6 +209,9 @@ export default {
     margin: 0 auto;
   }
   .connect {
+    .sign-in {
+      cursor: pointer;
+    }
     .day {
       .title {
         margin-left: 60px;

@@ -1,4 +1,7 @@
 
+// 封装时间转换
+// {{ $moment.dateFormat("HH:mm", new Date(item.starttime)) }}
+// {{$moment.dateFormat("HH:mm", new Date(item.starttime))}}
 export default {
   // 时间格式化
   dateFormat: function (fmt, date) {
