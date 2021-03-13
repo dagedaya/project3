@@ -100,7 +100,7 @@ export default {
       // 切换状态
       cut: 1,
       // 购课
-      buyclass: false,
+      buyclass: true,
       // 排课
       course: false,
       // 添加班级

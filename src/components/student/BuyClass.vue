@@ -2,12 +2,13 @@
   <div class="pay-course">
     <div class="connect">
       <div class="connect-row">
+        <!-- 二 -->
         <div class="connect-row-rows">
           <div class="title">
             <p>合约类型</p>
           </div>
           <div class="connect-row-radio">
-            <el-radio-group>
+            <el-radio-group v-model="BuyClass.ordertype">
               <el-radio label="课时卡"></el-radio>
               <el-radio label="时段卡"></el-radio>
             </el-radio-group>
@@ -20,7 +21,12 @@
             </p>
           </div>
           <div>
-            <el-date-picker v-model="date" type="date" placeholder="选择日期"></el-date-picker>
+            <el-date-picker
+              v-model="BuyClass.beigindate"
+              value-format="yyyy-MM-dd"
+              type="date"
+              placeholder="选择日期"
+            ></el-date-picker>
           </div>
         </div>
         <div class="connect-row-rows">
@@ -28,10 +34,16 @@
             <p>结束日期</p>
           </div>
           <div>
-            <el-date-picker v-model="date" type="date" placeholder="选择日期"></el-date-picker>
+            <el-date-picker
+              v-model="BuyClass.enddate"
+              value-format="yyyy-MM-dd"
+              type="date"
+              placeholder="选择日期"
+            ></el-date-picker>
           </div>
         </div>
       </div>
+      <!-- 三 -->
       <div class="connect-row">
         <div class="connect-row-rows">
           <div class="title">
@@ -41,83 +53,98 @@
           </div>
           <div>
             <el-select v-model="date" placeholder="请选择课程">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
+              <el-option
+                v-for="(item,index) in dataList"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
             </el-select>
             <el-button class="create" icon="el-icon-plus"></el-button>
           </div>
         </div>
         <div class="connect-row-rows">
           <div class="title">
-            <p>签约日期</p>
+            <p>课时数</p>
           </div>
           <div class="connect-row-input">
-            <el-input v-model="date"></el-input>
+            <el-input v-model="BuyClass.coursecounts" type="number"></el-input>
           </div>
         </div>
         <div class="connect-row-rows">
           <div class="title">
-            <p>签约日期</p>
+            <p>课程单价</p>
           </div>
           <div class="connect-row-input">
-            <el-input v-model="date"></el-input>
+            <el-input v-model="BuyClass.price" type="number"></el-input>
           </div>
         </div>
         <div class="connect-row-rows">
           <div class="title">
             <p>
-              <span style="color: red">*</span> 签约日期
+              <span style="color: red">*</span> 课程金额
             </p>
           </div>
           <div class="connect-row-input">
-            <el-input v-model="date"></el-input>
+            <el-input v-model="courseMoney" type="number"></el-input>
           </div>
         </div>
       </div>
+      <!-- 四 -->
       <div class="connect-row">
         <div class="connect-row-rows">
           <div class="title">
-            <p>合约类型</p>
+            <p>折扣方式</p>
           </div>
           <div class="connect-row-radio">
-            <el-radio-group>
-              <el-radio label="课时卡"></el-radio>
-              <el-radio label="时段卡"></el-radio>
+            <el-radio-group v-model="BuyClass.discounttype">
+              <el-radio label="直减"></el-radio>
+              <el-radio label="折扣"></el-radio>
             </el-radio-group>
           </div>
         </div>
-        <div class="connect-row-rows">
+        <div class="connect-row-rows" v-if="BuyClass.discounttype==='直减'">
           <div class="title">
-            <p>签约日期</p>
+            <p>优惠金额</p>
           </div>
           <div class="connect-row-input">
-            <el-input v-model="date"></el-input>
+            <el-input v-model="BuyClass.discountprice" type="number" min="0" max="BuyClass.sumprice"></el-input>
+          </div>
+        </div>
+        <div class="connect-row-rows" v-else>
+          <div class="title">
+            <p>优惠金额</p>
+          </div>
+          <div class="connect-row-input">
+            <el-input v-model="BuyClass.discountper" type="number" min="0" max="BuyClass.sumprice"></el-input>&nbsp;&nbsp;&nbsp;%
           </div>
         </div>
       </div>
+      <!-- 五 -->
       <div class="connect-row">
         <div class="connect-row-rows">
           <div class="title">
-            <p>签约日期</p>
+            <p>备注</p>
           </div>
           <div class="connect-row-input">
-            <el-input type="textarea" v-model="date"></el-input>
+            <el-input type="textarea" v-model="BuyClass.remarks"></el-input>
           </div>
         </div>
       </div>
     </div>
+    <!-- 底部 -->
     <div class="footer">
       <div>
         <div class="money">
           <b>
             总金额：
-            <span style="color: red">￥15000</span>
+            <span style="color: red">￥{{total}}</span>
           </b>
         </div>
         <div class="money">
           <b>
             已优惠：
-            <span style="color: red">￥5000</span>
+            <span style="color: red">￥{{sale}}</span>
           </b>
         </div>
       </div>
@@ -132,11 +159,88 @@ export default {
   name: "payCourse",
   data() {
     return {
-      date: ""
+      // 课程列表数据
+      dataList: [],
+      date: "",
+      // 真实数据
+      BuyClass: {
+        // 学员id
+        studentid: "922",
+        // 合约类型
+        ordertype: "课时卡",
+        // 签约日期
+        beigindate: "2021-03-10",
+        // 结束日期
+        enddate: "2021-03-31",
+        // 课程id
+        courseid: "86",
+        // 课时数
+        coursecounts: 2,
+        // 课程单价
+        price: 5,
+        // 课程金额
+        sumprice: "0",
+        //打折类型
+        discounttype: "直减",
+        // 折扣
+        discountper: 0,
+        // 直减
+        discountprice: 0,
+        // 备注
+        remarks: ""
+      }
     };
   },
+  created() {
+    this.loaddata();
+  },
   mounted() {},
-  methods: {}
+  // 计算属性
+  computed: {
+    // 课程金额=课程数*课程单价
+    courseMoney() {
+      this.BuyClass.sumprice = this.BuyClass.coursecounts * this.BuyClass.price;
+      return this.BuyClass.sumprice;
+      // 课程数量=课程金额/课程单价
+    },
+    // 商品折扣后价格(总金额)=商品原价×折扣率
+    total() {
+      if (this.BuyClass.discountper != "") {
+        let total = (this.BuyClass.sumprice * this.BuyClass.discountper) / 100;
+        return total;
+        // 直减（总金额= 课程金额-直减金额）
+      } else if (this.BuyClass.discountprice != "") {
+        let total = this.BuyClass.sumprice - this.BuyClass.discountprice;
+        return total;
+      } else {
+        return this.BuyClass.sumprice;
+      }
+    },
+    // 优惠价格=课程金额-总金额
+    sale() {
+      if (this.total != "") {
+        let sale = this.BuyClass.sumprice - this.total;
+        return sale;
+      } else {
+        return 0;
+      }
+    }
+  },
+  methods: {
+    // 请求课程列表数据
+    loaddata() {
+      this.$http.get(
+        "/courses/list",
+        { page: 1 },
+        success => {
+          this.dataList = success.data.list;
+        },
+        failrue => {
+          console.log("请求数据失败");
+        }
+      );
+    }
+  }
 };
 </script>
 <style lang="less">
