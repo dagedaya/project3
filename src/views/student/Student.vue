@@ -47,7 +47,7 @@
         <td>10</td>
         <td>9</td>
         <td class="cli-btn">
-          <a href="javascript:;" @click="buyclass=true">购课</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="javascript:;" @click="BuyCourse(index)">购课</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <a
             href="javascript:;"
             @click="edit(index)"
@@ -82,7 +82,7 @@
     </el-dialog>
     <!-- 购课 -->
     <el-dialog title="购课" class="pty-pro" :visible.sync="buyclass" width="80%">
-      <BuyClass></BuyClass>
+      <BuyClass ref="BuyClass" @BuyChild="BuyChild"></BuyClass>
     </el-dialog>
   </div>
 </template>
@@ -100,7 +100,7 @@ export default {
       // 切换状态
       cut: 1,
       // 购课
-      buyclass: true,
+      buyclass: false,
       // 排课
       course: false,
       // 添加班级
@@ -211,6 +211,19 @@ export default {
           }
         );
       }
+    },
+    // 子传父
+    BuyChild(){
+      this.buyclass=false
+      this.loaddata(1)
+    },
+    // 购买课程
+    BuyCourse(index){
+      console.log(index)
+      this.buyclass=true
+      setTimeout(()=>{
+        this.$refs.BuyClass.BuyClass.studentid=this.dataList[index].id
+      },50)
     }
   }
 };

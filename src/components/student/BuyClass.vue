@@ -108,7 +108,12 @@
             <p>优惠金额</p>
           </div>
           <div class="connect-row-input">
-            <el-input v-model="BuyClass.discountprice" type="number" min="0" max="BuyClass.sumprice"></el-input>
+            <el-input
+              v-model="BuyClass.discountprice"
+              type="number"
+              min="0"
+              max="BuyClass.sumprice"
+            ></el-input>
           </div>
         </div>
         <div class="connect-row-rows" v-else>
@@ -148,7 +153,7 @@
           </b>
         </div>
       </div>
-      <div class="submit">保存</div>
+      <div class="submit" @click="BuyCourse">保存</div>
     </div>
     <div style="clear: both"></div>
   </div>
@@ -237,6 +242,24 @@ export default {
         },
         failrue => {
           console.log("请求数据失败");
+        }
+      );
+    },
+    // 购买课程
+    BuyCourse() {
+      this.$http.post(
+        "/students/addorder",
+        this.BuyClass,
+        success => {
+          console.log(success);
+          this.$message({
+            message: "学员购课成功",
+            type: "success"
+          });
+          this.$emit('BuyChild')
+        },
+        failrue => {
+          console.log("购买课程获取失败");
         }
       );
     }
