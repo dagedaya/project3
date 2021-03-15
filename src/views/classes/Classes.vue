@@ -50,11 +50,12 @@
         <td>{{item.endcourses}}</td>
         <td>{{item.coursecounts}}</td>
         <td class="cli-btn">
-          <a href="javascript:;" @click="course=true">排课</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="javascript:;" @click="course=true">排课</a>
           <a
             href="javascript:;"
             @click="edit(index)"
-          >修改</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          >修改</a>
+          <a href="javascript:;" @click="chart=true">图表</a>
           <a href="javascript:;" @click="del(index)">删除</a>
         </td>
       </tr>
@@ -82,17 +83,25 @@
     <el-dialog title="排课" :visible.sync="course" width="80%">
       <CourseList></CourseList>
     </el-dialog>
+      <!-- 图表 -->
+    <el-dialog title="课表" :visible.sync="chart" width="80%">
+      <ChartList></ChartList>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import ClassesList from "../../components/classes/ClassesList.vue";
 import CourseList from "../../components/classes/CourseList.vue";
+import ChartList from "../../components/classes/ChartList.vue";
+
 
 export default {
-  components: { ClassesList, CourseList },
+  components: { ClassesList, CourseList, ChartList },
   data() {
     return {
+      // 图表
+      chart:true,
       // 排课
       course: false,
       // 添加班级
@@ -271,7 +280,7 @@ export default {
   table tr:hover .cli-btn a {
     display: block;
     float: left;
-    margin-left: 20px;
+    margin-left: 10px;
     padding-left: 15px;
   }
   .cli-btn a {

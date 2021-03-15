@@ -496,6 +496,7 @@ export default {
 </style>
 <style lang="less" scoped>
 .courseListes {
+  background-color: #fff;
   .el-icon-user {
     font-size: 16px;
   }

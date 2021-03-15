@@ -53,7 +53,7 @@ export default {
       form: {
         // 课程id
         courseid: "",
-        // 课程名称
+        // 课程名称r
         coursename: "",
         // 班级名称
         name: "",
@@ -121,7 +121,6 @@ export default {
 </script>
 <style lang="less" scoped>
 .classesList {
-  
   .inner {
     width: 420px;
     border-radius: 4px;

@@ -1,5 +1,17 @@
 <template>
   <div class="body courseListes">
+    <!-- 头部 -->
+      <div class="header">
+        <div class="header_pro">
+          <font color="red">*</font>选择课程
+        </div>
+        <div class="">
+          <el-select class="selectAll" v-model="courseForm.teacherid"  placeholder="请选择">
+            <el-option value="1">1</el-option>
+          </el-select>
+        </div>
+      </div>
+
     <!-- 上半部分 -->
     <div class="heads">
       <div class="zhuteacher1">
@@ -238,7 +250,7 @@ export default {
       classroomList: [],
       // 学员列表
       studentList: [],
-      // 要传输的数据
+      // 要传输的数据 
       courseForm: {
         // 班级ID
         classid: "",
@@ -469,10 +481,15 @@ export default {
 };
 </script>
 <style>
-
 </style>
 <style lang="less" scoped>
 .courseListes {
+  .header{
+    margin-left:30px;
+    .header_pro{
+      margin-bottom:10px;
+    }
+  }
   .el-icon-user {
     font-size: 16px;
   }
@@ -488,7 +505,7 @@ export default {
   .week-time .el-input {
     margin-top: 10px;
     width: 115px;
-    border:none;
+    border: none;
   }
   .up-time {
     clear: both;
@@ -614,7 +631,7 @@ export default {
     padding-top: 15px;
     float: left;
   }
-  .zhuteacher1 .createTeacher{
+  .zhuteacher1 .createTeacher {
     float: right;
     color: #15b0ff;
     cursor: pointer;
@@ -694,9 +711,9 @@ export default {
     height: none;
     top: 0;
   }
-  .first{
+  .first {
     position: absolute;
-    top: 15px;
+    top: 84px;
     left: 150px;
   }
 }
