@@ -14,34 +14,34 @@
             </el-radio-group>
           </div>
         </div>
-        <div class="connect-row-rows">
-          <div class="title">
-            <p>
-              <span style="color: red">*</span> 签约日期
-            </p>
+          <div class="connect-row-rows">
+            <div class="title">
+              <p>
+                <span style="color: red">*</span> 签约日期
+              </p>
+            </div>
+            <div>
+              <el-date-picker
+                v-model="BuyClass.beigindate"
+                value-format="yyyy-MM-dd"
+                type="date"
+                placeholder="选择日期"
+              ></el-date-picker>
+            </div>
           </div>
-          <div>
-            <el-date-picker
-              v-model="BuyClass.beigindate"
-              value-format="yyyy-MM-dd"
-              type="date"
-              placeholder="选择日期"
-            ></el-date-picker>
+          <div class="connect-row-rows" v-show="BuyClass.ordertype!='课时卡'">
+            <div class="title">
+              <p>结束日期</p>
+            </div>
+            <div>
+              <el-date-picker
+                v-model="BuyClass.enddate"
+                value-format="yyyy-MM-dd"
+                type="date"
+                placeholder="选择日期"
+              ></el-date-picker>
+            </div>
           </div>
-        </div>
-        <div class="connect-row-rows">
-          <div class="title">
-            <p>结束日期</p>
-          </div>
-          <div>
-            <el-date-picker
-              v-model="BuyClass.enddate"
-              value-format="yyyy-MM-dd"
-              type="date"
-              placeholder="选择日期"
-            ></el-date-picker>
-          </div>
-        </div>
       </div>
       <!-- 三 -->
       <div class="connect-row">
@@ -256,7 +256,7 @@ export default {
             message: "学员购课成功",
             type: "success"
           });
-          this.$emit('BuyChild')
+          this.$emit("BuyChild");
         },
         failrue => {
           console.log("购买课程获取失败");

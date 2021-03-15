@@ -33,92 +33,21 @@
             </td>
           </tr>
         </table>
+        <span class="dialog-footer">
+        <el-button class="button-box" type="primary" @click="course = false">保存</el-button>
+      </span>
       </el-tab-pane>
-      <el-tab-pane label="一对一排课" name="second">
-        <div class="first">
-          <el-form ref="form" :model="form" label-width="20px">
-            <el-form-item label>
-              <div>
-                <i style="color:red">*</i>&nbsp;&nbsp;&nbsp;选择课程
-              </div>
-              <el-select v-model="form.region" placeholder="请选择">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-form>
-        </div>
-        <div class="second">
-          <el-form ref="form" :model="form" label-width="20px">
-            <el-form-item label style="float:left;">
-              <div>
-                <i style="color:red">*</i>&nbsp;&nbsp;&nbsp;主讲老师
-                <a href="javascript:;">添加助教</a>
-              </div>
-              <el-select v-model="form.region" placeholder="请选择">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label style="float:left;">
-              <div>
-                <i style="color:red">*</i>&nbsp;&nbsp;&nbsp;教室
-              </div>
-              <el-select v-model="form.region" placeholder="请选择">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
-              </el-select>
-            </el-form-item>&nbsp;&nbsp;&nbsp;
-            <el-form-item label>
-              <div>
-                <i style="color:red">*</i>&nbsp;&nbsp;&nbsp;单节课扣学员课时
-              </div>
-              <input type="text" class="input-ke" />
-            </el-form-item>
-          </el-form>
-        </div>
-        <div class="third">
-          <el-tabs @tab-click="handleClick">
-            <el-tab-pane v-model="activeName" label="单次排课" name="first">
-              <div class="One-time">
-                <div>开课日期</div>
-                <el-date-picker v-model="startTime" type="date" placeholder="选择日期"></el-date-picker>
-                <div style="height:15px"></div>
-                <div>
-                  <i style="color:red">*</i>&nbsp;&nbsp;&nbsp;上课时间
-                </div>
-                <el-time-select
-                  placeholder="起始时间"
-                  v-model="startTime"
-                  :picker-options="{
-      start: '08:30',
-      step: '00:15',
-      end: '18:30'
-    }"
-                ></el-time-select>
-                <el-time-select
-                  placeholder="结束时间"
-                  v-model="endTime"
-                  :picker-options="{
-      start: '08:30',
-      step: '00:15',
-      end: '18:30',
-      minTime: startTime
-    }"
-                ></el-time-select>
-                <i class="el-icon-circle-plus-outline"></i>
-              </div>
-            </el-tab-pane>
-            <el-tab-pane label="定时任务补偿" name="second">批量排课</el-tab-pane>
-          </el-tabs>
-        </div>
+      <el-tab-pane label="一对一排课" name="second" class="second">
+        <isOne></isOne>
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
+import isOne from "../../components/student/isOne";
 export default {
+  components: { isOne },
   data() {
     return {
       // 获取课程信息
@@ -179,34 +108,6 @@ export default {
     margin-left: 20px;
   }
   /* 一对一排课 */
-  div.second > form > div:nth-child(3) > div > input {
-    border: 1px solid #dee3e9;
-  }
-  .first {
-    width: 100%;
-    height: 100px;
-    background-color: #fafafa;
-  }
-  .second {
-    width: 100%;
-    height: 100px;
-    background-color: #fafafa;
-    margin-top: 20px;
-  }
-  .third {
-    width: 100%;
-    height: 220px;
-    background-color: #fafafa;
-    margin-top: 20px;
-  }
-  #pane-third {
-    line-height: 40px;
-  }
-
-  .el-tabs--card > .el-tabs__header {
-    border-bottom: 1px solid #4281fc;
-  }
-
   /* 表格 */
   .tab tr td span {
     background-image: url("../../assets/ico.png");

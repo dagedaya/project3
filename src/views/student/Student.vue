@@ -76,9 +76,6 @@
     <!-- 添加排课 -->
     <el-dialog title="添加排课" :visible.sync="course" width="80%">
       <CourseList></CourseList>
-      <span slot="footer" class="dialog-footer">
-        <el-button class="button-box" type="primary" @click="course = false">保存</el-button>
-      </span>
     </el-dialog>
     <!-- 购课 -->
     <el-dialog title="购课" class="pty-pro" :visible.sync="buyclass" width="80%">

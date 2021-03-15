@@ -216,25 +216,6 @@
         </div>
       </div>
     </div>
-    <!-- 尾部部分 -->
-    <div class="floor">
-      <div class="box">
-        <h3>选择学员(0)</h3>
-        <span class="createUser" @click="stuChoose">
-          <span class="el-icon-user"></span>添加学员
-        </span>
-        <div class="user" v-for="(item,index) in selectStudentList" :key="index">
-          <div>
-            <span class="elf userCap"></span>
-            {{item.name}}
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- 选择成员 -->
-    <el-dialog title="选择学员" :visible.sync="dialogVisible" :append-to-body="true" width="60%">
-      <StudentList @changeStudent="changeStudentes"></StudentList>
-    </el-dialog>
     <!-- 提交按钮 -->
     <div class="button-bg">
       <el-button type="primary" class="buttin save" @click="handleClick">保存</el-button>
@@ -243,13 +224,9 @@
 </template>
 
 <script>
-import StudentList from "./StudentList";
 export default {
-  components: { StudentList },
   data() {
     return {
-      // 选中的成员
-      selectStudentList: [],
       dialogVisible: false,
       // 主讲老师列表
       teacherslist: [],
@@ -511,6 +488,7 @@ export default {
   .week-time .el-input {
     margin-top: 10px;
     width: 115px;
+    border:none;
   }
   .up-time {
     clear: both;
@@ -718,7 +696,7 @@ export default {
   }
   .first{
     position: absolute;
-    top: 81px;
+    top: 15px;
     left: 150px;
   }
 }
