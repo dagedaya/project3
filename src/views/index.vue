@@ -2,7 +2,7 @@
   <div class="indexes">
     <el-container>
       <!-- 头部 -->
-      <el-header height="50px">
+      <el-header height="60px">
         <img src="@/assets/logo.png" alt class="logo" />
         <h1>云教务管理系统</h1>
       </el-header>
@@ -36,93 +36,93 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       // 左侧栏默认
       status: 0,
       elList: [
         {
-          path: '/classes',
-          name: '班级管理',
+          path: "/classes",
+          name: "班级管理",
           // 选中
           check: {
-            backgroundPos: 'backgroundPosition:-9px -183px'
+            backgroundPos: "backgroundPosition:-9px -183px"
           },
           // 未选中
           checkNo: {
-            backgroundPos: 'backgroundPosition:-9px -283px'
+            backgroundPos: "backgroundPosition:-9px -283px"
           }
         },
         {
-          path: '/project',
-          name: '课程管理',
+          path: "/project",
+          name: "课程管理",
           // 选中
           check: {
-            backgroundPos: 'background-position:-82px -234px'
+            backgroundPos: "background-position:-82px -234px"
           },
           // 未选中
           checkNo: {
-            backgroundPos: 'background-position:-9px -94px'
+            backgroundPos: "background-position:-9px -94px"
           }
         },
         {
-          path: '/work',
-          name: '考勤管理',
+          path: "/work",
+          name: "考勤管理",
           // 选中
           check: {
-            backgroundPos: 'background-position:-9px -382px'
+            backgroundPos: "background-position:-9px -382px"
           },
           // 未选中
           checkNo: {
-            backgroundPos: 'background-position:-9px -476px'
+            backgroundPos: "background-position:-9px -476px"
           }
         },
         {
-          path: '/hour',
-          name: '课时管理',
+          path: "/hour",
+          name: "课时管理",
           // 选中
           check: {
-            backgroundPos: 'background-position:-146px -1px'
+            backgroundPos: "background-position:-146px -1px"
           },
           // 未选中
           checkNo: {
-            backgroundPos: 'background-position:-146px -95px'
+            backgroundPos: "background-position:-146px -95px"
           }
         },
         {
-          path: '/student',
-          name: '学员管理',
+          path: "/student",
+          name: "学员管理",
           // 选中
           check: {
-            backgroundPos: 'background-position:-2px -714px'
+            backgroundPos: "background-position:-2px -714px"
           },
           // 未选中
           checkNo: {
-            backgroundPos: 'background-position:-88px -714px'
+            backgroundPos: "background-position:-88px -714px"
           }
         }
       ]
-    }
+    };
   },
   // 防止页面刷新
-  created () {
+  created() {
     for (var i = 0; i < this.elList.length; i++) {
       if (this.elList[i].path == this.$route.path) {
-        this.status = i
+        this.status = i;
       }
     }
   },
-  mounted () {},
+  mounted() {},
   methods: {
     // 路由跳转
-    addClass (val) {
-      this.status = val
+    addClass(val) {
+      this.status = val;
       this.$router.push({
         path: this.elList[val].path
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
@@ -168,7 +168,7 @@ export default {
     height: 98px;
     text-align: center;
     border-radius: 4px;
-    margin-left: 9px;
+    margin-left: 5px;
     margin-top: 20px;
     cursor: pointer;
   }
@@ -181,14 +181,15 @@ export default {
 
   /* logo */
   .logo {
-    margin-top: 6px;
+    margin-top: 11px;
+    margin-left: 5px;
   }
   .el-header img {
     float: left;
     margin-right: 10px;
   }
   .el-header h1 {
-    margin-top: -5px;
+    margin-top: -1px;
   }
 
   /* element-ui 自带样式 */
@@ -197,6 +198,11 @@ export default {
     background-color: #fff;
     line-height: 60px;
     border-bottom: 1px solid #dee3e9;
+    position: fixed;
+    width: 100%;
+    z-index: 999;
+    top: -2px;
+    box-shadow: 1px 5px 5px #f5f5f5;
   }
 
   .el-aside {
@@ -204,17 +210,21 @@ export default {
     background-color: #ffffff;
     color: #333;
     text-align: center;
-    height: 600px;
+    height: 100%;
+    position: fixed;
     box-shadow: 5px 0px 6px #dee3e9;
     z-index: 9;
+    margin-top: 50px;
   }
 
   .el-main {
     padding: 0;
     background-color: #fefefe;
     color: #333;
+    margin-left: 130px;
     /* text-align: center; */
     /* line-height: 160px; */
+    margin-top: 50px;
   }
 
   body > .el-container {

@@ -86,7 +86,7 @@
             </p>
           </div>
           <div class="connect-row-input">
-            <el-input v-model="courseMoney" type="number"></el-input>
+            <el-input v-model="BuyClass.sumprice" type="text"></el-input>
           </div>
         </div>
       </div>
@@ -193,7 +193,9 @@ export default {
         discountprice: 0,
         // 备注
         remarks: ""
-      }
+      },
+      //优惠价格
+      sale:'',
     };
   },
   created() {
@@ -202,32 +204,37 @@ export default {
   mounted() {},
   // 计算属性
   computed: {
-    // 课程金额=课程数*课程单价
-    courseMoney() {
-      this.BuyClass.sumprice = this.BuyClass.coursecounts * this.BuyClass.price;
-      return this.BuyClass.sumprice;
-      // 课程数量=课程金额/课程单价
-    },
-    // 商品折扣后价格(总金额)=商品原价×折扣率
-    total() {
-      if (this.BuyClass.discountper != "") {
-        let total = (this.BuyClass.sumprice * this.BuyClass.discountper) / 100;
-        return total;
-        // 直减（总金额= 课程金额-直减金额）
-      } else if (this.BuyClass.discountprice != "") {
-        let total = this.BuyClass.sumprice - this.BuyClass.discountprice;
-        return total;
-      } else {
-        return this.BuyClass.sumprice;
+    total(){
+      //课时数
+      var coursecounts = this.BuyClass.coursecounts
+      //课时单价
+      var price = this.BuyClass.price
+      // 课程金额 = 课时数*课时单价
+      this.BuyClass.sumprice = coursecounts * price
+      //课程金额
+      var sumprice = this.BuyClass.sumprice
+      // 打折类型
+      if(this.BuyClass.discounttype == '直减'){
+        this.sale = this.BuyClass.discountprice
+        return sumprice-this.BuyClass.discountprice
+      }else{
+        this.sale = sumprice-sumprice*(this.BuyClass.discountper/100)
+        return sumprice*(this.BuyClass.discountper/100)
       }
-    },
-    // 优惠价格=课程金额-总金额
-    sale() {
-      if (this.total != "") {
-        let sale = this.BuyClass.sumprice - this.total;
-        return sale;
-      } else {
-        return 0;
+    }
+  },
+  //监听
+  watch:{
+    // 监听课程金额
+    'BuyClass.sumprice':{
+      // 该回调将会在侦听开始之后被立即调用
+      handler:function(newVal,oldVal){
+        // 总金额 = 单价 * 数量
+        if(this.BuyClass.coursecounts==""){ //课时数为空
+          this.BuyClass.price=newVal/this.BuyClass.coursecounts
+        }else{
+          this.BuyClass.coursecounts=newVal / this.BuyClass.price
+        }
       }
     }
   },

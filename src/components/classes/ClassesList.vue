@@ -1,44 +1,46 @@
 <template>
   <div class="classesList">
-    <el-form ref="form" :v-model="form" label-width="80px">
-      <el-form-item label="所选课程:">
+    <el-form ref="classForm" :v-model="form" :rules="classForm" label-width="90px">
+      <el-form-item label="所选课程:" prop="courseid">
         <el-select class="inner" v-model="form.courseid">
           <template v-for="item in proList">
             <el-option :value="item.id" :label="item.name" :key="item.id">{{item.name}}</el-option>
           </template>
         </el-select>
       </el-form-item>
-      <el-form-item label="班级名称:">
+      <el-form-item label="班级名称:" prop="name">
         <el-input v-model="form.name" class="inner"></el-input>
       </el-form-item>
-      <el-form-item label="计划课时:">
+      <el-form-item label="计划课时:" prop="coursecounts">
         <el-input v-model="form.coursecounts" class="inner"></el-input>&nbsp;&nbsp;课时
       </el-form-item>
-      <el-form-item label="当前日期">
+      <el-form-item label="当前日期" prop="startdate">
         <el-col :span="11">
           <el-date-picker
             type="date"
             placeholder="选择日期"
             value-format="yyyy-MM-dd"
             v-model="form.startdate"
+            :picker-options="OrderstartDate"
             style="width: 100%"
           ></el-date-picker>
         </el-col>
       </el-form-item>
-      <el-form-item label="结束日期">
+      <el-form-item label="结束日期" prop="enddate">
         <el-col :span="11">
           <el-date-picker
             type="date"
             placeholder="选择日期"
             value-format="yyyy-MM-dd"
             v-model="form.enddate"
+            :picker-options="OrderstartDate"
             style="width: 100%"
           ></el-date-picker>
         </el-col>
       </el-form-item>
       <el-button
         type="primary preservation"
-        @click="AddClass"
+        @click="AddClass(classForm)"
       >{{form.id==0||form.id==undefined?"添加":"修改"}}</el-button>
     </el-form>
   </div>
@@ -53,7 +55,7 @@ export default {
       form: {
         // 课程id
         courseid: "",
-        // 课程名称r
+        // 课程名称
         coursename: "",
         // 班级名称
         name: "",
@@ -63,6 +65,47 @@ export default {
         startdate: "",
         // 结束时间
         enddate: ""
+      },
+      // 表单验证
+      classForm: {
+        courseid: [{ required: true, message: "请选择", trigger: "change" }],
+        name: [{ required: true, message: "请输入名称", trigger: "blur" }],
+        coursecounts: [
+          { required: true, message: "不能为空", trigger: "blur" }
+        ],
+        startdate: [
+          {
+            required: true,
+            message: "请选择开班日期",
+            trigger: ["change", "blur"]
+          }
+        ],
+        enddate: [
+          {
+            required: true,
+            message: "请选择结班日期",
+            trigger: ["change", "blur"]
+          }
+        ]
+      },
+      // 判断开始的日期不能大于结束的日期
+      OrderstartDate: {
+        disabledDate: time => {
+          if (this.classForm.starttime) {
+            console.log(time.getTime()) >
+              new Date(this.classForm.enddate).getTime();
+          }
+        }
+      },
+      orderEndDate: {
+        disabledDate: time => {
+          if (this.classForm.endtime) {
+            return (
+              time.getTime() <
+              new Date(this.classForm.startdate).getTime() - 86400000
+            );
+          }
+        }
       }
     };
   },
@@ -92,29 +135,36 @@ export default {
       );
     },
     // 请求添加班级数据
-    AddClass() {
-      const that = this;
-      const data = JSON.stringify(this.form);
-      this.$http.post(
-        "/classes/add",
-        data,
-        success => {
-          // 添加成功
-          this.restModel();
-          that.$emit("ClassListChild");
-          // 弹框
-          this.$message({
-            message: "恭喜你，添加成功",
-            type: "success"
-          });
-        },
-        failrue => {
-          this.$message({
-            message: "添加失败",
-            type: "error"
-          });
+    AddClass(classForm) {
+      this.$refs.classForm.validate(valid => {
+        if (valid) {
+          const that = this;
+          const data = JSON.stringify(this.form);
+          this.$http.post(
+            "/classes/add",
+            data,
+            success => {
+              // 添加成功
+              this.restModel();
+              that.$emit("ClassListChild");
+              // 弹框
+              this.$message({
+                message: "恭喜你，添加成功",
+                type: "success"
+              });
+            },
+            failrue => {
+              this.$message({
+                message: "添加失败",
+                type: "error"
+              });
+            }
+          );
+        } else {
+          console.log("error submit!!");
+          return false;
         }
-      );
+      });
     }
   }
 };

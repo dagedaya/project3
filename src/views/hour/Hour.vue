@@ -14,7 +14,7 @@
             </div>
           </div>
         </div>
-        <div v-for="(item,index) in HourList" :key="item.id" class="box-style">
+        <div v-for="(item,index) in HourList" :key="index" class="box-style">
           <div v-if="item.coursedate == data.day" class="dataes" @click="ClickDetail(index)">
             <div class="box-course">
               <p>{{ item.coursename }}</p>
@@ -60,7 +60,11 @@ export default {
     calendar(valmonth) {
       this.$http.get(
         "/coursetables/search",
-        { month: this.$moment.dateFormat("yyyy-MM", valmonth), page: 1,psize:10000 },
+        {
+          month: this.$moment.dateFormat("yyyy-MM", valmonth),
+          page: 1,
+          psize: 10000
+        },
         success => {
           this.HourList = success.data.list;
         },
@@ -84,18 +88,18 @@ export default {
 <style lang="less">
 .Houres {
   .dataes {
-    width: 126px;
+    width: 154px;
     height: 63px;
     border-left: 6px solid #4381fc;
     border-radius: 3px;
     background-color: #f5f5f5;
     margin-bottom: 15px;
-    margin-left: 15px;
-    margin-top: 5px;
+    margin-left: 8px;
+    margin-top: 4px;
     cursor: pointer;
     text-align: center;
     line-height: 10px;
-    padding-top:5px;
+    padding-top: 7px;
   }
   table {
     font-size: 14px !important;

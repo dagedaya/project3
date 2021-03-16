@@ -67,8 +67,9 @@
 </template>
 
 <script>
-// import 
+// import Hour from "../../views/hour/Hour.vue"
 export default {
+  // components:{Hour},
   name: "ChartList",
   data() {
     return {
