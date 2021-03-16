@@ -67,6 +67,7 @@
 </template>
 
 <script>
+// import 
 export default {
   name: "ChartList",
   data() {
@@ -75,11 +76,22 @@ export default {
       value: new Date()
     };
   },
+  created(){
+    this.student()
+  },
   mounted() {},
   methods: {
     // 进度条
     format(percentage) {
       return percentage === 100 ? "满" : `${percentage}%`;
+    },
+    // 获取学生信息
+    student(){
+      this.$http.get('/students/list',{page:1,psize:10000},success=>{
+        console.log(success)
+      },failure=>{
+        console.log('获取学生信息失败')
+      })
     }
   }
 };

@@ -101,7 +101,7 @@ export default {
   data() {
     return {
       // 图表
-      chart:true,
+      chart:false,
       // 排课
       course: false,
       // 添加班级

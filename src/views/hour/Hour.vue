@@ -72,9 +72,10 @@ export default {
     // 查看详情
     ClickDetail(index) {
       this.dialogVisible = true;
-      // setTimeout(() => {
-      //   this.$refs.hourChild = this.HourList[index];
-      // }, 50);
+      // console.log(this.HourList[index])
+      setTimeout(() => {
+        this.$refs.hourChild.courseInfo = this.HourList[index];
+      }, 50);
     }
   }
 };

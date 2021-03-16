@@ -2,17 +2,17 @@
   <div class="HourListes">
     <div class="first">
       <b>基本信息</b>
-      <p>课程名称：架子鼓课</p>
-      <p>主讲老师：明明</p>
-      <p>教师：202教师</p>
+      <p>课程名称：{{courseInfo.coursename}}</p>
+      <p>主讲老师：{{courseInfo.teachername}}</p>
+      <p>教师：{{courseInfo.classname}}</p>
     </div>
     <div class="second">
       <b>
         <i style="color:red">*</i>&nbsp;&nbsp;&nbsp;
         上课时间
       </b>
-      <p>2021年3月1日(周一)</p>
-      <p>13:30 - 14:15</p>
+      <p>{{courseInfo.coursedate}}(周一)</p>
+      <p>{{$moment.dateFormat('HH:mm',new Date(courseInfo.starttime))}} - {{$moment.dateFormat("HH:mm",new Date(courseInfo.endtime))}}</p>
     </div>
     <div class="third">
       <!-- 尾部部分 -->
@@ -42,10 +42,14 @@
 export default {
   name: 'HourList',
   data () {
-    return {}
+    return {
+      courseInfo:[]
+    }
   },
   mounted () {},
-  methods: {}
+  methods: {
+    
+  }
 }
 </script>
 
@@ -56,7 +60,7 @@ export default {
     background-color: #f5f5f5;
     b {
       clear: both;
-      margin-left: -359px;
+      margin-left: -310px;
       line-height: 60px;
     }
     p {
