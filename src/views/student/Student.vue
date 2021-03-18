@@ -34,7 +34,7 @@
     <table class="tab">
       <tr>
         <th width="2%">
-          <input type="checkbox" @click="changeAll" />
+          <input type="checkbox" :checked="changeStatus" @click="changeAll" />
         </th>
         <th width="20%" class="stu">学生姓名</th>
         <th width="14%">性别</th>
@@ -133,15 +133,33 @@ export default {
     loaddata(page) {
       this.$http.get(
         "/students/list",
-        { page, psize: this.pageNum, name:this.search},
+        { page, psize: this.pageNum, name: this.search },
         success => {
           this.dataList = success.data.list;
           this.counts = success.data.counts;
+          this.checkPage();
         },
         failrue => {
           console.log("请求数据失败");
         }
       );
+    },
+    //处理 全选
+    checkPage() {
+      //定义状态
+      let isselect = true;
+      // 转化 选中列表
+      let checkList = JSON.stringify(this.checkList);
+      //  循环   当前列表
+      for (let item of this.dataList) {
+        // 装换    查找
+        if (checkList.indexOf(JSON.stringify(item)) == -1) {
+          isselect = false;
+          break;
+        }
+      }
+      //状态
+      this.changeStatus = isselect;
     },
     // 当前页数
     changeNumber(page) {
@@ -259,17 +277,17 @@ export default {
 };
 </script>
 <style lang="less">
-.text-box2 {
-  .el-input__inner {
-    margin-top: 30px;
-    height: 33px;
-    margin-left: -6px;
-    border: none;
-    width: 400px;
-  }
-  .el-input .el-input__clear {
-    margin-top: 17px;
-  }
+.studentes {
+    .el-input__inner {
+      margin-top: 30px;
+      height: 33px;
+      margin-left: -2px;
+      border: none;
+      width: 400px;
+    }
+    .el-input .el-input__clear {
+      margin-top: 17px;
+    }
 }
 </style>
 <style lang="less">

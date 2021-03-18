@@ -10,19 +10,30 @@
           <i class="el-icon-folder-add"></i>&nbsp;添加班级
         </el-button>
       </div>
+      <!-- 下拉 -->
       <div class="select-box">
-        <el-dropdown trigger="click">
-          <span class="el-dropdown-link">
-            下拉菜单
-            <i class="el-icon-arrow-down el-icon--right"></i>
-          </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-plus">学习</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-circle-plus">课程</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+        <el-form ref="form" :model="form" label-width="0px">
+          <el-form-item>
+            <el-select v-model="ClassesFrom.searchListThis" placeholder="请选择课程" :clearable="true" @change="selectChange">
+              <el-option
+                :label="item.name"
+                :value="item.id"
+                v-for="(item,index) in ClassesFrom.courseData"
+                :key="index"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
         <div class="text-box">
-          <input type="text" class="el-input_inner" placeholder="请输入班级" v-model="keydata"  />
+          <el-autocomplete
+            v-model="ClassesFrom.search"
+            :fetch-suggestions="querySearchAsync"
+            placeholder="请输入课程"
+            @select="handleSelect"
+            :clearable="true"
+            :trigger-on-focus="false"
+            value-key="name"
+          ></el-autocomplete>
         </div>
         <i @click="search()" class="el-icon-search search"></i>
       </div>
@@ -51,10 +62,7 @@
         <td>{{item.coursecounts}}</td>
         <td class="cli-btn">
           <a href="javascript:;" @click="couseInfo(item.id,item.courseid)">排课</a>
-          <a
-            href="javascript:;"
-            @click="edit(index)"
-          >修改</a>
+          <a href="javascript:;" @click="edit(index)">修改</a>
           <a href="javascript:;" @click="chart=true">图表</a>
           <a href="javascript:;" @click="del(index)">删除</a>
         </td>
@@ -83,7 +91,7 @@
     <el-dialog title="排课" :visible.sync="course" width="80%">
       <CourseList :id="classid" :courseid="courseid"></CourseList>
     </el-dialog>
-      <!-- 图表 -->
+    <!-- 图表 -->
     <el-dialog title="课表" :visible.sync="chart" width="80%">
       <ChartList></ChartList>
     </el-dialog>
@@ -95,40 +103,54 @@ import ClassesList from "../../components/classes/ClassesList.vue";
 import CourseList from "../../components/classes/CourseList.vue";
 import ChartList from "../../components/classes/ChartList.vue";
 
-
 export default {
   components: { ClassesList, CourseList, ChartList },
   data() {
     return {
+      form: {
+        region: ""
+      },
       // 图表
-      chart:false,
+      chart: false,
       // 排课
       course: false,
       // 班级id
-      classid:'',
+      classid: "",
       // 课程id
-      courseid:'',
+      courseid: "",
       // 添加班级
       dialogVisible: false,
-      dataList: [],
       // 切换状态
       status: "",
       // 总条数
       counts: 0,
       // 每页显示多少条数据
-      pageNum: 6,
+      pageNum: 10000,
+      // 主体列表
+      dataList: [],
       // 搜索框
-      keydata:''
+      keydata: "",
+      ClassesFrom: {
+        // 课程数据
+        courseData: [],
+        // 课程id
+        searchListThis: "",
+        // 内容
+        search: ""
+      }
     };
   },
   created() {
+    // 主体（班级）
     this.loaddata(1);
+    // 课程
+    this.courseInfo();
   },
   mounted() {},
   methods: {
     // 搜索
-    search(){
-      this.loaddata()
+    search() {
+      this.loaddata();
     },
     // 当前页数
     changeNumber(page) {
@@ -138,9 +160,13 @@ export default {
     loaddata(page) {
       this.$http.get(
         "/classes/list",
-        { page, psize: this.pageNum ,name:this.keydata},
+        {
+          page,
+          psize: this.pageNum,
+          name: this.keydata,
+          courseid: this.ClassesFrom.courseid
+        },
         success => {
-          console.log(success.data.list)
           this.dataList = success.data.list;
           this.counts = success.data.counts;
         },
@@ -155,12 +181,12 @@ export default {
       this.dialogVisible = false;
     },
     // 子传父的值（班级id 和 课程id）
-    couseInfo(id,courseid){
-      this.course = true
-      this.classid= id
-      this.courseid = courseid
-      console.log('fu',this.classid)
-      console.log('fu',this.courseid)
+    couseInfo(id, courseid) {
+      this.course = true;
+      this.classid = id;
+      this.courseid = courseid;
+      console.log("fu", this.classid);
+      console.log("fu", this.courseid);
     },
     // 删除课程接口
     del(index) {
@@ -197,11 +223,86 @@ export default {
     save() {
       this.dialogVisible = true;
       this.status = "添加课程";
+    },
+    // 请求课程接口
+    courseInfo() {
+      this.$http.get(
+        "/courses/list",
+        { page: 1 },
+        success => {
+          this.ClassesFrom.courseData = success.data.list;
+        },
+        failrue => {
+          console.log("请求数据失败");
+        }
+      );
+    },
+    // 搜索
+    querySearchAsync(queryString, cb) {
+      console.log(queryString);
+      this.$http.get(
+        "/classes/list",
+        {
+          psize:10000,
+          name:queryString
+        },
+        success => {
+          cb(success.data.list)
+        },
+        failrue => {
+          console.log("获取数据失败");
+        }
+      );
+    },
+    // 点击选中建议项时触发
+    handleSelect(item) {
+      this.ClassesFrom.courseid =item.courseid;
+      this.loaddata(1);
+    },
+    // 自动改变（change)
+    selectChange(){
+      this.ClassesFrom.courseid = this.ClassesFrom.searchListThis
+      this.loaddata(1)
     }
   }
 };
 </script>
-
+<style lang="less">
+.classes {
+  .text-box {
+    margin-top: -28px;
+    margin-left: 5px;
+    width: 800px;
+    .el-input__inner {
+      width: 280px !important;
+    }
+    .el-input__icon {
+      position: relative;
+      left: 0px;
+      top: -25px;
+    }
+  }
+  .box-header {
+    .select-box {
+      .el-input__inner {
+        height: 33px;
+        position: relative;
+        top: -5px;
+        border: none;
+        background-color: transparent;
+        width: 155px;
+      }
+      .el-select {
+        .el-input__icon {
+          position: relative;
+          left: -41px;
+          top: -23px;
+        }
+      }
+    }
+  }
+}
+</style>
 <style lang="less" socped>
 /* 表格 */
 .classes {
@@ -248,7 +349,7 @@ export default {
   }
   /* 输入框 */
   .select-box {
-    width: 420px;
+    width: 400px;
     height: 31px;
     border: 1px solid #dee3e9;
     margin-left: 260px;
@@ -280,14 +381,16 @@ export default {
     padding: 0;
     border: none;
     background-color: rgba(0, 0, 0, 0);
-    margin-left: 20px;
-    width: 262px;
+    margin-left: 22px;
+    position: relative;
+    top: -33px;
+    width: 254px;
     height: 30px;
     outline: none;
   }
   .el-icon-search {
     position: absolute;
-    left: 781px;
+    left: 776px;
     top: 74px;
     font-size: 20px;
   }
@@ -346,7 +449,7 @@ export default {
   }
   .el-input__icon {
     position: absolute;
-    left: -16px;
+    left: -9px;
     top: -16px;
   }
 }

@@ -87,7 +87,7 @@ export default {
       // 内容
       search: "",
       // 课程id
-      courseid:''
+      courseid: ""
     };
   },
   mounted() {
@@ -98,7 +98,12 @@ export default {
     loaddata(page) {
       this.$http.get(
         "/courses/list",
-        { page, psize: this.pageNumber,name:this.search,courseid:this.courseid },
+        {
+          page,
+          psize: this.pageNumber,
+          name: this.search,
+          courseid: this.courseid
+        },
         success => {
           this.dataList = success.data.list;
           // 总数据
@@ -171,7 +176,7 @@ export default {
     // 点击选中建议项时触发
     handleSelect(item) {
       console.log(item.id);
-      this.courseid=item.id
+      this.courseid = item.id;
       this.loaddata(1);
     }
   }
@@ -179,16 +184,18 @@ export default {
 </script>
 <style lang='less'>
 .projectes {
-  .text-box2 {
-    .el-input__inner {
-      margin-top: 30px;
-      height: 30px;
-      margin-left: 3px;
-      border: none;
-      width: 374px;
-    }
-    .el-input .el-input__clear {
-      margin-top: 17px;
+  .select-box {
+    .text-box2 {
+      .el-input__inner {
+        margin-top: 30px;
+        height: 30px;
+        margin-left: 3px;
+        border: none;
+        width: 374px;
+      }
+      .el-input .el-input__clear {
+        margin-top: 17px;
+      }
     }
   }
 }

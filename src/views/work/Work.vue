@@ -14,7 +14,7 @@
       </div>
       <el-form ref="form" :model="attendanceFrom">
         <div class="form-search">
-          <el-select v-model="attendanceFrom.searchListThis" :clearable="true" placeholder="班级">
+          <el-select v-model="attendanceFrom.searchListThis" :clearable="true" @change="workSelect" placeholder="班级">
             <el-option
               v-for="(item,index) in attendanceFrom.searchList"
               :key="index"
@@ -136,8 +136,7 @@ export default {
     this.classData();
   },
   mounted() {
-    // 设置搜索框下的默认选中
-    // this.attendanceFrom.searchListThis = this.attendanceFrom.searchList[0].value;
+
   },
   methods: {
     // 初始化考勤数据
@@ -207,6 +206,11 @@ export default {
         this.$refs.workChilds.form.id = id;
         this.$refs.workChilds.form.courseid = courseid;
       }, 50);
+    },
+    // change
+    workSelect(){
+      this.classid = this.attendanceFrom.searchListThis
+      this.attendance()
     }
   }
 };
