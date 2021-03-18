@@ -1,6 +1,6 @@
 <template>
   <div class="classesList">
-    <el-form ref="classForm" :v-model="form" :rules="classForm" label-width="90px">
+    <el-form ref="form" :model="form" :rules="rules" label-width="90px"> 
       <el-form-item label="所选课程:" prop="courseid">
         <el-select class="inner" v-model="form.courseid">
           <template v-for="item in proList">
@@ -40,7 +40,7 @@
       </el-form-item>
       <el-button
         type="primary preservation"
-        @click="AddClass(classForm)"
+        @click="AddClass(form)"
       >{{form.id==0||form.id==undefined?"添加":"修改"}}</el-button>
     </el-form>
   </div>
@@ -67,7 +67,7 @@ export default {
         enddate: ""
       },
       // 表单验证
-      classForm: {
+      rules: {
         courseid: [{ required: true, message: "请选择", trigger: "change" }],
         name: [{ required: true, message: "请输入名称", trigger: "blur" }],
         coursecounts: [
@@ -91,18 +91,18 @@ export default {
       // 判断开始的日期不能大于结束的日期
       OrderstartDate: {
         disabledDate: time => {
-          if (this.classForm.starttime) {
+          if (this.form.starttime) {
             console.log(time.getTime()) >
-              new Date(this.classForm.enddate).getTime();
+              new Date(this.form.enddate).getTime();
           }
         }
       },
       orderEndDate: {
         disabledDate: time => {
-          if (this.classForm.endtime) {
+          if (this.form.endtime) {
             return (
               time.getTime() <
-              new Date(this.classForm.startdate).getTime() - 86400000
+              new Date(this.form.startdate).getTime() - 86400000
             );
           }
         }
@@ -135,8 +135,8 @@ export default {
       );
     },
     // 请求添加班级数据
-    AddClass(classForm) {
-      this.$refs.classForm.validate(valid => {
+    AddClass(form) {
+      this.$refs.form.validate((valid) => {
         if (valid) {
           const that = this;
           const data = JSON.stringify(this.form);

@@ -215,6 +215,7 @@ export default {
     box-shadow: 5px 0px 6px #dee3e9;
     z-index: 9;
     margin-top: 50px;
+    overflow: hidden;
   }
 
   .el-main {

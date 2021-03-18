@@ -5,15 +5,23 @@
       <div class="place">
         <button class="btn">课程管理</button>
         <div class="triangle"></div>
-        <el-button @click="dialogVisible = true">
+        <el-button @click="save">
           <i class="el-icon-folder-add"></i>&nbsp;添加班级
         </el-button>
       </div>
       <div class="select-box">
         <div class="text-box2">
-          <input type="text" class="el-input__inner" />
+          <el-autocomplete
+            v-model="search"
+            :fetch-suggestions="querySearchAsync"
+            placeholder="请输入内容"
+            @select="handleSelect"
+            value-key="name"
+            :clearable="true"
+            :trigger-on-focus="false"
+          ></el-autocomplete>
         </div>
-        <i class="el-icon-search search"></i>
+        <i class="el-icon-search search" @click="loaddata(1)"></i>
       </div>
     </div>
     <table class="tab">
@@ -33,7 +41,7 @@
         <td>{{item.price}}</td>
         <td>{{item.mode}}</td>
         <td class="cli-btn">
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <a
             href="javascript:;"
             @click="edit(index)"
@@ -53,18 +61,20 @@
       :page-size="pageNumber"
     ></el-pagination>
     <!-- 添加班级 -->
-    <el-dialog :title="status" :visible.sync="dialogVisible" width="47%">
-      <ProjectList ref="classForm" @PorListChild="proAdd"></ProjectList>
-    </el-dialog>
+    <div v-if="dialogVisible">
+      <el-dialog :title="status" :visible.sync="dialogVisible" width="47%">
+        <ProjectList ref="classForm" @PorListChild="proAdd"></ProjectList>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
 <script>
 // 引入组件
-import ProjectList from '../../components/project/ProjectList.vue'
+import ProjectList from "../../components/project/ProjectList.vue";
 export default {
   components: { ProjectList },
-  data () {
+  data() {
     return {
       // 总页数
       counts: 0,
@@ -73,73 +83,116 @@ export default {
       dialogVisible: false,
       dataList: [],
       // 切换状态
-      status: '添加课程'
-    }
+      status: "",
+      // 内容
+      search: "",
+      // 课程id
+      courseid:''
+    };
   },
-  mounted () {
-    this.loaddata(1)
+  mounted() {
+    this.loaddata(1);
   },
   methods: {
     // 请求课程列表数据
-    loaddata (page) {
+    loaddata(page) {
       this.$http.get(
-        '/courses/list',
-        { page, psize: this.pageNumber },
+        "/courses/list",
+        { page, psize: this.pageNumber,name:this.search,courseid:this.courseid },
         success => {
-          this.dataList = success.data.list
+          this.dataList = success.data.list;
           // 总数据
-          this.counts = success.data.counts
+          this.counts = success.data.counts;
         },
         failrue => {
-          console.log('请求数据失败')
+          console.log("请求数据失败");
         }
-      )
+      );
     },
     // 当前页
-    chagneNumber (page) {
-      this.loaddata(page)
+    chagneNumber(page) {
+      this.loaddata(page);
     },
     // 子传父
-    proAdd () {
-      this.dialogVisible = false
+    proAdd() {
+      this.dialogVisible = false;
       // 初始化数据
-      this.loaddata()
+      this.loaddata();
     },
     // 删除
-    del (index) {
+    del(index) {
       this.$http.get(
-        '/courses/delete',
+        "/courses/delete",
         { id: this.dataList[index].id },
         success => {
           this.$message({
-            message: '恭喜你，删除成功',
-            type: 'success'
-          })
+            message: "恭喜你，删除成功",
+            type: "success"
+          });
           // 初始化数据
-          this.loaddata()
+          this.loaddata();
         },
         failrue => {
           this.$message({
-            message: '恭喜你，删除失败',
-            type: 'error'
-          })
+            message: "恭喜你，删除失败",
+            type: "error"
+          });
         }
-      )
+      );
     },
     // 修改
-    edit (index) {
-      this.dialogVisible = true
-      this.status = '修改课程'
+    edit(index) {
+      this.dialogVisible = true;
+      this.status = "修改课程";
       setTimeout(() => {
         this.$refs.classForm.form = JSON.parse(
           JSON.stringify(this.dataList[index])
-        )
-      }, 50)
+        );
+      }, 50);
+    },
+    // 添加
+    save() {
+      this.dialogVisible = true;
+      this.status = "添加课程";
+    },
+    // 搜索
+    querySearchAsync(queryString, cb) {
+      this.$http.get(
+        "/courses/list",
+        { psize: 10000, name: queryString },
+        success => {
+          cb(success.data.list);
+        },
+        failrue => {
+          console.log("请求数据失败");
+        }
+      );
+    },
+    // 点击选中建议项时触发
+    handleSelect(item) {
+      console.log(item.id);
+      this.courseid=item.id
+      this.loaddata(1);
+    }
+  }
+};
+</script>
+<style lang='less'>
+.projectes {
+  .text-box2 {
+    .el-input__inner {
+      margin-top: 30px;
+      height: 30px;
+      margin-left: 3px;
+      border: none;
+      width: 374px;
+    }
+    .el-input .el-input__clear {
+      margin-top: 17px;
     }
   }
 }
-</script>
-
+</style>
 <style lang="less" scoped>
 .projectes {
   // 分页
@@ -218,8 +271,9 @@ export default {
   }
 
   .el-input__inner {
-    margin-top: 25px;
+    margin-top: 26px;
     border: none;
+    width: 390px;
     background-color: rgba(0, 0, 0, 0);
   }
   /* 搜索 */

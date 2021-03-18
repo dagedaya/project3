@@ -22,9 +22,9 @@
           </el-dropdown-menu>
         </el-dropdown>
         <div class="text-box">
-          <input type="text" class="el-input_inner" />
+          <input type="text" class="el-input_inner" placeholder="请输入班级" v-model="keydata"  />
         </div>
-        <i class="el-icon-search search"></i>
+        <i @click="search()" class="el-icon-search search"></i>
       </div>
     </div>
     <table class="tab">
@@ -50,7 +50,7 @@
         <td>{{item.endcourses}}</td>
         <td>{{item.coursecounts}}</td>
         <td class="cli-btn">
-          <a href="javascript:;" @click="course=true">排课</a>
+          <a href="javascript:;" @click="couseInfo(item.id,item.courseid)">排课</a>
           <a
             href="javascript:;"
             @click="edit(index)"
@@ -81,7 +81,7 @@
     </div>
     <!-- 排课 -->
     <el-dialog title="排课" :visible.sync="course" width="80%">
-      <CourseList></CourseList>
+      <CourseList :id="classid" :courseid="courseid"></CourseList>
     </el-dialog>
       <!-- 图表 -->
     <el-dialog title="课表" :visible.sync="chart" width="80%">
@@ -104,6 +104,10 @@ export default {
       chart:false,
       // 排课
       course: false,
+      // 班级id
+      classid:'',
+      // 课程id
+      courseid:'',
       // 添加班级
       dialogVisible: false,
       dataList: [],
@@ -112,7 +116,9 @@ export default {
       // 总条数
       counts: 0,
       // 每页显示多少条数据
-      pageNum: 6
+      pageNum: 6,
+      // 搜索框
+      keydata:''
     };
   },
   created() {
@@ -120,6 +126,10 @@ export default {
   },
   mounted() {},
   methods: {
+    // 搜索
+    search(){
+      this.loaddata()
+    },
     // 当前页数
     changeNumber(page) {
       this.loaddata(page);
@@ -128,8 +138,9 @@ export default {
     loaddata(page) {
       this.$http.get(
         "/classes/list",
-        { page, psize: this.pageNum },
+        { page, psize: this.pageNum ,name:this.keydata},
         success => {
+          console.log(success.data.list)
           this.dataList = success.data.list;
           this.counts = success.data.counts;
         },
@@ -142,6 +153,14 @@ export default {
     AddClass2() {
       this.loaddata();
       this.dialogVisible = false;
+    },
+    // 子传父的值（班级id 和 课程id）
+    couseInfo(id,courseid){
+      this.course = true
+      this.classid= id
+      this.courseid = courseid
+      console.log('fu',this.classid)
+      console.log('fu',this.courseid)
     },
     // 删除课程接口
     del(index) {

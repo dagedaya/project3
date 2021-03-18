@@ -7,28 +7,33 @@
         <el-date-picker
           type="date"
           placeholder="选择日期"
-          v-model="form.today"
+          v-model="today"
           value-format="yyyy-MM-dd"
-        ></el-date-picker>-
-        <el-date-picker
-          type="date"
-          placeholder="结束日期"
-          v-model="form.today"
-          value-format="yyyy-MM-dd"
+          @blur="loaddate"
         ></el-date-picker>
       </div>
       <el-form ref="form" :model="attendanceFrom">
         <div class="form-search">
-          <el-select v-model="attendanceFrom.searchListThis">
+          <el-select v-model="attendanceFrom.searchListThis" :clearable="true" placeholder="班级">
             <el-option
-              v-for="item in attendanceFrom.searchList"
-              :key="item.label"
-              :label="item.label"
-              :value="item.value"
+              v-for="(item,index) in attendanceFrom.searchList"
+              :key="index"
+              :label="item.name"
+              :value="item.id"
             ></el-option>
           </el-select>
           <i class="el-icon-search searchIcon"></i>
-          <input v-model="attendanceFrom.search" placeholder="搜索学员快速签到" class="search" />
+          <!-- <input v-model="attendanceFrom.search" placeholder="搜索学员快速签到" class="search" /> -->
+          <el-autocomplete
+            class="search"
+            v-model="attendanceFrom.search"
+            :fetch-suggestions="querySearchAsync"
+            placeholder="搜索学员快速签到"
+            @select="handleSelect"
+            value-key="name"
+            :clearable="true"
+            :trigger-on-focus="false"
+          ></el-autocomplete>
         </div>
       </el-form>
     </div>
@@ -45,6 +50,7 @@
         </div>
 
         <div v-for="item in attendanceList" :key="item.id">
+          <!-- {{item}} -->
           <div class="student-group">
             <div class="row">
               <div class="title">
@@ -80,41 +86,12 @@
                     <img src="../../assets/到达.gif" alt srcset />
                     <span>{{ item2.checkedName }}</span>
                     <img src="../../assets/签到.gif" alt srcset />
-                    <span class="sign-in" @click="qiandao(item2.id,item.id)">签到</span>
+                    <span class="sign-in" @click="qiandao(item.id,item2.id)">签到</span>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="student-list-detail">
-            <div class="student-group-row" v-for="item2 in item.studentList" :key="item2.id">
-              <input type="checkbox" name id class="checkbox-selectStudent" />
-              <img src="../../assets/ico1.png" alt srcset />
-              <span>{{ item2.name }}</span>
-              <div class="book-course">
-                <img src="../../assets/课程.gif" alt srcset />
-                <span>{{ item.coursename }}</span>
-              </div>
-              <div class="book-course">
-                <img src="../../assets/时间.gif" alt srcset />
-                <span>
-                  {{ $moment.dateFormat("HH:mm", new Date(item.starttime)) }}-{{
-                  $moment.dateFormat("HH:mm", new Date(item.endtime))
-                  }}
-                </span>
-              </div>
-              <div class="book-course">
-                <img src="../../assets/hat.gif" alt srcset />
-                <span>{{ item.teachername }}</span>
-              </div>
-              <div class="right">
-                <img src="../../assets/到达.gif" alt srcset />
-                <span>{{ item2.checkedName }}</span>
-                <img src="../../assets/签到.gif" alt srcset />
-                <span class="sign-in" @click="qiandao(item2.id,item.id)">签到</span>
-              </div>
-            </div>
-          </div>
+          </div>   
         </div>
       </div>
     </div>
@@ -132,7 +109,7 @@ export default {
   name: "index",
   data() {
     return {
-      today: null,
+      today: new Date(),
       // 考勤数据
       attendanceList: [],
       form: {
@@ -140,36 +117,39 @@ export default {
         date2: ""
       },
       attendanceFrom: {
-        // 搜索内容
-        searchList: [
-          {
-            label: "课程",
-            value: 0
-          },
-          {
-            label: "老师",
-            value: 1
-          }
-        ],
+        // 班级数据
+        searchList: [],
+        // 班级id
         searchListThis: "",
+        // 学生id
+        studentid:null,
+        // 内容
         search: ""
       },
       dialogVisible: false
     };
   },
+
   created() {
-    this.attendance();
+    this.loaddate();
+    // 班级数据
+    this.classData();
   },
   mounted() {
     // 设置搜索框下的默认选中
-    this.attendanceFrom.searchListThis = this.attendanceFrom.searchList[0].value;
+    // this.attendanceFrom.searchListThis = this.attendanceFrom.searchList[0].value;
   },
   methods: {
     // 初始化考勤数据
     attendance() {
       this.$http.get(
         "/coursetables/checked",
-        { today: this.today, psize: 100 },
+        {
+          today: this.$moment.dateFormat("yyyy-MM-dd", new Date(this.today)),
+          psize: 100,
+          classid: this.attendanceFrom.searchListThis,
+          studentid:this.attendanceFrom.studentid
+        },
         success => {
           this.attendanceList = success.data.list;
         },
@@ -178,23 +158,71 @@ export default {
         }
       );
     },
+    // 获取班级数据
+    classData() {
+      this.$http.get(
+        "/classes/list",
+        {psize: 10000 },
+        success => {
+          this.attendanceFrom.searchList = success.data.list;
+        },
+        failrue => {
+          console.log("获取数据失败");
+        }
+      );
+    },
+    // 日期
+    loaddate() {
+      // console.log(this.today)
+      this.attendance();
+    },
+    // 搜索
+    querySearchAsync(queryString,cb) {
+      // 输入的内容
+      this.$http.get(
+        "/students/list",
+        { psize: 10000, name: queryString },
+        success => {
+          cb(success.data.list);
+        },
+        failrue => {
+          console.log("获取数据失败");
+        }
+      );
+    },
+    // 点击选中建议项时触发
+    handleSelect(item) {
+      this.attendanceFrom.studentid = item.id;
+      this.attendance();
+    },
     // (子传父)
     workAdd() {
       this.dialogVisible = false;
       this.attendance();
     },
     // 签到
-    qiandao(id, courseid) {
+    qiandao(courseid, id) {
       this.dialogVisible = true;
       setInterval(() => {
         this.$refs.workChilds.form.id = id;
-        this.$refs.workChilds.form.couseid = courseid;
+        this.$refs.workChilds.form.courseid = courseid;
       }, 50);
     }
   }
 };
 </script>
 
+<style lang="less">
+.header {
+  .form-search {
+    .el-input__inner {
+      border: none;
+      height: 33px;
+      background-color: transparent;
+    }
+  }
+}
+</style>
 <style lang="less">
 .attendance-body {
   .qiandao {
@@ -332,15 +360,19 @@ export default {
     position: absolute;
     font-size: 20px;
     cursor: pointer;
-    background-color: #ffffff;
+    z-index: 998;
   }
   .header .el-select {
-    width: 80px;
+    width: 94px;
     position: absolute;
-    left: 30px;
+    left: 25px;
     top: 0px;
+    z-index: 998;
     .el-input__inner {
       background: none !important;
+    }
+    .el-input .el-select__caret {
+      margin-top: 4px;
     }
   }
   .connect p {

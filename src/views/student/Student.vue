@@ -15,11 +15,20 @@
           <i class="el-icon-delete"></i>&nbsp;删除
         </el-button>
       </div>
+      <!-- 搜索 -->
       <div class="select-box">
         <div class="text-box2">
-          <input type="text" class="el-input__inner box2" />
+          <el-autocomplete
+            v-model="search"
+            :fetch-suggestions="querySearchAsync"
+            placeholder="请输入内容"
+            @select="handleSelect"
+            value-key="name"
+            :clearable="true"
+            :trigger-on-focus="false"
+          ></el-autocomplete>
         </div>
-        <i class="el-icon-search search"></i>
+        <i class="el-icon-search search" @click="loaddata(1)"></i>
       </div>
     </div>
     <table class="tab">
@@ -102,10 +111,14 @@ export default {
       course: false,
       // 添加班级
       dialogVisible: false,
+      // 搜索内容
+      search: "",
       // 循环数据列表
       dataList: [],
       checkList: [], // 选中列表
       changeStatus: false, // 是否全选
+      // 学员id
+      studentid: "",
       // 总条数
       counts: 0,
       // 每页显示多少条数据
@@ -120,7 +133,7 @@ export default {
     loaddata(page) {
       this.$http.get(
         "/students/list",
-        { page, psize: this.pageNum },
+        { page, psize: this.pageNum, name:this.search},
         success => {
           this.dataList = success.data.list;
           this.counts = success.data.counts;
@@ -189,6 +202,7 @@ export default {
     handleClickDel() {
       console.log(this.checkList);
       for (var i in this.checkList) {
+        console.log(i);
         this.$http.get(
           "/students/delete",
           { id: this.checkList[i].id },
@@ -210,22 +224,54 @@ export default {
       }
     },
     // 子传父
-    BuyChild(){
-      this.buyclass=false
-      this.loaddata(1)
+    BuyChild() {
+      this.buyclass = false;
+      this.loaddata(1);
     },
     // 购买课程
-    BuyCourse(index){
-      console.log(index)
-      this.buyclass=true
-      setTimeout(()=>{
-        this.$refs.BuyClass.BuyClass.studentid=this.dataList[index].id
-      },50)
+    BuyCourse(index) {
+      console.log(index);
+      this.buyclass = true;
+      setTimeout(() => {
+        this.$refs.BuyClass.BuyClass.studentid = this.dataList[index].id;
+      }, 50);
+    },
+    // 搜索
+    querySearchAsync(queryString, cb) {
+      this.$http.get(
+        "/students/list",
+        { psize: 10000, name: queryString },
+        success => {
+          cb(success.data.list);
+        },
+        failrue => {
+          console.log("请求数据失败");
+        }
+      );
+    },
+    // 点击选中建议项时触发
+    handleSelect(item) {
+      // 获取班级id
+      this.studentid = item.id;
+      this.loaddata(1);
     }
   }
 };
 </script>
-
+<style lang="less">
+.text-box2 {
+  .el-input__inner {
+    margin-top: 30px;
+    height: 33px;
+    margin-left: -6px;
+    border: none;
+    width: 400px;
+  }
+  .el-input .el-input__clear {
+    margin-top: 17px;
+  }
+}
+</style>
 <style lang="less">
 .studentes {
   // 分页
@@ -380,9 +426,9 @@ export default {
       font-size: 14px;
     }
   }
-  .el-button+.el-button {
+  .el-button + .el-button {
     margin-left: 20px;
-}
+  }
 
   .box-header .box2 {
     border: none;

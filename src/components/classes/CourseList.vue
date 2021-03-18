@@ -219,11 +219,11 @@
     <!-- 尾部部分 -->
     <div class="floor">
       <div class="box">
-        <h3>选择学员(0)</h3>
+        <h3>选择学员({{courseForm.studentlist.length}})</h3>
         <span class="createUser" @click="stuChoose">
           <span class="el-icon-user"></span>添加学员
         </span>
-        <div class="user" v-for="(item,index) in selectStudentList" :key="index">
+        <div class="user" v-for="(item,index) in courseForm.studentList" :key="index">
           <div>
             <span class="elf userCap"></span>
             {{item.name}}
@@ -246,10 +246,17 @@
 import StudentList from "./StudentList";
 export default {
   components: { StudentList },
+  // 接收传值classid和courseid
+  props: {
+    id: {
+      type: Number
+    },
+    courseid: {
+      type: Number
+    }
+  },
   data() {
     return {
-      // 选中的成员
-      selectStudentList: [],
       dialogVisible: false,
       // 主讲老师列表
       teacherslist: [],
@@ -259,14 +266,12 @@ export default {
       is_createTeacher: false,
       // 教室列表
       classroomList: [],
-      // 学员列表
-      studentList: [],
       // 要传输的数据
       courseForm: {
         // 班级ID
-        classid: "",
+        classid: this.id,
         // 课程ID
-        courseid: "",
+        courseid: this.courseid,
         // 单次/批量排课
         addtype: "one",
         // 主讲老师ID
@@ -287,7 +292,7 @@ export default {
         coursescount: "",
         // 上课时间
         weektime: [],
-        // 学员列表
+        // 学员列表（已选择）
         studentlist: []
       },
       // 上课时间
@@ -349,6 +354,8 @@ export default {
     };
   },
   created() {
+    console.log(this.id);
+    console.log(this.courseid);
     // 获取讲师信息
     this.getTeacherInfo();
     // 获取助教讲师信息
@@ -360,7 +367,7 @@ export default {
     // 选中的成员
     changeStudentes(list) {
       this.dialogVisible = false;
-      this.selectStudentList = list;
+      this.courseForm.studentlist = list;
     },
     // 批量排课里面（切换结束方式）
     clickCatJsfs() {
@@ -427,6 +434,7 @@ export default {
         "/teachers/list",
         { cat: 2, page: 1 },
         success => {
+          console.log("助教", success.data.list);
           this.assistantList = success.data.list;
         },
         failure => {
@@ -440,6 +448,7 @@ export default {
         "/classrooms/list",
         { page: 1 },
         success => {
+          console.log("教师", success.data.list);
           this.classroomList = success.data.list;
         },
         failure => {
@@ -451,7 +460,7 @@ export default {
     stuChoose() {
       this.dialogVisible = true;
     },
-    // 保存
+    // 保存排课
     handleClick() {
       // 单次排课
       if (this.courseForm.addtype == "one") {
@@ -460,7 +469,7 @@ export default {
             week: 0,
             // 开始时间和结束时间
             begintime: this.weekBegintime,
-            endtime: this.weekBegintime
+            endtime: this.weekEndtime
           }
         ];
       } else if (this.courseForm.jsfs != "按课节") {
@@ -473,9 +482,10 @@ export default {
       // 打印结果查看
       console.log(this.courseForm);
       console.log(JSON.stringify(this.courseForm));
-      this.$http.post(
+      let that = this 
+      that.$http.post(
         "/coursetables/add",
-        this.courseForm,
+        that.courseForm,
         success => {
           this.$message.success({
             message: "班级排课成功",
@@ -484,7 +494,10 @@ export default {
           this.$emit("closeAlert");
         },
         failure => {
-          console.log("班级排课失败");
+          this.$message({
+            message: "班级排课失败",
+            type: "error"
+          });
         }
       );
     }
@@ -492,7 +505,6 @@ export default {
 };
 </script>
 <style>
-
 </style>
 <style lang="less" scoped>
 .courseListes {
@@ -637,7 +649,7 @@ export default {
     padding-top: 15px;
     float: left;
   }
-  .zhuteacher1 .createTeacher{
+  .zhuteacher1 .createTeacher {
     float: right;
     color: #15b0ff;
     cursor: pointer;
@@ -717,7 +729,7 @@ export default {
     height: none;
     top: 0;
   }
-  .first{
+  .first {
     position: absolute;
     top: 81px;
     left: 150px;

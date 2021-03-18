@@ -2,7 +2,7 @@
   <div class="workList">
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item>
-        <el-radio-group v-model="form.status">
+        <el-radio-group v-model="form.checked">
           <el-radio name="rad" label="0">未签到</el-radio>
           <el-radio name="rad" label="1">出勤</el-radio>
           <el-radio name="rad" label="2">迟到</el-radio>
@@ -30,7 +30,7 @@ export default {
         // 学员id
         id: "",
         // 签到状态
-        status: 0,
+        checked: "",
         // 课程id
         courseid: "",
         // 备注
@@ -49,7 +49,7 @@ export default {
         data,
         success => {
           this.$message({
-            message: "操作成功",
+            message: "签到成功",
             type: "success"
           });
           this.$emit('workChild')

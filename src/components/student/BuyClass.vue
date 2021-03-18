@@ -254,6 +254,7 @@ export default {
     },
     // 购买课程
     BuyCourse() {
+      console.log(JSON.stringify(this.BuyClass))
       this.$http.post(
         "/students/addorder",
         this.BuyClass,
