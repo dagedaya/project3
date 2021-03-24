@@ -6,7 +6,7 @@
         <button class="btn">课程管理</button>
         <div class="triangle"></div>
         <el-button @click="save">
-          <i class="el-icon-folder-add"></i>&nbsp;添加班级
+          <i class="el-icon-folder-add"></i>&nbsp;添加课程
         </el-button>
       </div>
       <div class="select-box">
@@ -46,7 +46,10 @@
             href="javascript:;"
             @click="edit(index)"
           >修改</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <a href="javascript:;" @click="del(index)">删除</a>
+          <!-- 删除弹出确认按钮  // 气泡中确定按钮绑定click事件 -->
+          <el-popconfirm title="这是一条数据确定删除吗？" @confirm="del(index)">
+            <a href="javascript:;" slot="reference">删除</a>
+          </el-popconfirm>
         </td>
       </tr>
     </table>

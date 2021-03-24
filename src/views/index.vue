@@ -23,6 +23,32 @@
               </li>
             </ul>
           </div>
+          <el-menu
+            router :default-active="$route.path"
+            class="el-menu-vertical-demo"
+            @open="handleOpen"
+            @close="handleClose"
+            :collapse="isCollapse"
+          >
+            <el-submenu index="1">
+              <template slot="title">
+                <i class="el-icon-location"></i>
+                <p class="set">其他设置</p>
+              </template>
+              <el-menu-item-group>
+                <el-menu-item index="/classroom">教室管理</el-menu-item>
+              </el-menu-item-group>
+              <el-menu-item-group>
+                <el-menu-item index="/teacher">教师管理</el-menu-item>
+              </el-menu-item-group>
+              <el-menu-item-group>
+                <el-menu-item index="/campus">校区管理</el-menu-item>
+              </el-menu-item-group>
+              <el-menu-item-group>
+                <el-menu-item index="/account">账号管理</el-menu-item>
+              </el-menu-item-group>
+            </el-submenu>
+          </el-menu>
         </el-aside>
         <!-- 主要部分 -->
         <el-main>
@@ -38,6 +64,7 @@
 export default {
   data() {
     return {
+      isCollapse: true,
       // 左侧栏默认
       status: 0,
       elList: [
@@ -114,6 +141,12 @@ export default {
   },
   mounted() {},
   methods: {
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+    },
     // 路由跳转
     addClass(val) {
       this.status = val;
@@ -124,9 +157,27 @@ export default {
   }
 };
 </script>
-
+<style>
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 400px;
+}
+.el-menu {
+  border: none;
+}
+.el-menu--collapse .el-submenu {
+  position: relative;
+  left: 29px;
+  top: 11px;
+}
+</style>
 <style lang="less" scoped>
 .indexes {
+  .set {
+    color: #4f5f78;
+    margin-top: -31px;
+    margin-left: -21px;
+  }
   /* 清除页面边距 */
   * {
     margin: 0;
@@ -165,7 +216,7 @@ export default {
   }
   .el-div {
     width: 110px;
-    height: 98px;
+    height: 90px;
     text-align: center;
     border-radius: 4px;
     margin-left: 5px;
@@ -202,7 +253,6 @@ export default {
     width: 100%;
     z-index: 999;
     top: -2px;
-    box-shadow: 1px 5px 5px #f5f5f5;
   }
 
   .el-aside {

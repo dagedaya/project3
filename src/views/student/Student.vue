@@ -48,7 +48,7 @@
           <input type="checkbox" v-model="checkList" :value="item" />
         </td>
         <td class="stu">
-          <span></span>
+          <span class="title-tab"></span>
           {{item.name}}
         </td>
         <td>{{item.sex}}</td>
@@ -61,7 +61,11 @@
             href="javascript:;"
             @click="edit(index)"
           >修改</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <a href="javascript:;" @click="del(index)">删除</a>
+          <!-- 删除弹出确认按钮  // 气泡中确定按钮绑定click事件 -->
+          <el-popconfirm title="这是一条数据确定删除吗？" @confirm="del(index)">
+            <a href="javascript:;" slot="reference">删除</a>
+          </el-popconfirm>
+          <!-- <a href="javascript:;" @click="del(index)">删除</a> -->
         </td>
       </tr>
     </table>
@@ -77,8 +81,8 @@
       @current-change="changeNumber"
     ></el-pagination>
     <!-- 添加班级 -->
-    <div v-if="dialogVisible">
-      <el-dialog :title="status" :visible.sync="dialogVisible" width="47%">
+    <div v-if="dialogVisible" class="stud_class">
+      <el-dialog :title="status" :visible.sync="dialogVisible" width="50%">
         <StudentList ref="studentEdit" @studentChild="studentChange"></StudentList>
       </el-dialog>
     </div>
@@ -87,7 +91,12 @@
       <CourseList></CourseList>
     </el-dialog>
     <!-- 购课 -->
-    <el-dialog title="购课" class="pty-pro" :visible.sync="buyclass" width="80%">
+    <el-dialog
+      title="购课"
+      class="pty-pro"
+      :visible.sync="buyclass"
+      width="80%"
+    >
       <BuyClass ref="BuyClass" @BuyChild="BuyChild"></BuyClass>
     </el-dialog>
   </div>
@@ -278,6 +287,7 @@ export default {
 </script>
 <style lang="less">
 .studentes {
+  .text-box2 {
     .el-input__inner {
       margin-top: 30px;
       height: 33px;
@@ -288,10 +298,24 @@ export default {
     .el-input .el-input__clear {
       margin-top: 17px;
     }
+  }
 }
 </style>
 <style lang="less">
 .studentes {
+  .el-dialog{
+    height: auto;
+  }
+  .stud_class {
+    margin-top: 0 !important;
+    position: absolute;
+    margin: auto;
+    left: 25%;
+    top: 35px;
+    // bottom: 20px;
+    display: flex;
+    flex-direction: column;
+  }
   // 分页
   .paging {
     text-align: center;
@@ -319,7 +343,7 @@ export default {
   }
 
   /* 表格 */
-  .tab tr td span {
+  .title-tab {
     background-image: url("../../assets/ico.png");
     display: inline-block;
     width: 25px;

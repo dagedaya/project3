@@ -1,6 +1,6 @@
 <template>
   <div class="classesList">
-    <el-form ref="form" :model="form" :rules="rules" label-width="90px"> 
+    <el-form ref="form" :model="form" :rules="rules" label-width="90px">
       <el-form-item label="所选课程:" prop="courseid">
         <el-select class="inner" v-model="form.courseid">
           <template v-for="item in proList">
@@ -92,8 +92,7 @@ export default {
       OrderstartDate: {
         disabledDate: time => {
           if (this.form.starttime) {
-            console.log(time.getTime()) >
-              new Date(this.form.enddate).getTime();
+            console.log(time.getTime()) > new Date(this.form.enddate).getTime();
           }
         }
       },
@@ -136,7 +135,7 @@ export default {
     },
     // 请求添加班级数据
     AddClass(form) {
-      this.$refs.form.validate((valid) => {
+      this.$refs.form.validate(valid => {
         if (valid) {
           const that = this;
           const data = JSON.stringify(this.form);
@@ -169,6 +168,15 @@ export default {
   }
 };
 </script>
+<style>
+.el-button--primary {
+  color: #fff;
+  background-color: #409eff;
+  border-color: #409eff;
+  float: right;
+  margin-top: -20px;
+}
+</style>
 <style lang="less" scoped>
 .classesList {
   .inner {

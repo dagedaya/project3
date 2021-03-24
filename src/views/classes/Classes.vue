@@ -14,7 +14,12 @@
       <div class="select-box">
         <el-form ref="form" :model="form" label-width="0px">
           <el-form-item>
-            <el-select v-model="ClassesFrom.searchListThis" placeholder="请选择课程" :clearable="true" @change="selectChange">
+            <el-select
+              v-model="ClassesFrom.searchListThis"
+              placeholder="请选择课程"
+              :clearable="true"
+              @change="selectChange"
+            >
               <el-option
                 :label="item.name"
                 :value="item.id"
@@ -47,7 +52,7 @@
         <th width="10%">计划课时</th>
         <th width="10%">已排课时</th>
         <th width="10%">已上课时</th>
-        <th width="18%">操作</th>
+        <th width="20%">操作</th>
       </tr>
       <tr v-for="(item,index) in dataList" :key="index">
         <td style="text-align:left;clear:both; line-height:55px">
@@ -63,8 +68,11 @@
         <td class="cli-btn">
           <a href="javascript:;" @click="couseInfo(item.id,item.courseid)">排课</a>
           <a href="javascript:;" @click="edit(index)">修改</a>
-          <a href="javascript:;" @click="chart=true">图表</a>
-          <a href="javascript:;" @click="del(index)">删除</a>
+          <a href="javascript:;" @click="timetable(index,item.id,item.courseid)">图表</a>
+          <!-- 删除弹出确认按钮  // 气泡中确定按钮绑定click事件 -->
+          <el-popconfirm title="这是一条数据确定删除吗？" @confirm="del(index)">
+            <a href="javascript:;" slot="reference">删除</a>
+          </el-popconfirm>
         </td>
       </tr>
     </table>
@@ -88,12 +96,12 @@
       </el-dialog>
     </div>
     <!-- 排课 -->
-    <el-dialog title="排课" :visible.sync="course" width="80%">
+    <el-dialog title="排课" :visible.sync="course" width="90%">
       <CourseList :id="classid" :courseid="courseid"></CourseList>
     </el-dialog>
-    <!-- 图表 -->
-    <el-dialog title="课表" :visible.sync="chart" width="80%">
-      <ChartList></ChartList>
+    <!-- 课表 -->
+    <el-dialog title="课表" :visible.sync="chart" width="90%">
+      <ChartList ref="timetable" :id="classid" :courseid="courseid"></ChartList>
     </el-dialog>
   </div>
 </template>
@@ -243,11 +251,11 @@ export default {
       this.$http.get(
         "/classes/list",
         {
-          psize:10000,
-          name:queryString
+          psize: 10000,
+          name: queryString
         },
         success => {
-          cb(success.data.list)
+          cb(success.data.list);
         },
         failrue => {
           console.log("获取数据失败");
@@ -256,17 +264,34 @@ export default {
     },
     // 点击选中建议项时触发
     handleSelect(item) {
-      this.ClassesFrom.courseid =item.courseid;
+      this.ClassesFrom.courseid = item.courseid;
       this.loaddata(1);
     },
     // 自动改变（change)
-    selectChange(){
-      this.ClassesFrom.courseid = this.ClassesFrom.searchListThis
-      this.loaddata(1)
+    selectChange() {
+      this.ClassesFrom.courseid = this.ClassesFrom.searchListThis;
+      this.loaddata(1);
+    },
+    // 课表
+    timetable(index, id, courseid) {
+      this.chart = true;
+      this.courseid = courseid;
+      this.classid = id;
+      console.log(this.dataList[index]);
+      setTimeout(() => {
+        this.$refs.timetable.item = JSON.parse(
+          JSON.stringify(this.dataList[index])
+        );
+      }, 50);
     }
   }
 };
 </script>
+<style>
+button.el-button.el-button--primary.el-button--mini{
+  margin-top:0px;
+}
+</style>
 <style lang="less">
 .classes {
   .text-box {

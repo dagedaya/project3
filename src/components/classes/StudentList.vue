@@ -3,18 +3,32 @@
     <div class="first-left">
       <!-- 搜索 -->
       <div class="search">
-        <el-select v-model="classFrom.searchListThis" placeholder="请选择">
+        <el-select
+          v-model="classFrom.searchListThis"
+          placeholder="请选择"
+          :clearable="true"
+          @change="studentChange"
+        >
           <el-option
-            v-for="item in classFrom.searchList"
-            :key="item.id"
-            :label="item.label"
-            :value="item.value"
+            v-for="(item,index) in classFrom.searchList"
+            :key="index"
+            :label="item.name"
+            :value="item.id"
           ></el-option>
         </el-select>
         <div class="text-box">
-          <input type="text" class="el-input_inner" />
+          <el-autocomplete
+            class="el-input_inner student"
+            v-model="classFrom.search"
+            :fetch-suggestions="querySearchAsync"
+            placeholder="请输入学员名称"
+            @select="handleSelect"
+            value-key="name"
+            :clearable="true"
+            :trigger-on-focus="false"
+          ></el-autocomplete>
         </div>
-        <i class="el-icon-search search"></i>
+        <i class="el-icon-search search" @click="searchChange()"></i>
       </div>
       <!-- 表格 -->
       <div class="stu-tab">
@@ -75,33 +89,68 @@ export default {
       tableData: [],
       // 选中的学员列表
       changeStudent: [],
+      // 班级id
+      classid: "",
       // 搜索
       classFrom: {
-        searchList: [
-          {
-            label: "课程",
-            value: 0
-          },
-          {
-            label: "老师",
-            value: 1
-          }
-        ],
-        searchListThis: 0
+        searchList: [],
+        // 班级id
+        searchListThis: "",
+        // 学生id
+        studentid: "",
+        // 搜索内容
+        search: ""
       }
     };
+  },
+  props: {
+    stuList: {
+      type: Array
+    }
+    // classid: {
+    //   type: Number
+    // },
+    // courseid:{
+    //   type: Number
+    // }
   },
   created() {
     // 初始化学生列表
     this.initstudent();
+    // 初始化班级信息
+    this.classAll();
   },
-  mounted() {},
+  mounted() {
+    let arr = [];
+    for (var i in this.stuList) {
+      arr.push(this.stuList[i].id);
+    }
+    this.changeStudent = arr;
+  },
   methods: {
+    // 获取班级信息
+    classAll() {
+      this.$http.get(
+        "/classes/list",
+        { page: 1 },
+        success => {
+          this.classFrom.searchList = success.data.list;
+        },
+        failure => {
+          console.log("班级信息获取失败");
+        }
+      );
+    },
     // 学生列表数据
     initstudent() {
       this.$http.get(
         "/students/list",
-        { psize: 100 },
+        {
+          psize: 100,
+          classid: this.classFrom.searchListThis,
+          studentid: this.classFrom.studentid,
+          name: this.classFrom.search
+        },
         success => {
           this.tableData = success.data.list;
         },
@@ -114,19 +163,79 @@ export default {
     StudentAll(val) {
       this.changeStudent = val;
     },
+    // change
+    studentChange() {
+      this.classid = this.classFrom.searchListThis;
+      this.initstudent();
+    },
     // 提交按钮
-    studentSubmit(){
-      this.$emit('changeStudent',this.changeStudent)
+    studentSubmit() {
+      console.log(this.changeStudent);
+      this.$emit("changeStudent", this.changeStudent);
+    },
+    // 搜索
+    querySearchAsync(queryString, cb) {
+      // 输入的内容
+      console.log(queryString);
+      this.$http.get(
+        "/students/list",
+        { psize: 10000, name: queryString },
+        success => {
+          cb(success.data.list);
+        },
+        failure => {
+          console.log("获取数据失败");
+        }
+      );
+    },
+    // 点击选中建议项时触发
+    handleSelect(item) {
+      this.classFrom.studentid = item.id;
+      this.initstudent();
+    },
+    // 重新请求数据
+    searchChange() {
+      this.initstudent();
     }
   }
 };
 </script>
-
+<style>
+.el-select .el-input .el-select__caret {
+  color: #c0c4cc;
+  font-size: 14px;
+  transition: transform 0.3s;
+  transform: rotateZ(180deg);
+  cursor: pointer;
+  /* margin-top: -30px; */
+  position: relative;
+  /* top: -19px; */
+}
+.el-dialog {
+  margin-top: 0 !important;
+  position: relative;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
+  box-sizing: border-box;
+  top: 30px;
+  bottom: 30px;
+  /* overflow-y: scroll; */
+  height: 640px;
+}
+</style>
 <style lang="less">
+.student {
+  .el-input__inner {
+    border: none;
+    height: 99%;
+    margin-top: 8px;
+  }
+}
+
 .studentes {
   .save {
     float: right;
-    margin-top: -20px;
+    margin-top: 11px;
   }
   .first-left {
     .el-table::before {
@@ -139,6 +248,7 @@ export default {
     .stu-table {
       height: 440px;
       overflow: auto;
+      margin-top: 15px;
     }
     .stu-table::-webkit-scrollbar {
       width: 7px;
@@ -207,9 +317,9 @@ export default {
         top: 90px;
         border: none;
       }
-      .text-box .el-input_inner {
+      .text-box .student {
         width: 267px;
-        height: 27px;
+        height: 20px;
         position: absolute;
         left: 126px;
         top: 85px;
@@ -218,11 +328,13 @@ export default {
       }
     }
   }
+
   .second-right {
     // 滚轮
     .stu-table2 {
       height: 440px;
       overflow: auto;
+      margin-top: 30px;
     }
     .stu-table2::-webkit-scrollbar {
       width: 7px;

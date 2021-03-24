@@ -31,7 +31,7 @@
         </div>
       </template>
     </el-calendar>
-    <el-dialog title="课程信息" :visible.sync="dialogVisible" width="60%">
+    <el-dialog title="课程信息" :visible.sync="dialogVisible" :append-to-body="true" width="60%" style="margin-top:0px;margin-bottom:35px">
       <HourList ref="hourChild"></HourList>
     </el-dialog>
   </div>

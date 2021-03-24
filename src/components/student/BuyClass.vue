@@ -14,34 +14,34 @@
             </el-radio-group>
           </div>
         </div>
-          <div class="connect-row-rows">
-            <div class="title">
-              <p>
-                <span style="color: red">*</span> 签约日期
-              </p>
-            </div>
-            <div>
-              <el-date-picker
-                v-model="BuyClass.beigindate"
-                value-format="yyyy-MM-dd"
-                type="date"
-                placeholder="选择日期"
-              ></el-date-picker>
-            </div>
+        <div class="connect-row-rows">
+          <div class="title">
+            <p>
+              <span style="color: red">*</span> 签约日期
+            </p>
           </div>
-          <div class="connect-row-rows" v-show="BuyClass.ordertype!='课时卡'">
-            <div class="title">
-              <p>结束日期</p>
-            </div>
-            <div>
-              <el-date-picker
-                v-model="BuyClass.enddate"
-                value-format="yyyy-MM-dd"
-                type="date"
-                placeholder="选择日期"
-              ></el-date-picker>
-            </div>
+          <div>
+            <el-date-picker
+              v-model="BuyClass.beigindate"
+              value-format="yyyy-MM-dd"
+              type="date"
+              placeholder="选择日期"
+            ></el-date-picker>
           </div>
+        </div>
+        <div class="connect-row-rows" v-show="BuyClass.ordertype!='课时卡'">
+          <div class="title">
+            <p>结束日期</p>
+          </div>
+          <div>
+            <el-date-picker
+              v-model="BuyClass.enddate"
+              value-format="yyyy-MM-dd"
+              type="date"
+              placeholder="选择日期"
+            ></el-date-picker>
+          </div>
+        </div>
       </div>
       <!-- 三 -->
       <div class="connect-row">
@@ -195,7 +195,7 @@ export default {
         remarks: ""
       },
       //优惠价格
-      sale:'',
+      sale: ""
     };
   },
   created() {
@@ -204,36 +204,37 @@ export default {
   mounted() {},
   // 计算属性
   computed: {
-    total(){
+    total() {
       //课时数
-      var coursecounts = this.BuyClass.coursecounts
+      var coursecounts = this.BuyClass.coursecounts;
       //课时单价
-      var price = this.BuyClass.price
+      var price = this.BuyClass.price;
       // 课程金额 = 课时数*课时单价
-      this.BuyClass.sumprice = coursecounts * price
+      this.BuyClass.sumprice = coursecounts * price;
       //课程金额
-      var sumprice = this.BuyClass.sumprice
+      var sumprice = this.BuyClass.sumprice;
       // 打折类型
-      if(this.BuyClass.discounttype == '直减'){
-        this.sale = this.BuyClass.discountprice
-        return sumprice-this.BuyClass.discountprice
-      }else{
-        this.sale = sumprice-sumprice*(this.BuyClass.discountper/100)
-        return sumprice*(this.BuyClass.discountper/100)
+      if (this.BuyClass.discounttype == "直减") {
+        this.sale = this.BuyClass.discountprice;
+        return sumprice - this.BuyClass.discountprice;
+      } else {
+        this.sale = sumprice - sumprice * (this.BuyClass.discountper / 100);
+        return sumprice * (this.BuyClass.discountper / 100);
       }
     }
   },
   //监听
-  watch:{
+  watch: {
     // 监听课程金额
-    'BuyClass.sumprice':{
+    "BuyClass.sumprice": {
       // 该回调将会在侦听开始之后被立即调用
-      handler:function(newVal,oldVal){
+      handler: function(newVal, oldVal) {
         // 总金额 = 单价 * 数量
-        if(this.BuyClass.coursecounts==""){ //课时数为空
-          this.BuyClass.price=newVal/this.BuyClass.coursecounts
-        }else{
-          this.BuyClass.coursecounts=newVal / this.BuyClass.price
+        if (this.BuyClass.coursecounts == "") {
+          //课时数为空
+          this.BuyClass.price = newVal / this.BuyClass.coursecounts;
+        } else {
+          this.BuyClass.coursecounts = newVal / this.BuyClass.price;
         }
       }
     }
@@ -254,7 +255,7 @@ export default {
     },
     // 购买课程
     BuyCourse() {
-      console.log(JSON.stringify(this.BuyClass))
+      console.log(JSON.stringify(this.BuyClass));
       this.$http.post(
         "/students/addorder",
         this.BuyClass,
@@ -276,6 +277,17 @@ export default {
 </script>
 <style lang="less">
 .studentes {
+  .el-dialog {
+    margin-top: 0 !important;
+    position: relative;
+    border-radius: 2px;
+    // box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
+    box-sizing: border-box;
+    top: 30px;
+    bottom: 30px;
+    /* overflow-y: scroll; */
+    height: 90%;
+  }
   .pty-pro {
     .el-dialog__body {
       padding: 15px 0 0 0;

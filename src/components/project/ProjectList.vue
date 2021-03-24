@@ -93,7 +93,12 @@ export default {
   }
 };
 </script>
-
+<style>
+.el-dialog{
+  overflow: hidden;
+  height: auto;
+}
+</style>
 <style lang="less" scoped>
 .projectList {
   .el-input {

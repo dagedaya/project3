@@ -217,17 +217,21 @@
       </div>
     </div>
     <!-- 尾部部分 -->
-    <div class="floor">
+    <div class="floor clearfix">
       <div class="box">
         <h3>选择学员({{courseForm.studentlist.length}})</h3>
         <span class="createUser" @click="stuChoose">
           <span class="el-icon-user"></span>添加学员
         </span>
-        <div class="user" v-for="(item,index) in courseForm.studentList" :key="index">
+        <div v-for="(item,index) in courseForm.studentlist" :key="index">
           <div>
             <span class="elf userCap"></span>
             {{item.name}}
           </div>
+        </div>
+        <!-- 提交按钮 -->
+        <div class="button-bg">
+          <el-button type="primary" class="buttin save" @click="handleClick">保存</el-button>
         </div>
       </div>
     </div>
@@ -235,10 +239,6 @@
     <el-dialog title="选择学员" :visible.sync="dialogVisible" :append-to-body="true" width="60%">
       <StudentList @changeStudent="changeStudentes"></StudentList>
     </el-dialog>
-    <!-- 提交按钮 -->
-    <div class="button-bg">
-      <el-button type="primary" class="buttin save" @click="handleClick">保存</el-button>
-    </div>
   </div>
 </template>
 
@@ -272,7 +272,7 @@ export default {
         classid: this.id,
         // 课程ID
         courseid: this.courseid,
-        // 单次/批量排课
+        // 单次one/批量排课more
         addtype: "one",
         // 主讲老师ID
         teacherid: "",
@@ -482,7 +482,7 @@ export default {
       // 打印结果查看
       console.log(this.courseForm);
       console.log(JSON.stringify(this.courseForm));
-      let that = this 
+      let that = this;
       that.$http.post(
         "/coursetables/add",
         that.courseForm,
@@ -505,6 +505,17 @@ export default {
 };
 </script>
 <style>
+.el-dialog {
+  margin-top: 0 !important;
+  position: relative;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
+  box-sizing: border-box;
+  top: 30px;
+  bottom: 30px;
+  /* overflow-y: scroll; */
+  height: 90%;
+}
 </style>
 <style lang="less" scoped>
 .courseListes {
@@ -531,7 +542,9 @@ export default {
   .save {
     height: 40px;
     margin-left: 80%;
-    margin-bottom: 20px;
+    position: relative;
+    top:-65px;
+    right:5px;
   }
   .iconfont {
     font-family: "iconfont" !important;
@@ -571,7 +584,8 @@ export default {
   .box .user > div {
     margin-top: 30px;
     margin-right: 100px;
-    float: left;
+    // float: left;
+    display: inline-block;
   }
   .floor {
     margin-top: 20px;
