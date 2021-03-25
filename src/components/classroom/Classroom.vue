@@ -70,7 +70,7 @@
       :page-size="pageNumber"
     ></el-pagination>
     <!-- 添加教室 -->
-    <el-dialog title="添加教室" :visible.sync="dialogVisible" width="47%" style="margin-top:0vh;margin-top:-70px;">
+    <el-dialog title="添加教室" :visible.sync="dialogVisible" width="47%">
       <ClassroomList ref="classroomForm" @classroomChild="classroomChild"></ClassroomList>
     </el-dialog>
   </div>
@@ -110,7 +110,7 @@ export default {
       this.$http.get(
         "/classrooms/list",
         {
-          page:page,
+          page: page,
           psize: this.pageNumber,
           name: this.classRoom.search,
           courseid: this.classRoom.courseid
@@ -188,6 +188,17 @@ export default {
   }
 };
 </script>
+<style lang="less" scoped>
+.el-dialog {
+  margin-top: 0vh !important;
+  position: absolute;
+  top: 35px;
+  /* bottom: 20px; */
+  left: 25%;
+  display: flex;
+  flex-direction: column;
+}
+</style>
 <style lang="less">
 .classroomes {
   div.text-box > div > div.el-input.el-input--suffix > input {
@@ -197,6 +208,7 @@ export default {
     margin-top: px;
   }
 }
+</style>
 </style>
 <style lang="less">
 .classroomes {

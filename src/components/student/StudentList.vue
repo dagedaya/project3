@@ -19,12 +19,8 @@
         :headers="headers"
       >
         <!-- :auto-upload="false"
-        :on-change="handleAvatarChange" -->
-        <img
-          v-if="imageUrl"
-          :src="imageUrl"
-          class="avatar"
-        />
+        :on-change="handleAvatarChange"-->
+        <img v-if="form.photo" :src="imgUrl+form.photo" class="avatar" />
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
 
@@ -35,7 +31,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="出生日期" prop="birthday">
-        <el-input v-model="form.birthday"></el-input>
+        <el-date-picker v-model="form.birthday" type="date" value-format="yyyy-MM-dd" placeholder="选择日期"></el-date-picker>
       </el-form-item>
       <el-form-item label="学员编号" prop="num">
         <el-input v-model="form.num"></el-input>
@@ -59,6 +55,7 @@ export default {
     return {
       headers: { token: localStorage.getItem("token") },
       // 上传图片
+      imgUrl: this.$config.imgUrl,
       imageUrl: "",
       // 绑定数据
       form: {
@@ -74,7 +71,7 @@ export default {
         num: "",
         // 备注
         remarks: "",
-        photo: null
+        photo: null,
       },
       // 表单验证
       rules: {
@@ -97,10 +94,10 @@ export default {
     submit(form) {
       this.$refs.form.validate(valid => {
         if (valid) {
-          let data = JSON.stringify(this.form);
+          console.log(JSON.stringify(this.form));
           this.$http.post(
             "/students/add",
-            data,
+            this.form,
             success => {
               this.restModel();
               this.$emit("studentChild");
@@ -109,6 +106,7 @@ export default {
                 message: "恭喜你，添加成功",
                 type: "success"
               });
+              console.log(success);
               this.$refs.upload.clearFiles(); //清空
             },
             failure => {
@@ -131,8 +129,7 @@ export default {
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
-      console.log(res.data);
-      this.photo = res.data;
+      this.form.photo = res.data;
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg";

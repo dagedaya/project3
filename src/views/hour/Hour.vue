@@ -50,7 +50,7 @@
       </div>
     </div>
     <table class="thead">
-      <tr v-for="(item,index) in dayMathList" :key="item.id">
+      <tr v-for="(item,index) in dayMathList" :key="index">
         <td>{{item}}</td>
         <td>
           <template v-for="vals in navlist">
@@ -61,7 +61,7 @@
               @click="handleClickDeail(index,vals.id)"
             >
               <th>{{vals.classname}}</th>
-              <div>1</div>
+              <div></div>
               <div>1</div>
             </div>
           </template>
@@ -164,7 +164,7 @@ export default {
         },
         success => {
           this.navlist = success.data.list;
-          // console.log(this.navlist);
+          console.log(this.navlist);
         },
         failure => {
           console.log("课程汇总数据请求失败");

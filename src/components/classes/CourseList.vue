@@ -508,6 +508,12 @@ export default {
 </style>
 <style lang="less" scoped>
 .courseListes {
+  .el-date-picker table {
+    table-layout: fixed;
+    width: 100%;
+    position: relative;
+    top: -40px;
+  }
   .el-dialog {
     margin-top: 0 !important;
     position: relative;

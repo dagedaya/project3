@@ -15,22 +15,40 @@
         <p>教室：{{courseInfo.classrooms}}</p>
       </td>
       <td v-show="!first_edit">
-        <p>
-          <span>课程名称：</span>
-          <el-input v-model="form.name"></el-input>
-        </p>
-        <p>
-          <span>主讲老师：</span>
-          <el-input v-model="form.name"></el-input>
-        </p>
-        <p>
-          <span>助教老师：</span>
-          <el-input v-model="form.name"></el-input>
-        </p>
-        <p>
-          <span>教师：</span>
-          <el-input v-model="form.name"></el-input>
-        </p>
+        <el-form ref="form" :model="form" label-width="80px">
+          <p>
+            <el-form-item label="课程名称">
+              <el-select v-model="form.name" placeholder="请选择活动区域">
+                <el-option label="区域一" value="shang"></el-option>
+                <el-option label="区域二" value="shang"></el-option>
+              </el-select>
+            </el-form-item>
+          </p>
+          <p>
+            <el-form-item label="主讲老师">
+              <el-select v-model="form.name" placeholder="请选择活动区域">
+                <el-option label="区域一"></el-option>
+                <el-option label="区域二"></el-option>
+              </el-select>
+            </el-form-item>
+          </p>
+          <p>
+            <el-form-item label="助教老师">
+              <el-select v-model="form.name" placeholder="请选择活动区域">
+                <el-option label="区域一"></el-option>
+                <el-option label="区域二"></el-option>
+              </el-select>
+            </el-form-item>
+          </p>
+          <p>
+            <el-form-item label="教师">
+              <el-select v-model="form.name" placeholder="请选择活动区域">
+                <el-option label="区域一"></el-option>
+                <el-option label="区域二"></el-option>
+              </el-select>
+            </el-form-item>
+          </p>
+        </el-form>
       </td>
     </div>
     <div v-if="second_edit">
@@ -48,7 +66,29 @@
       <td v-show="second_edit">
         <p class="times">{{courseInfo.starttime}} - {{courseInfo.endtime}}</p>
       </td>
-      <td v-show="!second_edit"></td>
+      <td v-show="!second_edit">
+        <el-time-select
+          class="start"
+          placeholder="起始时间"
+          v-model="startTime"
+          :picker-options="{
+      start: '08:30',
+      step: '00:15',
+      end: '18:30'
+    }"
+        ></el-time-select>
+        <el-time-select
+          class="end"
+          placeholder="结束时间"
+          v-model="endTime"
+          :picker-options="{
+      start: '08:30',
+      step: '00:15',
+      end: '18:30',
+      minTime: startTime
+    }"
+        ></el-time-select>
+      </td>
     </div>
     <div class="third">
       <!-- 尾部部分 -->
@@ -66,10 +106,10 @@
           </div>
         </div>
       </div>
-      <div>
-        <el-button class="cancels">修改</el-button>
-        <el-button class="cancel">取消课程</el-button>
-      </div>
+    </div>
+    <div>
+      <div class="cancel">取消课程</div>
+      <div class="edites">修改课程</div>
     </div>
   </div>
 </template>
@@ -79,6 +119,8 @@ export default {
   name: "HourList",
   data() {
     return {
+      startTime: "",
+      endTime: "",
       // 第一块修改
       first_edit: true,
       // 第二块修改
@@ -117,11 +159,19 @@ export default {
           console.log("获取失败");
         }
       );
-    }
+    },
+    // 课程信息
+    
   }
 };
 </script>
-<style lang="less" scoped> 
+<style>
+.HourListes .el-input--suffix .el-input__inner {
+  padding-right: 30px;
+  width: 183px;
+}
+</style>
+<style lang="less" scoped>
 .HourListes {
   a {
     text-align: center;
@@ -133,15 +183,6 @@ export default {
     top: 47px;
   }
 }
-.cancel {
-  margin-top: 95px;
-  text-align: center;
-}
-.cancels {
-  margin-top: 95px;
-  text-align: center;
-  /* display: none; */
-}
 .el-icon-edit {
   color: #409eff;
   position: relative;
@@ -150,9 +191,52 @@ export default {
   top: 49px;
   /* display: none; */
 }
+.el-dialog {
+    margin-top: 0vh !important;
+    position: absolute;
+    top: 35px;
+    /* bottom: 20px; */
+    left: 11%;
+    display: flex;
+    flex-direction: column;
+}
 </style>
 <style lang="less" scoped>
 .HourListes {
+  // 按钮
+  .edites {
+    width: 100px;
+    height: 33px;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    line-height: 33px;
+    border-radius: 5px;
+    float: right;
+    background-color: #2d67f6;
+    margin-top: 8px;
+  }
+  .cancel {
+    width: 100px;
+    height: 33px;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    background-color: #2d67f6;
+    line-height: 33px;
+    border-radius: 5px;
+    float: right;
+    margin-top: 8px;
+    margin-left: 20px;
+  }
+  // 时间
+  .start {
+    margin-left: 50px;
+    margin-top: -10px;
+  }
+  .end {
+    margin-top: -10px;
+  }
   .first {
     height: 130px;
     background-color: #f5f5f5;

@@ -48,7 +48,12 @@
           <input type="checkbox" v-model="checkList" :value="item" />
         </td>
         <td class="stu">
-          <span class="title-tab"></span>
+          <template v-if="item.photo">
+            <img :src="imgUrl+item.photo" alt width="25px" height="25px" class="imges" />
+          </template> 
+          <template v-else>
+            <span class="title-tab"></span>
+          </template>
           {{item.name}}
         </td>
         <td>{{item.sex}}</td>
@@ -126,7 +131,8 @@ export default {
       // 总条数
       counts: 0,
       // 每页显示多少条数据
-      pageNum: 8
+      pageNum: 8,
+      imgUrl:this.$config.imgUrl
     };
   },
   mounted() {},
@@ -308,6 +314,9 @@ export default {
 </style>
 <style lang="less">
 .studentes {
+  .imges{
+    border-radius: 50%;
+  }
   .el-dialog {
     height: auto;
     left: 0%;
