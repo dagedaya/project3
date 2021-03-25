@@ -14,7 +14,12 @@
       </div>
       <el-form ref="form" :model="attendanceFrom">
         <div class="form-search">
-          <el-select v-model="attendanceFrom.searchListThis" :clearable="true" @change="workSelect" placeholder="班级">
+          <el-select
+            v-model="attendanceFrom.searchListThis"
+            :clearable="true"
+            @change="workSelect"
+            placeholder="班级"
+          >
             <el-option
               v-for="(item,index) in attendanceFrom.searchList"
               :key="index"
@@ -91,7 +96,7 @@
                 </div>
               </div>
             </div>
-          </div>   
+          </div>
         </div>
       </div>
     </div>
@@ -122,7 +127,7 @@ export default {
         // 班级id
         searchListThis: "",
         // 学生id
-        studentid:null,
+        studentid: null,
         // 内容
         search: ""
       },
@@ -135,9 +140,7 @@ export default {
     // 班级数据
     this.classData();
   },
-  mounted() {
-
-  },
+  mounted() {},
   methods: {
     // 初始化考勤数据
     attendance() {
@@ -147,7 +150,7 @@ export default {
           today: this.$moment.dateFormat("yyyy-MM-dd", new Date(this.today)),
           psize: 100,
           classid: this.attendanceFrom.searchListThis,
-          studentid:this.attendanceFrom.studentid
+          studentid: this.attendanceFrom.studentid
         },
         success => {
           this.attendanceList = success.data.list;
@@ -161,7 +164,7 @@ export default {
     classData() {
       this.$http.get(
         "/classes/list",
-        {psize: 10000 },
+        { psize: 10000 },
         success => {
           this.attendanceFrom.searchList = success.data.list;
         },
@@ -176,7 +179,7 @@ export default {
       this.attendance();
     },
     // 搜索
-    querySearchAsync(queryString,cb) {
+    querySearchAsync(queryString, cb) {
       // 输入的内容
       this.$http.get(
         "/students/list",
@@ -202,21 +205,29 @@ export default {
     // 签到
     qiandao(courseid, id) {
       this.dialogVisible = true;
-      setInterval(() => {
+      setTimeout(() => {
         this.$refs.workChilds.form.id = id;
         this.$refs.workChilds.form.courseid = courseid;
       }, 50);
     },
     // change
-    workSelect(){
-      this.classid = this.attendanceFrom.searchListThis
-      this.attendance()
+    workSelect() {
+      this.classid = this.attendanceFrom.searchListThis;
+      this.attendance();
     }
   }
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
+.el-dialog {
+  margin-top: 0vh !important;
+  position: absolute;
+  top: 35px;
+  left: 20%;
+  display: flex;
+  flex-direction: column;
+}
 .header {
   .form-search {
     .el-input__inner {

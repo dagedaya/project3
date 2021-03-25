@@ -13,6 +13,9 @@ import 'element-ui/lib/theme-chalk/index.css'
 import HttpRequest from './api/httpRequest.js'
 Vue.http = Vue.prototype.$http = HttpRequest
 
+// 上传头像
+import config from './api/config.js'
+Vue.prototype.$config = config
 
 // 时间转换插件moment
 import Moment from './api/moment.js'

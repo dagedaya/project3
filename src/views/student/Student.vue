@@ -91,12 +91,7 @@
       <CourseList></CourseList>
     </el-dialog>
     <!-- 购课 -->
-    <el-dialog
-      title="购课"
-      class="pty-pro"
-      :visible.sync="buyclass"
-      width="80%"
-    >
+    <el-dialog title="购课" class="pty-pro" :visible.sync="buyclass" width="80%">
       <BuyClass ref="BuyClass" @BuyChild="BuyChild"></BuyClass>
     </el-dialog>
   </div>
@@ -299,22 +294,23 @@ export default {
       margin-top: 17px;
     }
   }
-}
-</style>
-<style lang="less">
-.studentes {
-  .el-dialog{
-    height: auto;
-  }
   .stud_class {
     margin-top: 0 !important;
     position: absolute;
     margin: auto;
-    left: 25%;
+    left: 10%;
     top: 35px;
-    // bottom: 20px;
+    bottom: 20px;
     display: flex;
     flex-direction: column;
+  }
+}
+</style>
+<style lang="less">
+.studentes {
+  .el-dialog {
+    height: auto;
+    left: 0%;
   }
   // 分页
   .paging {

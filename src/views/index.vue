@@ -276,6 +276,7 @@ export default {
     /* text-align: center; */
     /* line-height: 160px; */
     margin-top: 50px;
+    overflow: hidden;
   }
 
   body > .el-container {

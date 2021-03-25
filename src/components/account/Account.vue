@@ -25,7 +25,7 @@
           <img src="../../assets/签到.gif" alt @click="edit(index)" />
         </td>
         <td>
-          <a href="javascript:;" @click="reset(index)" class="a_del">重置密码</a>
+          <a href="javascript:;" @click="reset(index,item.id)" class="a_del">重置密码</a>
           <!-- 删除弹出确认按钮  // 气泡中确定按钮绑定click事件 -->
           <el-popconfirm title="这是一条数据确定删除吗？" @confirm="del(index)">
             <a href="javascript:;" slot="reference" class="a_del">删除</a>
@@ -44,9 +44,12 @@
       :page-size="pageNumber"
     ></el-pagination>
     <!-- 重置密码 -->
-    <el-dialog title="重置密码" :visible.sync="pass" width="47%">
-      <setPassList ref="setpass" @accountChild="accountChild"></setPassList>
-    </el-dialog>
+    <div v-if="pass">
+      <el-dialog title="重置密码" :visible.sync="pass" width="47%">
+        <setPassList ref="setpass" @accountChild="accountChild" :id = 'id'></setPassList>
+      </el-dialog>
+    </div>
+
     <template v-if="dialogVisible">
       <!-- 添加账号 -->
       <el-dialog title="添加账号" :visible.sync="dialogVisible" width="47%">
@@ -65,6 +68,8 @@ export default {
   components: { AccountList, setPassList },
   data() {
     return {
+      // 账号id
+      id:'',
       // 重置密码
       pass: false,
       // 总条数
@@ -138,8 +143,9 @@ export default {
       );
     },
     // 重置密码
-    reset(index) {
+    reset(index,id) {
       this.pass = true;
+      this.id = id
     },
     // 子传
     accountChild(page) {

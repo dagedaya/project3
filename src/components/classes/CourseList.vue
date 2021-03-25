@@ -505,20 +505,18 @@ export default {
 };
 </script>
 <style>
-.el-dialog {
-  margin-top: 0 !important;
-  position: relative;
-  border-radius: 2px;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
-  box-sizing: border-box;
-  top: 30px;
-  bottom: 30px;
-  /* overflow-y: scroll; */
-  height: 90%;
-}
 </style>
 <style lang="less" scoped>
 .courseListes {
+  .el-dialog {
+    margin-top: 0 !important;
+    position: relative;
+    border-radius: 2px;
+    box-sizing: border-box;
+    top: 30px;
+    bottom: 30px;
+    height: 90%;
+  }
   background-color: #fff;
   .el-icon-user {
     font-size: 16px;
@@ -543,8 +541,8 @@ export default {
     height: 40px;
     margin-left: 80%;
     position: relative;
-    top:-65px;
-    right:5px;
+    top: -65px;
+    right: 5px;
   }
   .iconfont {
     font-family: "iconfont" !important;
@@ -697,7 +695,6 @@ export default {
     width: 177px;
     height: 40px;
     float: left;
-    border: 1px solid #ebeef5;
     border-radius: 5px;
     margin-top: 12px;
   }

@@ -49,15 +49,23 @@ export default {
       }
     };
   },
+  props:{
+    id: {
+      type: Number,
+    },
+  },
   mounted() {},
   methods: {
     // 重置账号密码
     loaddata(form) {
+      // console.log(JSON.stringify(this.form))
+      // console.log(this.id)
+      // console.log(this.form.pass)
       this.$refs.form.validate(valid => {
         if (valid) {
           this.$http.post(
             "/company/changepass",
-            { id: this.form.id, pass: this.form.pass },
+            { id: this.id, pass: this.form.pass },
             success => {
               console.log(success);
               this.$message({

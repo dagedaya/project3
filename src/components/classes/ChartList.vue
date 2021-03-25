@@ -61,7 +61,7 @@
       <div class="content">
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="单次排课" name="first">
-            <hour></hour>
+            <!-- <hour></hour> -->
           </el-tab-pane>
           <el-tab-pane label="批量排课" name="second">批量排课</el-tab-pane>
         </el-tabs>
@@ -78,10 +78,10 @@
 </template>
 
 <script>
-import Hour from "../../views/hour/Hour.vue";
+// import Hour from "../../views/hour/Hour.vue";
 import StudentList from "../../components/classes/StudentList.vue";
 export default {
-  components: { Hour, StudentList },
+  components: { StudentList },
   name: "ChartList",
   data() {
     return {
@@ -168,38 +168,11 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .el-calendar__body {
   padding: 12px 20px 35px;
   height: 513px;
   overflow: scroll;
-}
-</style>
-<style lang="less">
-.classes {
-  .el-dialog__body {
-    background-color: #f5f5f5;
-  }
-  .el-calendar-table .el-calendar-day {
-    height: auto;
-    min-height: 85px;
-  }
-  .Houres .dataes {
-    width: 102px;
-    height: 61px;
-    border-left: 6px solid #4381fc;
-    border-radius: 3px;
-    background-color: #f5f5f5;
-    margin-bottom: 15px;
-    margin-left: -4px;
-    margin-top: 4px;
-    cursor: pointer;
-    text-align: center;
-    line-height: 11px;
-  }
-  .el-dialog {
-    height: auto;
-  }
 }
 </style>
 <style lang="less" scoped>
@@ -207,8 +180,9 @@ export default {
   .left {
     float: left;
     .top {
+      // border:1px solid #f5f5f5;
       width: 369px;
-      height: 330px;
+      height: 300px;
       background-color: #fff;
       border-radius: 10px;
       .header {
@@ -225,8 +199,7 @@ export default {
       }
       .content {
         font-size: 14px;
-        margin-top: -6px;
-        margin-left: 30px;
+        border:1px solid #f5f5f5;
         line-height: 12px;
         .pro_one {
           color: #7e8a9a;
@@ -243,11 +216,12 @@ export default {
     }
     .bottom {
       width: 369px;
-      height: 300px;
+      height: 200px;
       background-color: #fff;
       margin-top: 10px;
       border-radius: 10px;
       overflow: scroll;
+      border:1px solid #f5f5f5;
       .one {
         width: 313px;
         height: 38px;
@@ -266,7 +240,7 @@ export default {
       i {
         position: absolute;
         left: 339px;
-        top: 459px;
+        top: 440px;
         font-size: 20px;
       }
       .block img {

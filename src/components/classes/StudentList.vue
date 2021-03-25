@@ -200,7 +200,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .el-select .el-input .el-select__caret {
   color: #c0c4cc;
   font-size: 14px;

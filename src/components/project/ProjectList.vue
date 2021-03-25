@@ -93,8 +93,8 @@ export default {
   }
 };
 </script>
-<style>
-.el-dialog{
+<style lang="less" scoped>
+.el-dialog {
   overflow: hidden;
   height: auto;
 }

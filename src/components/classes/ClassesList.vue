@@ -183,8 +183,5 @@ export default {
     width: 420px;
     border-radius: 4px;
   }
-  .el-input {
-    border: 1px solid #f5f5f5;
-  }
 }
 </style>

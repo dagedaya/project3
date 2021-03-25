@@ -7,7 +7,7 @@
           <el-radio name="rad" label="1">出勤</el-radio>
           <el-radio name="rad" label="2">迟到</el-radio>
           <el-radio name="rad" label="3">请假</el-radio>
-          <el-radio name="rad" label="4">旷课</el-radio>  
+          <el-radio name="rad" label="4">旷课</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item>
@@ -52,7 +52,7 @@ export default {
             message: "签到成功",
             type: "success"
           });
-          this.$emit('workChild')
+          this.$emit("workChild");
         },
         failure => {
           this.$message({

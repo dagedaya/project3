@@ -1,18 +1,54 @@
 <template>
   <div class="HourListes">
+    <div v-if="first_edit">
+      <i class="el-icon-edit" @click="first_edit=!first_edit"></i>
+    </div>
+    <div v-else>
+      <a href="javascript:;" @click="first_edit=!first_edit">取消</a>
+    </div>
     <div class="first">
       <b>基本信息</b>
-      <p>课程名称：{{courseInfo.coursename}}</p>
-      <p>主讲老师：{{courseInfo.teachername}}</p>
-      <p>教师：{{courseInfo.classname}}</p>
+      <td v-show="first_edit">
+        <p>课程名称：{{courseInfo.classname}}</p>
+        <p>主讲老师：{{courseInfo.teachername}}</p>
+        <p>助教老师：{{courseInfo.assistantname}}</p>
+        <p>教室：{{courseInfo.classrooms}}</p>
+      </td>
+      <td v-show="!first_edit">
+        <p>
+          <span>课程名称：</span>
+          <el-input v-model="form.name"></el-input>
+        </p>
+        <p>
+          <span>主讲老师：</span>
+          <el-input v-model="form.name"></el-input>
+        </p>
+        <p>
+          <span>助教老师：</span>
+          <el-input v-model="form.name"></el-input>
+        </p>
+        <p>
+          <span>教师：</span>
+          <el-input v-model="form.name"></el-input>
+        </p>
+      </td>
+    </div>
+    <div v-if="second_edit">
+      <i class="el-icon-edit" @click="second_edit=!second_edit"></i>
+    </div>
+    <div v-else>
+      <a href="javascript:;" @click="second_edit=!second_edit">取消</a>
     </div>
     <div class="second">
       <b>
         <i style="color:red">*</i>&nbsp;&nbsp;&nbsp;
         上课时间
       </b>
-      <p>{{courseInfo.coursedate}}(周一)</p>
-      <p>{{$moment.dateFormat('HH:mm',new Date(courseInfo.starttime))}} - {{$moment.dateFormat("HH:mm",new Date(courseInfo.endtime))}}</p>
+      <p>{{courseInfo.coursedate}}({{courseInfo.week}})</p>
+      <td v-show="second_edit">
+        <p class="times">{{courseInfo.starttime}} - {{courseInfo.endtime}}</p>
+      </td>
+      <td v-show="!second_edit"></td>
     </div>
     <div class="third">
       <!-- 尾部部分 -->
@@ -22,17 +58,17 @@
           <span class="createUser">
             <span class="el-icon-user"></span>添加学员
           </span>
-          <div class="user">
+          <div class="user" v-for="(item,index) in courseInfo.studentList" :key="index">
             <div>
               <span class="elf userCap"></span>
-              Jason
-            </div>
-            <div>
-              <span class="elf userCap"></span>
-              Jason
+              {{item.name}}
             </div>
           </div>
         </div>
+      </div>
+      <div>
+        <el-button class="cancels">修改</el-button>
+        <el-button class="cancel">取消课程</el-button>
       </div>
     </div>
   </div>
@@ -40,19 +76,81 @@
 
 <script>
 export default {
-  name: 'HourList',
-  data () {
+  name: "HourList",
+  data() {
     return {
-      courseInfo:[]
+      // 第一块修改
+      first_edit: true,
+      // 第二块修改
+      second_edit: true,
+      // 第三块修改
+      thrid_edit: true,
+      courseInfo: [],
+      form: {
+        name: ""
+      }
+    };
+  },
+  // 接收课表id
+  props: {
+    tableid: {
+      type: Number
     }
   },
-  mounted () {},
+  created() {
+    // 初始化单个课程
+    this.single();
+  },
+  mounted() {},
   methods: {
-    
+    //单个课程
+    single() {
+      console.log(this.tableid);
+      this.$http.get(
+        "/coursetables/get",
+        { id: this.tableid },
+        success => {
+          console.log(success);
+          this.courseInfo = success.data.model;
+        },
+        fialure => {
+          console.log("获取失败");
+        }
+      );
+    }
+  }
+};
+</script>
+<style lang="less" scoped> 
+.HourListes {
+  a {
+    text-align: center;
+    color: #409eff;
+    font-size: 14px;
+    text-decoration: none;
+    position: relative;
+    left: 1113px;
+    top: 47px;
   }
 }
-</script>
-
+.cancel {
+  margin-top: 95px;
+  text-align: center;
+}
+.cancels {
+  margin-top: 95px;
+  text-align: center;
+  /* display: none; */
+}
+.el-icon-edit {
+  color: #409eff;
+  position: relative;
+  left: 1113px;
+  font-size: 21px;
+  top: 49px;
+  /* display: none; */
+}
+</style>
 <style lang="less" scoped>
 .HourListes {
   .first {
@@ -60,13 +158,13 @@ export default {
     background-color: #f5f5f5;
     b {
       clear: both;
-      margin-left: -310px;
+      margin-left: 24px;
       line-height: 60px;
     }
     p {
       float: left;
       margin-left: 20px;
-      margin-top: 60px;
+      margin-top: 0px;
     }
   }
   .second {
@@ -75,13 +173,16 @@ export default {
     margin: 10px 0px 10px 0px;
     b {
       clear: both;
-      margin-left: -238px;
+      margin-left: -146px;
       line-height: 60px;
     }
     p {
       float: left;
       margin-left: 20px;
       margin-top: 60px;
+    }
+    .times {
+      margin-top: 0px;
     }
   }
   .third {

@@ -91,7 +91,7 @@
     </div>
     <!-- 添加班级/修改班级 -->
     <div v-if="dialogVisible">
-      <el-dialog :title="status" :visible.sync="dialogVisible" width="47%">
+      <el-dialog :title="status" class="cl_ss" :visible.sync="dialogVisible" width="47%">
         <ClassesList ref="classForm" @ClassListChild="AddClass2"></ClassesList>
       </el-dialog>
     </div>
@@ -133,7 +133,7 @@ export default {
       // 总条数
       counts: 0,
       // 每页显示多少条数据
-      pageNum: 10000,
+      pageNum: 6,
       // 主体列表
       dataList: [],
       // 搜索框
@@ -288,12 +288,25 @@ export default {
 };
 </script>
 <style>
-button.el-button.el-button--primary.el-button--mini{
-  margin-top:0px;
+button.el-button.el-button--primary.el-button--mini {
+  margin-top: 0px;
 }
 </style>
 <style lang="less">
 .classes {
+  .cl_ss {
+    left: 25%;
+    width: 100%;
+    height: auto;
+  }
+  .el-dialog {
+    margin-top: 0vh !important;
+    position: absolute;
+    top: 35px;
+    left: 5%;
+    display: flex;
+    flex-direction: column;
+  }
   .text-box {
     margin-top: -28px;
     margin-left: 5px;

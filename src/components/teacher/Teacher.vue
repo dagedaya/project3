@@ -52,7 +52,7 @@
             href="javascript:;"
             @click="edit(index)"
           >修改</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-           <!-- 删除弹出确认按钮  // 气泡中确定按钮绑定click事件 -->
+          <!-- 删除弹出确认按钮  // 气泡中确定按钮绑定click事件 -->
           <el-popconfirm title="这是一条数据确定删除吗？" @confirm="del(index)">
             <a href="javascript:;" slot="reference">删除</a>
           </el-popconfirm>
@@ -71,7 +71,7 @@
     ></el-pagination>
     <!-- 添加教师 -->
     <div v-if="dialogVisible">
-      <el-dialog title="添加教师" :visible.sync="dialogVisible" width="47%" style="margin-top:0vh;margin-top:-70px;">
+      <el-dialog title="添加教师" :visible.sync="dialogVisible" width="47%" style>
         <TeacherList ref="teacherForm" @teacherChild="teacherChild"></TeacherList>
       </el-dialog>
     </div>
@@ -99,9 +99,7 @@ export default {
       courseid: ""
     };
   },
-  mounted() {
-    
-  },
+  mounted() {},
   created() {
     // 初始化教师
     this.loaddata(1);
@@ -184,10 +182,19 @@ export default {
   }
 };
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .teacheres {
   div.text-box > div > div.el-input.el-input--suffix > input {
     border: none !important;
+  }
+  .el-dialog {
+    margin-top: 0vh !important;
+    position: absolute;
+    top: 35px;
+    /* bottom: 20px; */
+    left: 25%;
+    display: flex;
+    flex-direction: column;
   }
 }
 </style>

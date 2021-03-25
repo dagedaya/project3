@@ -5,6 +5,7 @@
 export default {
   // 时间格式化
   dateFormat: function (fmt, date) {
+    // console.log(date);
     let ret
     const opt = {
       'y+': date.getFullYear().toString(), // 年
