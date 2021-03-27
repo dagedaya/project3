@@ -60,23 +60,17 @@
               class="subject"
               @click="handleClickDeail(index,vals.id)"
             >
-              <th>{{vals.classname}}</th>
-              <div></div>
-              <div>1</div>
+              <th>{{vals.coursename}}:{{vals.classname}}</th>
+              <div>{{$moment.dateFormat('MM-dd',new Date(vals.starttime))}}</div>
+              <div>{{vals.teachername}}</div>
             </div>
           </template>
         </td>
       </tr>
     </table>
     <!-- 课程详情 -->
-    <el-dialog
-      class="prodetail"
-      title="课程信息"
-      :visible.sync="dialogVisible"
-      :append-to-body="true"
-      width="80%"
-    >
-      <HourList ref="hourChild" :tableid="tableid"></HourList>
+    <el-dialog title="课程信息" :visible.sync="dialogVisible" :append-to-body="true" width="80%">
+      <HourList ref="hourChild" :tableid="tableid" @hourChild='hourChild'></HourList>
     </el-dialog>
   </div>
 </template>
@@ -95,7 +89,7 @@ export default {
       // 列表
       HourList: [],
       // 课表id
-      tableid:'',
+      tableid: "",
       // 循环列表
       navlist: [],
       CourseDetails: false,
@@ -140,7 +134,7 @@ export default {
         }
       } else {
         if (month < 12) {
-          console.log(month);
+          // console.log(month);
 
           month += 1;
         } else {
@@ -164,7 +158,8 @@ export default {
         },
         success => {
           this.navlist = success.data.list;
-          console.log(this.navlist);
+          // this.navlist.push(success.data.list[0])
+          // console.log(this.navlist);
         },
         failure => {
           console.log("课程汇总数据请求失败");
@@ -181,33 +176,29 @@ export default {
       }, 50);
     },
 
-    handleClickDeail(index,id) {
-      this.tableid = id
+    handleClickDeail(index, id) {
+      this.tableid = id;
       this.dialogVisible = true;
       this.sendData = this.navlist[index];
       console.log(this.tableid);
+    },
+    // 
+    hourChild(){
+      this.dialogVisible = false
+      this.calendar()
     }
   }
 };
 </script>
-
-<style>
+<style lang="less" scoped>
 .el-date-picker table {
   table-layout: fixed;
   width: 100%;
   margin-left: -800px;
   position: relative;
-  top:-40px;
-} 
-.el-dialog {
-  margin-top: 0vh !important;
-  position: absolute;
-  top: 35px;
-  bottom: 20px;
-  left: 10%;
-  display: flex;
-  flex-direction: column;
+  top: -40px;
 }
+
 </style>
 <style lang="less" scoped>
 .houres {
@@ -371,15 +362,18 @@ export default {
   }
   .thead tr td .subject {
     width: 150px;
-    height: 57px;
+    // height: 57px;
+    min-height: 57px;
+    height: auto;
     background-color: #ffffff;
     border-radius: 5px;
     font-size: 13px;
-    position: absolute;
     top: 20px;
     left: 14px;
     border-left: 4px solid #4381fc;
     text-align: center;
+    display: inline-block;
+    margin-left: 10px;
   }
   .thead tr td .subject th {
     padding-top: 7px;

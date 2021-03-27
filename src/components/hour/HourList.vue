@@ -15,36 +15,47 @@
         <p>教室：{{courseInfo.classrooms}}</p>
       </td>
       <td v-show="!first_edit">
-        <el-form ref="form" :model="form" label-width="80px">
-          <p>
-            <el-form-item label="课程名称">
-              <el-select v-model="form.name" placeholder="请选择活动区域">
-                <el-option label="区域一" value="shang"></el-option>
-                <el-option label="区域二" value="shang"></el-option>
-              </el-select>
-            </el-form-item>
-          </p>
+        <el-form ref="form" :v-model="editList" label-width="80px">
           <p>
             <el-form-item label="主讲老师">
-              <el-select v-model="form.name" placeholder="请选择活动区域">
-                <el-option label="区域一"></el-option>
-                <el-option label="区域二"></el-option>
+              <el-select v-model="editList.teacherid" placeholder="请选择主讲老师">
+                <el-option
+                  :label="item.name"
+                  v-for="(item,index) in mainListes"
+                  :key="index"
+                  :value="item.id"
+                ></el-option>
               </el-select>
             </el-form-item>
           </p>
           <p>
             <el-form-item label="助教老师">
-              <el-select v-model="form.name" placeholder="请选择活动区域">
-                <el-option label="区域一"></el-option>
-                <el-option label="区域二"></el-option>
+              <el-select v-model="editList.assistant" placeholder="请选择助教老师">
+                <el-option
+                  :label="item.name"
+                  v-for="(item,index) in teachinges"
+                  :key="index"
+                  :value="item.id"
+                ></el-option>
               </el-select>
             </el-form-item>
           </p>
           <p>
-            <el-form-item label="教师">
-              <el-select v-model="form.name" placeholder="请选择活动区域">
-                <el-option label="区域一"></el-option>
-                <el-option label="区域二"></el-option>
+            <el-form-item label="教室">
+              <el-select v-model="editList.classrooms" placeholder="请选择教室">
+                <el-option
+                  :label="item.name"
+                  v-for="(item,index) in classroomList"
+                  :key="index"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </p>
+          <p>
+            <el-form-item label="扣课">
+              <el-select v-model="editList.pricecounts" placeholder="请选择扣课">
+                <el-option value="shagn"></el-option>
               </el-select>
             </el-form-item>
           </p>
@@ -70,7 +81,8 @@
         <el-time-select
           class="start"
           placeholder="起始时间"
-          v-model="startTime"
+          v-model="editList.starttime"
+          value="shang"
           :picker-options="{
       start: '08:30',
       step: '00:15',
@@ -80,7 +92,7 @@
         <el-time-select
           class="end"
           placeholder="结束时间"
-          v-model="endTime"
+          v-model="editList.endtime"
           :picker-options="{
       start: '08:30',
       step: '00:15',
@@ -94,31 +106,66 @@
       <!-- 尾部部分 -->
       <div class="floor">
         <div class="box">
-          <h3>选择学员(0)</h3>
-          <span class="createUser">
+          <h3>选择学员({{studentList.length}})</h3>
+          <span class="createUser" @click="dialogVisible=true">
             <span class="el-icon-user"></span>添加学员
           </span>
-          <div class="user" v-for="(item,index) in courseInfo.studentList" :key="index">
-            <div>
-              <span class="elf userCap"></span>
-              {{item.name}}
-            </div>
-          </div>
+          <table>
+            <tr>
+              <td v-for="(item,index) in studentList" :key="index">
+                <span class="elf userCap"></span>
+                {{item.name}}
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>
     <div>
-      <div class="cancel">取消课程</div>
-      <div class="edites">修改课程</div>
+      <div class="cancel" @click="cancel()">取消课程</div>
+      <div class="edites" @click="submitForm()">修改课程</div>
     </div>
+    <div style="clear:both"></div>
+    <!-- 选择成员 -->
+    <el-dialog
+      title="选择学员"
+      style="margin-top:0vh;margin-top:-70px;"
+      :visible.sync="dialogVisible"
+      :append-to-body="true"
+      width="60%"
+    >
+      <StudentList  @changeStudent="changeStudent"></StudentList>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import StudentList from "../classes/StudentList.vue";
 export default {
-  name: "HourList",
+  components: {
+    StudentList
+  },
   data() {
     return {
+      // 选择学员
+      dialogVisible: false,
+      // 主讲老师
+      mainListes: [],
+      // 助教老师
+      teachinges: [],
+      // 教室
+      classroomList: [],
+      // 学生列表
+      studentList: [],
+      // 修改学生
+      studentes: [],
+      // 新增学员插班排课表单
+      studentJoinForm: {
+        classid: null,
+        studentes: []
+      },
+      // 修改课程的信息
+      editList: {},
       startTime: "",
       endTime: "",
       // 第一块修改
@@ -127,10 +174,10 @@ export default {
       second_edit: true,
       // 第三块修改
       thrid_edit: true,
+      // 单个课程
       courseInfo: [],
-      form: {
-        name: ""
-      }
+      // //  模板定义
+      // form: {}
     };
   },
   // 接收课表id
@@ -142,37 +189,181 @@ export default {
   created() {
     // 初始化单个课程
     this.single();
+    // console.log(this.studentList);
+    // 初始化主讲老师
+    this.mainList();
+    // 初始化助教老师
+    this.teaching();
+    // 初始化教室
+    this.classrooms();
   },
   mounted() {},
   methods: {
     //单个课程
     single() {
-      console.log(this.tableid);
+      // console.log(this.tableid);
       this.$http.get(
         "/coursetables/get",
         { id: this.tableid },
         success => {
-          console.log(success);
           this.courseInfo = success.data.model;
+          this.studentList = success.data.students;
+          // console.log(this.studentList);
+          var students = [];
+          for (var i in this.students) {
+            // console.log("i啊", i);
+            students.push({ id: this.students[i].id });
+          }
+          this.studentJoinForm.classid = success.data.model.classid;
+          this.editList = {
+            // 单个课程id
+            id: this.courseInfo.id,
+            classrooms: this.courseInfo.classname,
+            // 单节课扣学员课时
+            pricecounts: this.courseInfo.pricecounts,
+            // 教师id
+            teacherid: this.courseInfo.teacherid,
+            // 助教id
+            assistant: this.courseInfo.assistant,
+            // 课程日期
+            // coursedate: null,
+            coursedate: "2021-03-21",
+            // 开始日期
+            starttime: this.courseInfo.starttime,
+            // 结束日期
+            endtime: this.courseInfo.endtime,
+            // 学生列表
+            studentes: this.studentList
+          };
+          // this.studentes = success.data.students;
+          // console.log(this.editList);
         },
         fialure => {
-          console.log("获取失败");
+          console.log("获取失败了");
         }
       );
     },
-    // 课程信息
-    
+    // 修改单个课程
+    submitForm() {
+      // console.log("修改", this.editList);
+      this.$http.post(
+        "/coursetables/edit",
+        this.editList,
+        success => {
+          // console.log(success);
+          this.first_edit = !this.first_edit;
+          this.second_edit = !this.second_edit;
+          this.single();
+        },
+        fialure => {
+          console.log("修改失败");
+        }
+      );
+    },
+    // 删除单个课程（取消排课）
+    cancel() {
+      this.$http.get(
+        "/coursetables/delete",
+        { id: this.tableid },
+        success => {
+          // console.log(success);
+          this.$message.success("取消排课成功");
+          this.$emit("hourChild");
+        },
+        failure => {
+          console.log("取消排课失败");
+        }
+      );
+    },
+    //主讲老师
+    mainList() {
+      this.$http.get(
+        "/teachers/list",
+        { cat: 1, page: 1, psize: 10000 },
+        success => {
+          // console.log(success);
+          this.mainListes = success.data.list;
+        },
+        failure => {
+          console.log("主讲老师获取失败");
+        }
+      );
+    },
+    // 助教老师
+    teaching() {
+      this.$http.get(
+        "/teachers/list",
+        { cat: 2, page: 1, psize: 10000 },
+        success => {
+          // console.log(success);
+          this.teachinges = success.data.list;
+        },
+        failure => {
+          console.log("主讲老师获取失败");
+        }
+      );
+    },
+    // 教室
+    classrooms() {
+      this.$http.get(
+        "/classrooms/list",
+        { page: 1 },
+        success => {
+          // console.log(success);
+          this.classroomList = success.data.list;
+        },
+        fialure => {
+          console.log("获取教室信息失败");
+        }
+      );
+    },
+    // 添加学员
+    changeStudent(list) {
+      this.dialogVisible = false;
+      for (var i in list) {
+        // 下标
+        // console.log(i)
+        this.studentList.push(list[i]);
+      }
+      console.log(this.studentList);
+    },  
   }
 };
 </script>
+<style lang="less">
+.HourListes {
+  .el-dialog {
+    margin-top: 0vh !important;
+    position: relative;
+    top: 35px;
+    margin: 0px auto 50px;
+    border-radius: 2px;
+    box-sizing: border-box;
+    width: 50%;
+  }
+  .el-dialog__wrapper {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    /* overflow: auto; */
+    margin: 0;
+  }
+}
+</style>
 <style>
-.HourListes .el-input--suffix .el-input__inner {
+.el-input--suffix .el-input__inner {
   padding-right: 30px;
   width: 183px;
 }
 </style>
 <style lang="less" scoped>
 .HourListes {
+  // 添加学员
+  .createUser {
+    cursor: pointer;
+  }
   a {
     text-align: center;
     color: #409eff;
@@ -191,15 +382,6 @@ export default {
   top: 49px;
   /* display: none; */
 }
-.el-dialog {
-    margin-top: 0vh !important;
-    position: absolute;
-    top: 35px;
-    /* bottom: 20px; */
-    left: 11%;
-    display: flex;
-    flex-direction: column;
-}
 </style>
 <style lang="less" scoped>
 .HourListes {
@@ -215,6 +397,7 @@ export default {
     float: right;
     background-color: #2d67f6;
     margin-top: 8px;
+    cursor: pointer;
   }
   .cancel {
     width: 100px;
@@ -228,6 +411,7 @@ export default {
     float: right;
     margin-top: 8px;
     margin-left: 20px;
+    cursor: pointer;
   }
   // 时间
   .start {

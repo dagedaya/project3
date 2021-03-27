@@ -23,6 +23,8 @@ Vue.prototype.$moment = Moment
 
 Vue.config.productionTip = false
 
+// 判断是否登录
+
 new Vue({
   router,
   store,

@@ -5,6 +5,28 @@
       <el-header height="60px">
         <img src="@/assets/logo.png" alt class="logo" />
         <h1>云教务管理系统</h1>
+        <el-form ref="form" :model="form" label-width="80px">
+          <el-form-item label="校区：" class="cap_header">
+            <el-select v-model="form.region" placeholder="请选择校区">
+              <el-option
+                :label="item.title"
+                v-for="(item,index) in campusList"
+                :key="index"
+                :clearable="true"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <el-menu class="el-menu-demo" mode="horizontal">
+          <img src="../assets/个人中心.png" alt width="25" height="25" class="center" />
+          <el-submenu index="2">
+            <template slot="title">个人中心</template>
+            <el-menu-item index="2-1" @click="dialogVisible = true">账号信息</el-menu-item>
+            <el-menu-item index="2-2">选项2</el-menu-item>
+            <el-menu-item index="2-3">选项3</el-menu-item>
+          </el-submenu>
+        </el-menu>
       </el-header>
       <el-container>
         <!-- 左侧 -->
@@ -24,7 +46,8 @@
             </ul>
           </div>
           <el-menu
-            router :default-active="$route.path"
+            router
+            :default-active="$route.path"
             class="el-menu-vertical-demo"
             @open="handleOpen"
             @close="handleClose"
@@ -57,13 +80,25 @@
         </el-main>
       </el-container>
     </el-container>
+    <!-- 账号信息 -->
+    <el-dialog title="账号信息" :visible.sync="dialogVisible" width="50%">
+      <accountInformation></accountInformation>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import accountInformation from "../../src/components/index/accountInformation.vue";
 export default {
+  components: { accountInformation },
   data() {
     return {
+      // 账号信息
+      dialogVisible: false,
+      // 表头
+      form: {},
+      // 校区信息
+      campusList: [],
       isCollapse: true,
       // 左侧栏默认
       status: 0,
@@ -138,6 +173,8 @@ export default {
         this.status = i;
       }
     }
+    // 初始化校区信息
+    this.campus();
   },
   mounted() {},
   methods: {
@@ -153,10 +190,29 @@ export default {
       this.$router.push({
         path: this.elList[val].path
       });
+    },
+    // 获取校区信息
+    campus() {
+      this.$http.get(
+        "/campus/list",
+        { page: 1 },
+        success => {
+          console.log(success);
+          this.campusList = success.data.list;
+        },
+        failure => {
+          console.log("获取信息失败");
+        }
+      );
     }
   }
 };
 </script>
+<style>
+.el-submenu__title {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+</style>
 <style>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
@@ -173,6 +229,24 @@ export default {
 </style>
 <style lang="less" scoped>
 .indexes {
+  .center {
+    margin-top: 18px;
+    position: relative;
+    left: 22px;
+    outline: none;
+  }
+  .el-menu-demo {
+    clear: both;
+    float: right;
+    margin-top: -59px;
+    height: 55px;
+    margin-right: 23px;
+  }
+  .cap_header {
+    float: right;
+    margin-right: 190px;
+    margin-top: 10px;
+  }
   .set {
     color: #4f5f78;
     margin-top: -31px;
@@ -241,6 +315,7 @@ export default {
   }
   .el-header h1 {
     margin-top: -1px;
+    float: left;
   }
 
   /* element-ui 自带样式 */

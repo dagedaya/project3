@@ -61,7 +61,7 @@
       <div class="content">
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="单次排课" name="first">
-            <!-- <hour></hour> -->
+            <ChartChild></ChartChild>
           </el-tab-pane>
           <el-tab-pane label="批量排课" name="second">批量排课</el-tab-pane>
         </el-tabs>
@@ -78,10 +78,10 @@
 </template>
 
 <script>
-// import Hour from "../../views/hour/Hour.vue";
+import ChartChild from "../../components/classes/ChartChild.vue"
 import StudentList from "../../components/classes/StudentList.vue";
 export default {
-  components: { StudentList },
+  components: { StudentList, ChartChild},
   name: "ChartList",
   data() {
     return {
@@ -220,7 +220,7 @@ export default {
       background-color: #fff;
       margin-top: 10px;
       border-radius: 10px;
-      overflow: scroll;
+      overflow-y:auto;
       border:1px solid #f5f5f5;
       .one {
         width: 313px;

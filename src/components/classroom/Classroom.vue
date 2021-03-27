@@ -205,10 +205,9 @@ export default {
     border: none !important;
   }
   .student .el-input__inner {
-    margin-top: px;
+    margin-top: 0px;
   }
 }
-</style>
 </style>
 <style lang="less">
 .classroomes {
@@ -247,18 +246,6 @@ export default {
     }
   }
 
-  // 表单
-  /* 表格 */
-  // .table-s {
-  //   float: left;
-  //   width: 48px;
-  //   height: 48px;
-  //   background-image: url("../../assets/ico.png");
-  // }
-  span:nth-of-type(1) {
-    // background-position: -82px -234px;
-    // margin-left: 10px;
-  }
   /* 列表 */
   .tab {
     width: 96%;

@@ -43,11 +43,10 @@
             </template>
           </el-table-column>
           <el-table-column width="40">
-            <span>
-              <img src="../../assets/ico1.png" alt />
-              <!-- {{data.$index}} -->
-              <!-- {{data.row.name}} -->
-            </span>
+            <img src="../../assets/ico1.png" alt />
+            <!-- {{data.$index}} -->
+            <!-- {{data.row.name}} -->
+            <span></span>
           </el-table-column>
           <el-table-column prop="name"></el-table-column>
         </el-table>
@@ -153,6 +152,7 @@ export default {
         },
         success => {
           this.tableData = success.data.list;
+          console.log(this.tableData);
         },
         failure => {
           console.log("获取数据失败");
@@ -200,27 +200,21 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style>
+.el-input--suffix .el-input__inner {
+  padding-right: 30px;
+  /* border: none; */
+  border:1px solid #dee3e9;
+}
+</style>
+<style lang="less" scoped>
 .el-select .el-input .el-select__caret {
   color: #c0c4cc;
   font-size: 14px;
   transition: transform 0.3s;
   transform: rotateZ(180deg);
   cursor: pointer;
-  /* margin-top: -30px; */
   position: relative;
-  /* top: -19px; */
-}
-.el-dialog {
-  margin-top: 0 !important;
-  position: relative;
-  border-radius: 2px;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
-  box-sizing: border-box;
-  top: 30px;
-  bottom: 30px;
-  /* overflow-y: scroll; */
-  height: 640px;
 }
 </style>
 <style lang="less">
@@ -235,7 +229,7 @@ export default {
 .studentes {
   .save {
     float: right;
-    margin-top: 11px;
+    margin-top: -22px;
   }
   .first-left {
     .el-table::before {
@@ -332,7 +326,7 @@ export default {
   .second-right {
     // 滚轮
     .stu-table2 {
-      height: 440px;
+      height: 400px;
       overflow: auto;
       margin-top: 30px;
     }

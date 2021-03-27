@@ -236,7 +236,13 @@
       </div>
     </div>
     <!-- 选择成员 -->
-    <el-dialog title="选择学员" :visible.sync="dialogVisible" :append-to-body="true" width="60%">
+    <el-dialog
+      title="选择学员"
+      style="margin-top:0vh;margin-top:-70px;"
+      :visible.sync="dialogVisible"
+      :append-to-body="true"
+      width="60%"
+    >
       <StudentList @changeStudent="changeStudentes"></StudentList>
     </el-dialog>
   </div>
@@ -507,12 +513,18 @@ export default {
 <style>
 </style>
 <style lang="less" scoped>
+.el-date-picker table {
+  table-layout: fixed;
+  width: 100%;
+  /* margin-left: -800px; */
+  position: relative;
+  /* top: -40px; */
+}
 .courseListes {
   .el-date-picker table {
     table-layout: fixed;
     width: 100%;
     position: relative;
-    top: -40px;
   }
   .el-dialog {
     margin-top: 0 !important;

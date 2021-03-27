@@ -158,6 +158,12 @@ export default {
     display: flex;
     flex-direction: column;
   }
+  .el-pagination__total{
+    margin-top:-1px!important;
+  }
+}
+div.text-box > div > div.el-input.el-input--suffix > input{
+  border:none;
 }
 </style>
 <style lang="less">

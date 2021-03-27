@@ -228,15 +228,6 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.header {
-  .form-search {
-    .el-input__inner {
-      border: none;
-      height: 33px;
-      background-color: transparent;
-    }
-  }
-}
 </style>
 <style lang="less">
 .attendance-body {
@@ -319,7 +310,7 @@ export default {
   .el-select .el-input__inner {
     border: 0;
     outline: none;
-    background-color: rgba(0, 0, 0, 0);
+    margin-top:-3px;
   }
   .header {
     height: 52px;
@@ -354,17 +345,25 @@ export default {
   .header .search {
     width: 200px;
     height: 35px;
-    border: 1px solid #dee3e9;
+    // border: 1px solid #dee3e9;
     border-radius: 2px;
     margin-left: 15px;
     padding-left: 100px;
     padding-right: 50px;
     outline: none;
+    .el-input__inner {
+      border: none;
+      height: 33px;
+      background-color: transparent;
+    }
   }
   .form-search {
     position: relative;
     display: inline-block;
-    margin-top: 5px;
+    margin-top: 7px;
+    border:1px solid #dee3e9;
+    background-color: #fff;
+    margin-left: 10px;
   }
   .el-form {
     display: inline-block;
@@ -387,7 +386,7 @@ export default {
       background: none !important;
     }
     .el-input .el-select__caret {
-      margin-top: 4px;
+      margin-top: 1px;
     }
   }
   .connect p {
