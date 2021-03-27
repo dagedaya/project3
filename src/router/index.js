@@ -91,7 +91,7 @@ const routes = [
   {
     path: '*',
     component: () => import('@/views/error/404.vue')
-  }
+  },
 ]
 
 

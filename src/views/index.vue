@@ -24,7 +24,7 @@
             <template slot="title">个人中心</template>
             <el-menu-item index="2-1" @click="dialogVisible = true">账号信息</el-menu-item>
             <el-menu-item index="2-2">选项2</el-menu-item>
-            <el-menu-item index="2-3">选项3</el-menu-item>
+            <el-menu-item index="2-3" @click="loginOut()">退出登录</el-menu-item>
           </el-submenu>
         </el-menu>
       </el-header>
@@ -204,6 +204,17 @@ export default {
           console.log("获取信息失败");
         }
       );
+    },
+    // 退出登录
+    loginOut() {
+      localStorage.removeItem("token");
+      this.$router.push({
+        path: "/login"
+      });
+      this.$message({
+        message: "请先登录",
+        type: "success"
+      });
     }
   }
 };

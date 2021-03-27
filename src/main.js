@@ -23,7 +23,28 @@ Vue.prototype.$moment = Moment
 
 Vue.config.productionTip = false
 
+
 // 判断是否登录
+router.beforeEach((to, from, next) => {
+  let isLogin = localStorage.getItem('token')
+  if (isLogin) {
+    // 如何用户信息存在则往下执行
+    next()
+  } else {
+    if (to.path === "/login") {
+      next()
+    } else {
+      ElementUI.Message({
+        message: '请先登录',
+        type: 'success'
+      });
+      next('/login')
+    }
+  }
+});
+
+// 在页面的停留时间
+
 
 new Vue({
   router,
