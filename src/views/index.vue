@@ -162,7 +162,7 @@ export default {
           checkNo: {
             backgroundPos: "background-position:-88px -714px"
           }
-        }
+        },
       ]
     };
   },

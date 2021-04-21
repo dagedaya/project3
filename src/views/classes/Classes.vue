@@ -134,7 +134,7 @@ export default {
       // 总条数
       counts: 0,
       // 每页显示多少条数据
-      pageNum: 6,
+      pageNum: 1,
       // 主体列表
       dataList: [],
       // 搜索框
@@ -231,7 +231,7 @@ export default {
     // 添加课程标题
     save() {
       this.dialogVisible = true;
-      this.status = "添加课程";
+      this.status = "添加班级";
     },
     // 请求课程接口
     courseInfo() {

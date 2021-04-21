@@ -91,7 +91,7 @@
                     <img src="../../assets/到达.gif" alt srcset />
                     <span>{{ item2.checkedName }}</span>
                     <img src="../../assets/签到.gif" alt srcset />
-                    <span class="sign-in" @click="qiandao(item.id,item2.id)">签到</span>
+                    <span class="sign-in" @click="qiandao(item.id,item2.id)">签到</span>  
                   </div>
                 </div>
               </div>
