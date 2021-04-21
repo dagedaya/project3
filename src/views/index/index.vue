@@ -8,6 +8,10 @@
         <!-- 左上 -->
         <div class="left-top">
           <div class="today">
+            <i
+              class="iconfont icon-shuju"
+              style="font-size:20px;color:#f54f43"
+            ></i>
             今日数据变动
           </div>
           <div class="add">
@@ -45,59 +49,72 @@
         <!-- 右上面 -->
         <div class="right-top">
           <div class="remind">
-            <div>事项提醒</div>
-            <div>0</div>
+            <div>
+              <i
+                class="iconfont icon-tixingtianchong"
+                style="font-size:20px;color:#68bce8;padding-right:10px"
+              ></i>
+              <span class="warn">事项提醒</span>
+            </div>
+
+            <div class="lingfont">0</div>
           </div>
           <div class="list">
             <div>
               <div class="money">欠费</div>
               <div class="font">有0位学员课时低于2</div>
             </div>
-            <div class="icon">></div>
+            <div class="icon"><i class="iconfont icon-yousanjiao"></i></div>
           </div>
           <div class="list">
             <div>
               <div class="money">欠费</div>
               <div class="font">有0位学员课时低于2</div>
             </div>
-            <div class="icon">></div>
+            <div class="icon"><i class="iconfont icon-yousanjiao"></i></div>
           </div>
           <div class="list">
             <div>
               <div class="money">欠费</div>
               <div class="font">有0位学员课时低于2</div>
             </div>
-            <div class="icon">></div>
+            <div class="icon"><i class="iconfont icon-yousanjiao"></i></div>
           </div>
           <div class="list">
             <div>
               <div class="money">欠费</div>
               <div class="font">有0位学员课时低于2</div>
             </div>
-            <div class="icon">></div>
+            <div class="icon"><i class="iconfont icon-yousanjiao"></i></div>
           </div>
           <div class="list">
             <div>
               <div class="money">欠费</div>
               <div class="font">有0位学员课时低于2</div>
             </div>
-            <div class="icon">></div>
+            <div class="icon"><i class="iconfont icon-yousanjiao"></i></div>
           </div>
           <div class="list">
             <div>
               <div class="money">欠费</div>
               <div class="font">有0位学员课时低于2</div>
             </div>
-            <div class="icon">></div>
+            <div class="icon"><i class="iconfont icon-yousanjiao"></i></div>
           </div>
         </div>
-        <!-- 有下面 -->
+        <!-- 右下面 -->
         <div class="right-bottom">
           <div class="list-bottom">
             <div>
-              <div class="birthday">生日学员</div>
+              <i
+                class="iconfont icon-dangao"
+                style="font-size:20px;color:#69bce8;padding-left:20px"
+              ></i>
+              <span class="birthday">生日学员</span>
             </div>
-            <div class="ling">0<span>></span></div>
+            <div class="ling">
+              0<span><i class="iconfont icon-yousanjiao"></i></span>
+            </div>
           </div>
           <div class="member">
             <div class="boder">
@@ -140,6 +157,7 @@ export default {
 * {
   margin: 0px;
   padding: 0px;
+  font-size: 14px;
 }
 .home {
   width: 100%;
@@ -154,14 +172,12 @@ export default {
   .main {
     height: 580px;
     margin-left: 10px;
+    max-width: 100%;
     display: flex;
     // 整个左面
     .left-All {
-      z-index: 999;
-      // min-width: 300px;
-      height: 100%;
+      margin-right: 20px;
       flex: 1;
-      margin-right: 320px;
       .left-top {
         height: 220px;
         margin-bottom: 20px;
@@ -181,7 +197,8 @@ export default {
           .student {
             color: #a47678;
           }
-          width: 170px;
+          width: auto;
+          width: 15%;
           height: 130px;
           border-right: 1px solid #f5f5f5;
           text-align: center;
@@ -199,11 +216,17 @@ export default {
     }
     // 整个右面
     .right-All {
-      position: fixed;
-      right: 8px;
+      .warn {
+        font-weight: 600;
+      }
+      float: right;
+      min-width: 300px;
       height: 100%;
       width: 300px;
       .right-top {
+        .lingfont {
+          font-weight: 600;
+        }
         height: 300px;
         background-color: #fff;
         .remind {
@@ -250,7 +273,7 @@ export default {
           display: flex;
           justify-content: space-between;
           border-bottom: 1px solid #f5f5f5;
-            margin-left: 10px;
+          margin-left: 10px;
 
           .boder {
             img {
@@ -273,9 +296,11 @@ export default {
           line-height: 50px;
         }
         .birthday {
-          padding-left: 20px;
+          padding-left: 10px;
+          font-weight: 600;
         }
         .ling {
+          font-weight: 600;
           padding-right: 20px;
         }
       }

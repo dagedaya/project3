@@ -1,0 +1,44 @@
+{
+  "id": "2501532",
+  "name": "vue",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "20797374",
+      "name": "右三角",
+      "font_class": "yousanjiao",
+      "unicode": "e6c8",
+      "unicode_decimal": 59080
+    },
+    {
+      "icon_id": "145728",
+      "name": "提醒_填充",
+      "font_class": "tixingtianchong",
+      "unicode": "e695",
+      "unicode_decimal": 59029
+    },
+    {
+      "icon_id": "5060338",
+      "name": "蛋糕",
+      "font_class": "dangao",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "5853377",
+      "name": "数据",
+      "font_class": "shuju",
+      "unicode": "e62b",
+      "unicode_decimal": 58923
+    },
+    {
+      "icon_id": "16117687",
+      "name": "统计",
+      "font_class": "tongji",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    }
+  ]
+}

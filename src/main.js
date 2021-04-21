@@ -9,6 +9,9 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // 安装插件
 
+// 引入阿里巴巴矢量图
+import './assets/icon/iconfont.css'
+
 // 封装的axios
 import HttpRequest from './api/httpRequest.js'
 Vue.http = Vue.prototype.$http = HttpRequest
