@@ -80,6 +80,18 @@ const routes = [
         name: "account",
         component: () => import("@/components/account/Account.vue")
       },
+      // 轮播图管理
+      {
+        path: "/slideshow",
+        name: "slideshow",
+        component: () => import("@/components/slideshow/Slideshow.vue")
+      },
+      // 动态管理
+      {
+        path: "/state",
+        name: "state",
+        component: () => import("@/components/state/State.vue") 
+      },
       // 首页
       {
         path: "/index",

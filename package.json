@@ -10,6 +10,8 @@
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "echarts": "^5.1.1",
+    "echarts-for-react": "^3.0.1",
     "element-china-area-data": "^5.0.2",
     "element-ui": "^2.15.1",
     "less-loader": "^5.0.0",
@@ -17,7 +19,8 @@
     "vue": "^2.6.11",
     "vue-axios": "^3.2.4",
     "vue-router": "^3.2.0",
-    "vuex": "^3.4.0"
+    "vuex": "^3.4.0",
+    "wangeditor": "^2.1.23"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

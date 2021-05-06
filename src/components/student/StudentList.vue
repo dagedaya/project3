@@ -95,8 +95,10 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           console.log(JSON.stringify(this.form));
+          this.form.classids=[]
           this.$http.post(
             "/students/add",
+
             this.form,
             success => {
               this.restModel();

@@ -27,6 +27,7 @@ Vue.prototype.$moment = Moment
 Vue.config.productionTip = false
 
 
+
 // 判断是否登录
 router.beforeEach((to, from, next) => {
   let isLogin = localStorage.getItem('token')

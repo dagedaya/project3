@@ -178,6 +178,7 @@ export default {
     // 全选
     changeAll() {
       if (this.changeStatus) {
+        console.log(this.changeStatus)
         this.checkList = [];
         this.changeStatus = false;
       } else {

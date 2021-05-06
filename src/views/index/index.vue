@@ -16,32 +16,88 @@
           </div>
           <div class="add">
             <div class="student">新增学员</div>
-            <p class="zier">0&nbsp;&nbsp;<span class="student">(人)</span></p>
+            <p class="zier">
+              {{ todayList.addCounts }}&nbsp;&nbsp;<span class="student"
+                >(人)</span
+              >
+            </p>
           </div>
           <div class="add">
-            <div class="student">新增学员</div>
-            <p class="zier">0&nbsp;&nbsp;<span class="student">(人)</span></p>
+            <div class="student">待续费学员</div>
+            <p class="zier">
+              {{ todayList.renewCounts }}&nbsp;&nbsp;<span class="student"
+                >(人)</span
+              >
+            </p>
           </div>
           <div class="add">
-            <div class="student">新增学员</div>
-            <p class="zier">0&nbsp;&nbsp;<span class="student">(人)</span></p>
+            <div class="student">今日课节</div>
+            <p class="zier">
+              {{ todayList.courseCounts }}&nbsp;&nbsp;<span class="student"
+                >(人)</span
+              >
+            </p>
           </div>
           <div class="add">
-            <div class="student">新增学员</div>
-            <p class="zier">0&nbsp;&nbsp;<span class="student">(人)</span></p>
+            <div class="student">请假人数</div>
+            <p class="zier">
+              {{ todayList.leaveCounts }}&nbsp;&nbsp;<span class="student"
+                >(人)</span
+              >
+            </p>
           </div>
           <div class="add">
-            <div class="student">新增学员</div>
-            <p class="zier">0&nbsp;&nbsp;<span class="student">(人)</span></p>
+            <div class="student">上课学员人数</div>
+            <p class="zier">
+              {{ todayList.studentCounts }}&nbsp;&nbsp;<span class="student"
+                >(人)</span
+              >
+            </p>
           </div>
           <div class="add add1">
-            <div class="student">新增学员</div>
-            <p class="zier">0&nbsp;&nbsp;<span class="student">(人)</span></p>
+            <div class="student">上课老师人数</div>
+            <p class="zier">
+              {{ todayList.teacherCounts }}&nbsp;&nbsp;<span class="student"
+                >(人)</span
+              >
+            </p>
           </div>
         </div>
         <!-- 左下 -->
         <div class="left-bottom">
-          下面
+          <div class="xiala">
+            <el-form ref="form" :model="form" label-width="80px">
+              <el-form-item class="cap_header">
+                <el-select v-model="form.region" placeholder="请选择年份">
+                  <el-option
+                    :label="item.title"
+                    v-for="(item, index) in campusList"
+                    :key="index"
+                    :clearable="true"
+                    :value="item.id"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-form>
+          </div>
+
+          <div class="statistics">
+            <i
+              class="iconfont icon-tongji1"
+              style="color:#6abde9;font-size:20px;margin-right:10px"
+            ></i
+            >学生数统计
+          </div>
+          <div
+            id="myChart"
+            :style="{
+              width: '920px',
+              height: '300px',
+              position: 'absolute',
+              left: '30px',
+              top: '23px'
+            }"
+          ></div>
         </div>
       </div>
       <!-- 整个右面 -->
@@ -113,29 +169,31 @@
               <span class="birthday">生日学员</span>
             </div>
             <div class="ling">
-              0<span><i class="iconfont icon-yousanjiao"></i></span>
+              {{ birthdayList.length
+              }}<span><i class="iconfont icon-yousanjiao"></i></span>
             </div>
           </div>
-          <div class="member">
+          <div
+            class="member"
+            v-for="(item, index) in birthdayList"
+            :key="index"
+          >
             <div class="boder">
-              <img src="../../assets/ico1.png" style="width:20px;height:20px" />
-              <div class="wenzi">钟尚阳</div>
+              <img
+                :src="imgUrl + item.photo"
+                v-if="item.photo != null && item.photo != ''"
+                style="width:20px;height:20px"
+              />
+              <img
+                src="../../assets/ico1.png"
+                v-else
+                style="width:20px;height:20px;border-radius:50%"
+              />
+              <div class="wenzi">{{ item.name }}</div>
             </div>
-            <div class="time">2021-04-21</div>
-          </div>
-          <div class="member">
-            <div class="boder">
-              <img src="../../assets/ico1.png" style="width:20px;height:20px" />
-              <div class="wenzi">钟尚阳</div>
+            <div class="time">
+              {{ $moment.dateFormat("yyyy-MM-dd", new Date(item.birthday)) }}
             </div>
-            <div class="time">2021-04-21</div>
-          </div>
-          <div class="member">
-            <div class="boder">
-              <img src="../../assets/ico1.png" style="width:20px;height:20px" />
-              <div class="wenzi">钟尚阳</div>
-            </div>
-            <div class="time">2021-04-21</div>
           </div>
         </div>
       </div>
@@ -144,16 +202,205 @@
 </template>
 
 <script>
+import echarts from "echarts";
 export default {
   data() {
-    return {};
+    return {
+      form: {
+        region: ""
+      },
+      // 校区信息
+      campusList: [],
+      // 月份
+      monthList: [],
+      // 数据
+      countsList: [],
+      // 单月月份
+      AloneList: [],
+      // 单月数据
+      AloneCountsList: [],
+      //学生统计总数
+      studentList: [],
+      // 当前时间
+      year: new Date(),
+      // 今日数据变动
+      todayList: [],
+      // 学生生日信息
+      birthdayList: [],
+      // 头像路径
+      imgUrl: this.$config.imgUrl
+    };
   },
-  mounted() {},
-  methods: {}
+  mounted() {
+    // this.drawLine();
+  },
+  created() {
+    this.campus();
+    // 获取今日数据变动
+    this.todaycounts();
+    // 获取学生生日信息
+    this.birthday();
+    // 获取学生统计总数
+    this.studentTotal();
+    // 学生单月增加统计
+    this.studentAlone();
+  },
+  methods: {
+    // 获取校区信息
+    campus() {
+      this.$http.get(
+        "/campus/list",
+        { page: 1 },
+        success => {
+          console.log(success);
+          this.campusList = success.data.list;
+        },
+        failure => {
+          console.log("获取信息失败");
+        }
+      );
+    },
+    // 下拉改变
+    change() {
+      this.$forceUpdate();
+    },
+    // 获取今日数据变动
+    todaycounts() {
+      this.$http.post(
+        "/students/todaycounts",
+        null,
+        success => {
+          this.todayList = success.data.model;
+          console.log("今日数据变动：", this.todayList);
+        },
+        failure => {
+          console.log("获取今日数据变动失败");
+        }
+      );
+    },
+    // 获取学生生日数据
+    birthday() {
+      this.$http.post(
+        "/students/birthday",
+        null,
+        success => {
+          console.log(success);
+          this.birthdayList = success.data.list;
+          console.log("学生生日信息：", this.birthdayList);
+        },
+        failure => {
+          console.log("获取学生生日信息失败");
+        }
+      );
+    },
+    // 学生总数统计
+    studentTotal() {
+      // this.$moment.dataFormat(yyyy,this.year)
+      this.$http.post(
+        "/students/allcounts?year=2020",
+        null,
+        success => {
+          console.log(success);
+          for (var i in success.data.list) {
+            // 月份
+            this.monthList.push(success.data.list[i].month);
+            // 数据
+            this.countsList.push(success.data.list[i].counts);
+          }
+          console.log("月份", this.monthList);
+          console.log("数据", this.countsList);
+          this.drawLine();
+        },
+        failure => {
+          console.log("获取学生总数统计失败");
+        }
+      );
+    },
+    // 学生单月增加统计
+    studentAlone() {
+      this.$http.post(
+        "/students/monthcounts?year=2020",
+        null,
+        success => {
+          console.log(success);
+          for (var i in success.data.list) {
+            // 月份
+            this.AloneList.push(success.data.list[i].month);
+            // 数据
+            this.AloneCountsList.push(success.data.list[i].counts);
+          }
+          console.log("单月月份", this.AloneList);
+          console.log("单月数据", this.AloneCountsList);
+        },
+        failure => {
+          console.log("获取学生单月增加统计");
+        }
+      );
+    },
+    // echarts图表
+    drawLine() {
+      var that = this;
+      // 基于准备好的dom，初始化echarts实例
+      let echarts = require("echarts");
+      let myChart = echarts.init(document.getElementById("myChart"));
+      // 绘制图表
+      myChart.setOption({
+        title: {
+          // text: "学生数统计"
+        },
+        tooltip: {
+          trigger: "axis"
+        },
+        legend: {
+          data: ["学生总数", "单月增加"]
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true
+        },
+        // 下载按钮
+        /* 
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        }, */
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: this.monthList
+        },
+        yAxis: {
+          type: "value"
+        },
+        series: [
+          {
+            name: "学生总数",
+            type: "line",
+            stack: "总量",
+            data: this.countsList
+          },
+          {
+            name: "单月增加",
+            type: "line",
+            stack: "总量",
+            data: this.AloneCountsList
+          }
+        ]
+      });
+    },
+    // 年份
+    Allcounts(){
+      this.$http.post()
+    }
+  }
 };
 </script>
 
 <style lang="less" scoped>
+
 * {
   margin: 0px;
   padding: 0px;
@@ -178,6 +425,11 @@ export default {
     .left-All {
       margin-right: 20px;
       flex: 1;
+      .xiala{
+        margin-left:650px;
+        padding-top:15px;
+        z-index:99999;
+      }
       .left-top {
         height: 220px;
         margin-bottom: 20px;
@@ -212,6 +464,13 @@ export default {
       .left-bottom {
         height: 330px;
         background-color: #fff;
+        position: relative;
+        .statistics {
+          font-size: 25rpx;
+          font-weight: bold;
+          padding-left: 40px;
+          margin-top:-40px;
+        }
       }
     }
     // 整个右面

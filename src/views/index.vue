@@ -10,7 +10,7 @@
             <el-select v-model="form.region" placeholder="请选择校区">
               <el-option
                 :label="item.title"
-                v-for="(item,index) in campusList"
+                v-for="(item, index) in campusList"
                 :key="index"
                 :clearable="true"
                 :value="item.id"
@@ -19,12 +19,22 @@
           </el-form-item>
         </el-form>
         <el-menu class="el-menu-demo" mode="horizontal">
-          <img src="../assets/个人中心.png" alt width="25" height="25" class="center" />
+          <img
+            src="../assets/个人中心.png"
+            alt
+            width="25"
+            height="25"
+            class="center"
+          />
           <el-submenu index="2">
             <template slot="title">个人中心</template>
-            <el-menu-item index="2-1" @click="dialogVisible = true">账号信息</el-menu-item>
+            <el-menu-item index="2-1" @click="dialogVisible = true"
+              >账号信息</el-menu-item
+            >
             <el-menu-item index="2-2">选项2</el-menu-item>
-            <el-menu-item index="2-3" @click="loginOut()">退出登录</el-menu-item>
+            <el-menu-item index="2-3" @click="loginOut()"
+              >退出登录</el-menu-item
+            >
           </el-submenu>
         </el-menu>
       </el-header>
@@ -33,15 +43,21 @@
         <el-aside width="130px">
           <div
             class="el-div"
-            v-for="(item,index) in elList"
+            v-for="(item, index) in elList"
             :key="index"
             @click="addClass(index)"
-            :class="index==status?'changeClass':''"
+            :class="index == status ? 'changeClass' : ''"
           >
             <ul>
               <li>
-                <span :style="index==status?item.check.backgroundPos:item.checkNo.backgroundPos"></span>
-                <p>{{item.name}}</p>
+                <span
+                  :style="
+                    index == status
+                      ? item.check.backgroundPos
+                      : item.checkNo.backgroundPos
+                  "
+                ></span>
+                <p>{{ item.name }}</p>
               </li>
             </ul>
           </div>
@@ -69,6 +85,12 @@
               </el-menu-item-group>
               <el-menu-item-group>
                 <el-menu-item index="/account">账号管理</el-menu-item>
+              </el-menu-item-group>
+              <el-menu-item-group>
+                <el-menu-item index="/slideshow">轮播图管理</el-menu-item>
+              </el-menu-item-group>
+              <el-menu-item-group>
+                <el-menu-item index="/state">动态管理</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
           </el-menu>
@@ -162,7 +184,7 @@ export default {
           checkNo: {
             backgroundPos: "background-position:-88px -714px"
           }
-        },
+        }
       ]
     };
   },
