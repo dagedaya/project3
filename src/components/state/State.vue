@@ -3,7 +3,7 @@
     <!-- 头部 -->
     <div class="box-header">
       <p>动态数目（8个）</p>
-      <div type="button" class="btn" @click="dialogVisible = true">添加</div>
+      <div type="button" class="btn" @click="handleClickAdd">添加</div>
     </div>
     <!-- 表格 -->
     <table class="tab">
@@ -17,7 +17,12 @@
       </tr>
       <tr>
         <td class="text-first">
-          <img src="@/assets/images/state.png" style="width:108px;height:71px" alt="" class="swiperInfo">
+          <img
+            src="@/assets/images/state.png"
+            style="width:108px;height:71px"
+            alt=""
+            class="swiperInfo"
+          />
           <div class="text-font">
             <h4>动作讲解</h4>
             <p>动作要领</p>
@@ -44,20 +49,20 @@
       :page-size="pageNumber"
     ></el-pagination> -->
 
-    <template v-if="dialogVisible">
+    <!-- <template v-if="dialogVisible">
       <el-dialog title="添加动态" :visible.sync="dialogVisible" width="80%">
         <stateList ref="account" @accountChild="accountChild"></stateList>
       </el-dialog>
-    </template>
+    </template> -->
   </div>
 </template>
 
 
 <script>
 // 引入组件
-import stateList from "../../components/state/stateList.vue";
+// import stateList from "../../components/state/stateList.vue";
 export default {
-  components: { stateList },
+  // components: { stateList },
   data() {
     return {
       // 账号id
@@ -83,6 +88,12 @@ export default {
     this.loaddata(1);
   },
   methods: {
+    // 跳转页面
+    handleClickAdd() {
+      this.$router.push({
+        path:'/stateList'
+      });
+    },
     // 当前页
     chagneNumber(page) {
       this.page = page;
@@ -227,27 +238,27 @@ export default {
     border-collapse: collapse;
     border-spacing: 0;
     border: 1px solid #f4f4f4;
-    .time{
+    .time {
       text-align: left;
     }
     .text-first {
       text-align: left;
       clear: both;
       line-height: 10px;
-      h4{
+      h4 {
         font-size: 18px;
       }
-      p{
+      p {
         font-size: 14px;
-        color:#989a99;
+        color: #989a99;
       }
     }
     .textleft {
       text-align: left;
       padding-left: 100px;
     }
-    .text-time{
-      color:#68667e;
+    .text-time {
+      color: #68667e;
     }
     .textth {
       text-align: left;
@@ -266,14 +277,14 @@ export default {
     padding: 10px 0px 10px 100px;
     float: left;
   }
-  .text-font{
+  .text-font {
     margin-left: 220px;
   }
   .tab th {
     border-bottom: solid 1px #fea500;
     text-align: center;
   }
-  .tab td{  
+  .tab td {
     border-bottom: 1px solid #ececec;
   }
   .tab th {

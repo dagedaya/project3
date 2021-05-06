@@ -90,7 +90,13 @@ const routes = [
       {
         path: "/state",
         name: "state",
-        component: () => import("@/components/state/State.vue") 
+        component: () => import("@/components/state/State.vue")
+      },
+      // 动态添加页面
+      {
+        path: "/stateList",
+        name: "stateList",
+        component: () => import("@/components/state/stateList.vue")
       },
       // 首页
       {
